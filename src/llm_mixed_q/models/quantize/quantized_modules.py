@@ -3,10 +3,7 @@ from functools import partial
 import torch.nn.functional as F
 import torch.nn as nn
 
-from ...chop.passes.transforms.quantize.quantizers import (
-    integer_quantizer,
-    block_fp_quantizer,
-)
+from .quantizers import integer_quantizer, block_fp_quantizer
 
 
 class _LinearBase(nn.Linear):

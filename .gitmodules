@@ -1,0 +1,3 @@
+[submodule "submodules/mase-tools"]
+	path = submodules/mase-tools
+	url = git@github.com:JianyiCheng/mase-tools.git

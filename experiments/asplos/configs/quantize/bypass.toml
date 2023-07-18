@@ -1,0 +1,5 @@
+by = "type"
+
+[default]
+name = "integer"
+bypass = true

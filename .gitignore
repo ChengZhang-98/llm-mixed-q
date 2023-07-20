@@ -1,2 +1,7 @@
 /.vscode/
 /**/__pycache__/
+/experiments/**/*.json
+/experiments/**/*.toml
+/experiments/**/*.txt
+/experiments/**/*.bin
+/experiments/**/wandb/

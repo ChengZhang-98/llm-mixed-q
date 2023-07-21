@@ -1,1 +1,4 @@
 
+[submodule "submodules/lm-evaluation-harness"]
+	path = submodules/lm-evaluation-harness
+	url = git@github.com:EleutherAI/lm-evaluation-harness.git

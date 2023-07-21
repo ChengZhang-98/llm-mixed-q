@@ -1,7 +1,7 @@
 import argparse
 from typing import Any
 import toml
-from ..models import get_config_cls, get_model_cls
+from ..models import get_config_cls, get_model_cls, get_tokenizer_cls
 from ..tools import set_logging_verbosity, load_config, save_config
 import logging
 
@@ -250,7 +250,7 @@ def main():
         config=config,
         ignore_mismatched_sizes=args.ignore_mismatched_sizes,
     )
-    tokenizer = AutoTokenizer.from_pretrained(
+    tokenizer = get_tokenizer_cls(args.model_architecture).from_pretrained(
         args.model_name_or_path,
         use_fast=True,
     )
@@ -328,7 +328,8 @@ def main():
         # the samples passed). When using mixed precision, we add `pad_to_multiple_of=8` to pad all tensors to multiple
         # of 8s, which will enable the use of Tensor Cores on NVIDIA hardware with compute capability >= 7.5 (Volta).
         data_collator = DataCollatorWithPadding(
-            tokenizer, pad_to_multiple_of=(8 if accelerator.mixed_precision == "fp16" else None)
+            tokenizer,
+            pad_to_multiple_of=(8 if accelerator.mixed_precision == "fp16" else None),
         )
 
     train_dataloader = DataLoader(

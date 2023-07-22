@@ -1,4 +1,5 @@
 import toml
+from pathlib import Path
 
 
 def convert_str_na_to_none(d):
@@ -51,5 +52,7 @@ def load_config(config_path):
 def save_config(config, config_path):
     """Convert None to "NA" and save to a toml config file."""
     config = convert_none_to_str_na(config)
+    path = Path(config_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
     with open(config_path, "w") as f:
         toml.dump(config, f)

@@ -19,7 +19,7 @@ class _LinearBase(nn.Linear):
         super().__init__(in_features, out_features, bias, device, dtype)
         self.config = config
         self.bypass = config.get("bypass", False)
-        self.is_qat = config.get("is_qat", True)
+        self.is_qat = config.get("is_qat", True) if not self.bypass else True
         self.x_quantizer = None
         self.w_quantizer = self._w_quantizer = None
         self.b_quantizer = self._b_quantizer = None
@@ -104,6 +104,16 @@ class LinearBlockFP(_LinearBase):
                     linear.bias.copy_(linear._b_quantizer(linear_fp32.bias))
         return linear
 
+    def __repr__(self):
+        txt = "LinearBlockFP(in_features={}, out_features={}, bias={}, bypass={}, is_qat={})".format(
+            self.in_features,
+            self.out_features,
+            self.bias is not None,
+            self.bypass,
+            self.is_qat,
+        )
+        return txt
+
 
 class LinearInteger(_LinearBase):
     def _setup_quantizers(self, config: dict):
@@ -154,6 +164,16 @@ class LinearInteger(_LinearBase):
                 if linear.bias is not None:
                     linear.bias.copy_(linear._b_quantizer(linear_fp32.bias))
         return linear
+
+    def __repr__(self):
+        txt = "LinearInteger(in_features={}, out_features={}, bias={}, bypass={}, is_qat={})".format(
+            self.in_features,
+            self.out_features,
+            self.bias is not None,
+            self.bypass,
+            self.is_qat,
+        )
+        return txt
 
 
 QUANTIZED_MODULE_MAP = {

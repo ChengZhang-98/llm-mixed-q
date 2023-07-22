@@ -42,3 +42,7 @@ def set_logging_verbosity(level: str = "info"):
                 f"Unknown logging level: {level}, should be one of: debug, info, warning, error, critical"
             )
     root_logger.info(f"Set logging level to {level}")
+
+
+def get_logger(name: str):
+    return root_logger.getChild(name)

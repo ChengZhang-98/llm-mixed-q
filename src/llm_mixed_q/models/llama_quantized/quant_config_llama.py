@@ -67,17 +67,17 @@ def create_a_layer_config(
     # fmt: off
     qc = {
         "self_attn": {
-            "q_proj": parse_node_config(layer_qc.get("self_attn", {}).get("q_proj", linear_qc), "linear"),
-            "k_proj": parse_node_config(layer_qc.get("self_attn", {}).get("k_proj", linear_qc), "linear"),
-            "v_proj": parse_node_config(layer_qc.get("self_attn", {}).get("v_proj", linear_qc), "linear"),
-            "o_proj": parse_node_config(layer_qc.get("self_attn", {}).get("o_proj", linear_qc), "linear"),
-            "matmul_0": parse_node_config(layer_qc.get("self_attn", {}).get("matmul_0", matmul_qc), "matmul"),
-            "matmul_1": parse_node_config(layer_qc.get("self_attn", {}).get("matmul_1", matmul_qc), "matmul"),
+            "q_proj": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("q_proj", linear_qc), "linear")),
+            "k_proj": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("k_proj", linear_qc), "linear")),
+            "v_proj": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("v_proj", linear_qc), "linear")),
+            "o_proj": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("o_proj", linear_qc), "linear")),
+            "matmul_0": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("matmul_0", matmul_qc), "matmul")),
+            "matmul_1": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("matmul_1", matmul_qc), "matmul")),
         },
         "mlp": {
-            "gate_proj": parse_node_config(layer_qc.get("mlp", {}).get("gate_proj", linear_qc), "linear"),
-            "down_proj": parse_node_config(layer_qc.get("mlp", {}).get("down_proj", linear_qc), "linear"),
-            "up_proj": parse_node_config(layer_qc.get("mlp", {}).get("up_proj", linear_qc), "linear")
+            "gate_proj": deepcopy(parse_node_config(layer_qc.get("mlp", {}).get("gate_proj", linear_qc), "linear")),
+            "down_proj": deepcopy(parse_node_config(layer_qc.get("mlp", {}).get("down_proj", linear_qc), "linear")),
+            "up_proj": deepcopy(parse_node_config(layer_qc.get("mlp", {}).get("up_proj", linear_qc), "linear"))
         },
     }
     # fmt: on

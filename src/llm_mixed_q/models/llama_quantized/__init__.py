@@ -39,3 +39,5 @@ from .modeling_llama import (
     LlamaQuantizedForCausalLM,
     LlamaQuantizedForSequenceClassification,
 )
+from .profiler_llama import profile_llama_quantized
+from .quant_config_llama import parse_llama_quantized_config

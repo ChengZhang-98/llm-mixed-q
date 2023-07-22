@@ -104,11 +104,11 @@ for quant_arith, entries in QUANT_ARITH_ENTRIES.items():
 MASE_OP_TO_ENTRIES = {
     "add": ("name", "data_in_entries"),
     "bmm": ("name", "data_in_entries", "weight_entries"),
-    "conv1d": ("name", "data_in_entries", "weight_entries", "bias_entries"),
-    "conv2d": ("name", "data_in_entries", "weight_entries", "bias_entries"),
+    "conv1d": ("name", "is_qat", "data_in_entries", "weight_entries", "bias_entries"),
+    "conv2d": ("name", "is_qat", "data_in_entries", "weight_entries", "bias_entries"),
     "matmul": ("name", "data_in_entries", "weight_entries"),
     "mul": ("name", "data_in_entries"),
-    "linear": ("name", "data_in_entries", "weight_entries", "bias_entries"),
+    "linear": ("name", "is_qat", "data_in_entries", "weight_entries", "bias_entries"),
     "relu": ("name", "data_in_entries"),
     "sub": ("name", "data_in_entries"),
 }

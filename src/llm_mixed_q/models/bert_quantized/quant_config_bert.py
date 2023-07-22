@@ -22,6 +22,7 @@ An example of quant_config for bert
             "matmul_0": {},
             "matmul_1": {},
         },
+        # TODO: does not support cross attention yet
         "crossattntion": { # if config.add_cross_attention is True
             "query": {},
             "key": {},
@@ -89,20 +90,20 @@ def create_a_layer_config(
     # fmt: off
     qc = {
         "attention": {
-            "query": parse_node_config(layer_qc.get("attention", {}).get("query", linear_qc), "linear"),
-            "key": parse_node_config(layer_qc.get("attention", {}).get("key", linear_qc), "linear"),
-            "value": parse_node_config(layer_qc.get("attention", {}).get("value", linear_qc), "linear"),
-            "matmul_0": parse_node_config(layer_qc.get("attention", {}).get("matmul_0", matmul_qc), "matmul"),
-            "matmul_1": parse_node_config(layer_qc.get("attention", {}).get("matmul_1", matmul_qc), "matmul"),
+            "query": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("query", linear_qc), "linear")),
+            "key": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("key", linear_qc), "linear")),
+            "value": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("value", linear_qc), "linear")),
+            "matmul_0": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("matmul_0", matmul_qc), "matmul")),
+            "matmul_1": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("matmul_1", matmul_qc), "matmul")),
             "output": {
-                "dense": parse_node_config(layer_qc.get("attention", {}).get("output", {}).get("dense", linear_qc), "linear"),
+                "dense": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("output", {}).get("dense", linear_qc), "linear")),
             },
         },
         "intermediate": {
-            "dense": parse_node_config(layer_qc.get("intermediate", {}).get("dense", linear_qc), "linear"),
+            "dense": deepcopy(parse_node_config(layer_qc.get("intermediate", {}).get("dense", linear_qc), "linear")),
         },
         "output": {
-            "dense": parse_node_config(layer_qc.get("output", {}).get("dense", linear_qc), "linear"),
+            "dense": deepcopy(parse_node_config(layer_qc.get("output", {}).get("dense", linear_qc), "linear")),
         },
     }
     # fmt: on

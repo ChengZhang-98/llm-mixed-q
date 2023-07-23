@@ -9,6 +9,7 @@ import ast
 from copy import deepcopy
 from functools import partial
 from argparse import ArgumentParser
+import json
 
 import datasets
 import joblib
@@ -18,7 +19,7 @@ import toml
 import torch
 from tabulate import tabulate
 import logging
-from transformers import default_data_collator
+from transformers import default_data_collator, set_seed
 import transformers
 from torch.utils.data import DataLoader
 
@@ -49,6 +50,7 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 transformers.utils.logging.set_verbosity_error()
 datasets.utils.logging.set_verbosity_error()
+optuna.logging.set_verbosity(optuna.logging.ERROR)
 
 logger = logging.getLogger(__name__)
 
@@ -82,7 +84,7 @@ class SearchBase:
         self.save_dir.mkdir(parents=True, exist_ok=True)
         logger = logging.getLogger(type(self).__name__)
         logger.setLevel(logging.INFO)
-        fh = logging.FileHandler(self.save_dir / "search.log")
+        fh = logging.FileHandler(self.save_dir / "search_log.csv")
         fh.setLevel(logging.INFO)
         logger.addHandler(fh)
         self.logger = logger
@@ -182,6 +184,12 @@ class SearchQuantisationForClassification(SearchBase):
 
         def objective(trial: optuna.Trial, quant_config_seed, seq_len: int):
             quant_config_seed = deepcopy(quant_config_seed)
+            if self.search_config["search_space"]["extend_quant_config_seed"]:
+                quant_config_seed = self.q_config_parser(
+                    quant_config_seed, self.model_config.num_hidden_layers
+                )
+            logger.debug(f"============= Quant Config Seed =============")
+            logger.debug("\n" + pformat(quant_config_seed))
             sampled_config = sample_config(
                 trial=trial,
                 config=quant_config_seed,
@@ -227,13 +235,20 @@ class SearchQuantisationForClassification(SearchBase):
             # fmt: off
             ori_s_metric = s_metric / self.search_config["search_estimator"]["alpha_acc"]
             ori_h_metric = h_metric / self.search_config["search_estimator"]["alpha_mem_density"]
+
+            avg_bitwidth = self.search_config["search_estimator"]["compare_to"] / ori_h_metric
             # fmt: on
             self.logger.info(
-                f"Trial {frozen_trail.number}: "
-                f"(scaled_acc, scaled_mem_density) = "
+                f"{frozen_trail.number},"
+                f"{ori_s_metric:.4f},{ori_h_metric:.4f},{avg_bitwidth:.2f}),"
+                f"{s_metric:.4f}, {h_metric:.4f}"
+            )
+            logger.info(
+                f"Trial {frozen_trail.number} is done: "
+                f"unscaled (acc, mem_density, avg_bitwidth) = "
+                f"({ori_s_metric:.4f}, {ori_h_metric:.4f}, {avg_bitwidth:.2f}),"
+                f"scaled (acc, mem_density) = "
                 f"({s_metric:.4f}, {h_metric:.4f}), "
-                f"(unscaled_acc, unscaled_mem_density) = "
-                f"({ori_s_metric:.4f}, {ori_h_metric:.4f}),"
             )
 
         # create sampler and study
@@ -256,6 +271,9 @@ class SearchQuantisationForClassification(SearchBase):
         # sample configs
         q_config_seed = self.search_config["search_space"]["quant_config_seed"]
 
+        self.logger.info(
+            f"trial,unscaled_acc,unscaled_mem_density,avg_bitwidth,scaled_acc,scaled_mem_density"
+        )
         study.optimize(
             func=partial(
                 objective,
@@ -273,7 +291,9 @@ class SearchQuantisationForClassification(SearchBase):
         return study
 
     @staticmethod
-    def save_trial_to_quant_config(trial: optuna.trial.FrozenTrial, save_path: str):
+    def save_trial_to_quant_config(
+        trial: optuna.trial.FrozenTrial, save_path: str = None
+    ):
         def parse_and_create_item(quant_config: dict, keys: list[str], value):
             for i, key in enumerate(keys):
                 if key not in quant_config:
@@ -291,60 +311,158 @@ class SearchQuantisationForClassification(SearchBase):
             if isinstance(value, str) and value.startswith("!ast!"):
                 value = ast.literal_eval(value.removeprefix("!ast!"))
             parse_and_create_item(quant_config, keys, value)
+        if save_path is not None:
+            save_config(quant_config, save_path)
+        return quant_config
 
-        save_config(quant_config, save_path)
-
-    def save_study_and_results(self, study: optuna.Study):
-        save_dir = Path(self.save_dir)
-        save_dir.mkdir(parents=True, exist_ok=True)
-        study_path = save_dir / "study.pkl"
-        result_table_path = save_dir / "results.csv"
+    @staticmethod
+    def get_result_df(
+        study: optuna.Study, save_dir, alpha_s, alpha_h, compare_to
+    ) -> pd.DataFrame:
         result_df = pd.DataFrame(
             columns=[
+                "trial_id",
                 "accuracy",
-                "memory density",
-                "average_bitwidth",
-                "quant_config",
+                "memory_density",
+                "avg_bitwidth",
+                "quant_config_path",
                 "scaled_acc",
                 "scaled_mem_density",
+                "quant_config",
             ]
         )
+        quant_config_dir = save_dir / "quant_configs"
+        quant_config_dir.mkdir(parents=True, exist_ok=True)
         for i, trial in enumerate(study.best_trials):
-            quant_config_path = save_dir / f"quant_config_{i}.toml"
-            SearchQuantisationForClassification.save_trial_to_quant_config(
-                trial, quant_config_path
+            trial_id = trial.number
+            quant_config_path = quant_config_dir / f"quant_config_{i}.toml"
+            quant_config = (
+                SearchQuantisationForClassification.save_trial_to_quant_config(
+                    trial, quant_config_path
+                )
             )
+            alpha_acc = alpha_s
+            alpha_mem_density = alpha_h
             scaled_s_metric, scaled_h_metric = trial.values[0], trial.values[1]
-            s_metric = (
-                scaled_s_metric / self.search_config["search_estimator"]["alpha_acc"]
-            )
-            h_metric = (
-                scaled_h_metric
-                / self.search_config["search_estimator"]["alpha_mem_density"]
-            )
-            avg_bitwidth = (
-                self.search_config["search_estimator"]["compare_to"] / h_metric
-            )
+            s_metric = scaled_s_metric / alpha_acc
+            h_metric = scaled_h_metric / alpha_mem_density
+            avg_bitwidth = compare_to / h_metric
             result_df.loc[i] = [
+                trial_id,
                 s_metric,
                 h_metric,
                 avg_bitwidth,
                 quant_config_path,
                 scaled_s_metric,
                 scaled_h_metric,
+                quant_config,
             ]
-        result_df.to_csv(result_table_path, index=False)
+            return result_df
+
+    def save_study_and_results(self, study: optuna.Study):
+        save_dir = Path(self.save_dir)
+        save_dir.mkdir(parents=True, exist_ok=True)
+        study_path = save_dir / "study.pkl"
+        result_table_path = save_dir / "results.csv"
+        search_config_path = save_dir / "search_config.toml"
+        save_config(self.search_config, search_config_path)
+
+        result_df = SearchQuantisationForClassification.get_result_df(
+            study,
+            save_dir=save_dir,
+            alpha_s=self.search_config["search_estimator"]["alpha_acc"],
+            alpha_h=self.search_config["search_estimator"]["alpha_mem_density"],
+            compare_to=self.search_config["search_estimator"]["compare_to"],
+        )
+        # result_df.to_json(result_json_path, orient="index")
+        result_df.drop("quant_config", axis=1).to_csv(result_table_path)
         joblib.dump(study, study_path)
         logger.info("========== Best Trials ==========")
         logger.info(
             f"(alpha_acc, alpha_mem_density) = {self.search_config['search_estimator']['alpha_acc']}, {self.search_config['search_estimator']['alpha_mem_density']}"
         )
+
+        result_df = result_df.drop("quant_config", axis=1)
+        result_df["quant_config_name"] = result_df["quant_config_path"].apply(
+            lambda x: "$save_dir/quant_configs/" + str(Path(x).name)
+        )
+        result_df = result_df.drop("quant_config_path", axis=1)
         logger.info(
             "\n"
-            + tabulate(result_df, headers="keys", tablefmt="pretty", floatfmt=".4f")
+            + tabulate(
+                result_df,
+                headers="keys",
+                tablefmt="pretty",
+                floatfmt=(None, ".4f", ".2f", ".2f", None, ".4f", ".2f"),
+            )
         )
         logger.info(f"Results saved to {save_dir}")
         logger.info(f"Study saved to {study_path}")
+
+    def evaluate_best_trials(
+        self,
+        study: optuna.Study,
+        eval_dataloader,
+        task,
+        is_regression,
+    ):
+        acc_threshold = self.search_config["search_strategy"]["acc_threshold"]
+        avg_bitwidth_threshold = self.search_config["search_strategy"][
+            "avg_bitwidth_threshold"
+        ]
+        sort_by = self.search_config["search_strategy"]["sort_by"]
+
+        for i, s in enumerate(sort_by):
+            assert s in [
+                "acc",
+                "accuracy",
+                "avg_bitwidth",
+            ], f"Unknown sort_by: {s}, must be one of ['acc', 'accuracy', 'avg_bitwidth']"
+            if s == "acc":
+                sort_by[i] = "accuracy"
+        result_df = SearchQuantisationForClassification.get_result_df(
+            study,
+            save_dir=self.save_dir,
+            alpha_s=self.search_config["search_estimator"]["alpha_acc"],
+            alpha_h=self.search_config["search_estimator"]["alpha_mem_density"],
+            compare_to=self.search_config["search_estimator"]["compare_to"],
+        )
+
+        filtered_df = result_df.loc[result_df["accuracy"] >= acc_threshold]
+        filtered_df = filtered_df.loc[
+            filtered_df["avg_bitwidth"] <= avg_bitwidth_threshold
+        ]
+        if len(filtered_df) == 0:
+            logger.warning(
+                f"No trials found with acc >= {acc_threshold} and avg_bitwidth <= {avg_bitwidth_threshold}"
+            )
+            return
+
+        sort_by = [s if s != "avg_bitwidth" else "memory_density" for s in sort_by]
+        filtered_df = filtered_df.sort_values(sort_by, ascending=False)
+
+        best_quant_config = filtered_df.iloc[0]["quant_config"]
+        save_config(best_quant_config, self.save_dir / "best_quant_config.toml")
+
+        logger.info("========== Evaluating the Best ==========")
+        model = self.rebuild_model(best_quant_config)
+        results = evaluate_cls_task(
+            model,
+            task,
+            eval_dataloader,
+            is_regression=is_regression,
+            num_samples=None,
+            progress_bar=True,
+        )
+        with open(self.save_dir / "best_eval.json", "w") as f:
+            json.dump(results, f, indent=4)
+
+        logger.info(
+            f"Best quant config avg bitwidth: {filtered_df.iloc[0]['avg_bitwidth']: .2f}"
+        )
+        logger.info(
+            f"Best quant config software metric: {pformat(results)}, saved to {self.save_dir / 'best_eval.json'})"
+        )
 
 
 def search_quantisation_for_cls():
@@ -358,13 +476,29 @@ def search_quantisation_for_cls():
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--padding", type=str, default="max_length")
     parser.add_argument("--max_length", type=int, default=128)
+    parser.add_argument(
+        "--search_dataset_split",
+        type=str,
+        default="train",
+        choices=["train", "validation", "test"],
+    )
+    parser.add_argument(
+        "--eval_dataset_split",
+        type=str,
+        default="validation",
+        choices=["train", "validation", "test"],
+    )
     parser.add_argument("--accelerator", type=str, default="cuda")
+    parser.add_argument("--seed", type=int, default=None)
 
     args = parser.parse_args()
 
-    logger.info("========== Search Config ==========")
+    logger.info("==================== Search Config ====================")
     logger.info(pformat(vars(args)))
-    logger.info("========== Search Starts ==========")
+    logger.info("==================== Search Starts ====================")
+
+    if args.seed is not None:
+        set_seed(args.seed)
 
     search_obj = SearchQuantisationForClassification(
         model_arch=args.model_arch,
@@ -379,24 +513,38 @@ def search_quantisation_for_cls():
     preprocessed_dataset_dict = preprocess_dataset_dict(
         raw_dataset_dict,
         args.task,
-        split="train",
         tokenizer=search_obj.tokenizer,
         padding=args.padding,
         max_length=args.max_length,
     )
     is_regression = is_regression_task(args.task)
-    eval_dataloader = DataLoader(
-        preprocessed_dataset_dict["train"],
+    search_dataloader = DataLoader(
+        preprocessed_dataset_dict[args.search_dataset_split],
         batch_size=args.batch_size,
         collate_fn=default_data_collator,
         num_workers=os.cpu_count(),
+        shuffle=False,
+    )
+    eval_dataloader = DataLoader(
+        preprocessed_dataset_dict[args.eval_dataset_split],
+        batch_size=args.batch_size,
+        collate_fn=default_data_collator,
+        num_workers=os.cpu_count(),
+        shuffle=False,
     )
 
     study = search_obj.search(
-        eval_dataloader=eval_dataloader,
+        eval_dataloader=search_dataloader,
         task=args.task,
         is_regression=is_regression,
         seq_len=args.max_length,
     )
 
-    logger.info("========== Search Ends ==========")
+    search_obj.evaluate_best_trials(
+        study,
+        eval_dataloader=eval_dataloader,
+        task=args.task,
+        is_regression=is_regression,
+    )
+
+    logger.info("==================== Search Ends ====================")

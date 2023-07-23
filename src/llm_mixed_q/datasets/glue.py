@@ -37,7 +37,7 @@ def get_raw_dataset(task: str) -> datasets.DatasetDict:
 
 
 def preprocess_datasets(
-    raw_dataset_dict, task: str, split: str, tokenizer, padding, max_length
+    raw_dataset_dict, task: str, tokenizer, padding, max_length
 ) -> datasets.DatasetDict:
     assert task in TASK_TO_KEYS, f"task {task} not supported"
     sentence1_key, sentence2_key = TASK_TO_KEYS[task]

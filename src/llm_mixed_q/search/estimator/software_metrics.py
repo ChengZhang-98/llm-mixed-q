@@ -1,9 +1,15 @@
 import torch
 import evaluate as hf_evaluate
+from tqdm import tqdm
 
 
 def evaluate_cls_task(
-    model, task, eval_dataloader, is_regression=False, num_samples: int = None
+    model,
+    task,
+    eval_dataloader,
+    is_regression=False,
+    num_samples: int = None,
+    progress_bar=False,
 ) -> dict:
     assert (
         num_samples is None or num_samples >= eval_dataloader.batch_size
@@ -14,6 +20,15 @@ def evaluate_cls_task(
     device = model.device
     if num_samples:
         num_batches = num_samples // eval_dataloader.batch_size
+    else:
+        num_batches = len(eval_dataloader)
+
+    progress_bar = tqdm(
+        eval_dataloader,
+        desc="Evaluating the best",
+        total=num_batches,
+        disable=not progress_bar,
+    )
 
     for i, batch in enumerate(eval_dataloader):
         with torch.no_grad():
@@ -29,6 +44,7 @@ def evaluate_cls_task(
         )
         references = batch["labels"]
         metric.add_batch(predictions=predictions, references=references)
+        progress_bar.update(1)
         if num_samples and i >= num_batches:
             break
     results = metric.compute()

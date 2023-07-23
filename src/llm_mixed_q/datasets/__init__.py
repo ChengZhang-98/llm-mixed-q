@@ -22,13 +22,12 @@ def get_raw_dataset_dict(task: str) -> datasets.DatasetDict:
 
 
 def preprocess_dataset_dict(
-    raw_dataset_dict, task: str, split: str, tokenizer, padding, max_length
+    raw_dataset_dict, task: str, tokenizer, padding, max_length
 ) -> datasets.DatasetDict:
     if task in GLUE_TASKS:
         return preprocess_dataset_dict_glue(
             raw_dataset_dict,
             task=task,
-            split=split,
             tokenizer=tokenizer,
             padding=padding,
             max_length=max_length,

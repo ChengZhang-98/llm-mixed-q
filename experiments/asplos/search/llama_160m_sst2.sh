@@ -8,8 +8,8 @@
 #SBATCH --time=24:00:00
 #SBATCH --account=su114-gpu
 #SBATCH --signal=SIGUSR1@90
-#SBATCH --output=log_bert-base-uncased_search_sst2.txt
-#SBATCH --job-name=bert-base-uncased_search_sst2
+#SBATCH --output=log_llama_160m_search_sst2.txt
+#SBATCH --job-name=llama_160m_search_sst2
 
 if [ -z $1 ]; then
     echo "❗Requires <search_tag> as \$0"
@@ -27,15 +27,15 @@ work_dir=$HOME/Projects/llm-mixed-q
 env_name=mase-sw
 run_dir=$work_dir/experiments/asplos/search
 cd $run_dir
-echo ========== Running BERT Base SST2 ==========
+echo ========== Running Llama-160M SST2 ==========
 search_tag=$1
-save_dir=$run_dir/bert_base_sst2/$search_tag
+save_dir=$run_dir/llama_160m_sst2/$search_tag
 mkdir -p $save_dir
 
-model_arch=bert
+model_arch=llama
 task=sst2
-search_config=$work_dir/experiments/asplos/configs/search/bert_base_sst2.toml
-ckpt=$work_dir/experiments/asplos/fine_tune/bert_base_sst2
+search_config=$work_dir/experiments/asplos/configs/search/llama_160m_sst2.toml
+ckpt=$work_dir/experiments/asplos/fine_tune/llama_160m_sst2
 batch_size=256
 max_length=196
 

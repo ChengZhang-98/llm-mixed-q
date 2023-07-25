@@ -11,9 +11,11 @@
 #SBATCH --output=log_llama-160m_sst2.txt
 #SBATCH --job-name=llama-160m_sst2
 
-module purge
-module load CUDA/11.7.0 GCCcore/11.3.0 GCC/11.3.0 OpenMPI/4.1.4 Python/3.10.4
-source /home/c/cz98/venvs/mase-sw/bin/activate
+if [ $USER = "cz98" ]; then
+    module purge
+    module load CUDA/11.7.0 GCCcore/11.3.0 GCC/11.3.0 OpenMPI/4.1.4 Python/3.10.4
+    source /home/c/cz98/venvs/mase-sw/bin/activate
+fi
 
 work_dir=$HOME/Projects/llm-mixed-q
 env_name=mase-sw

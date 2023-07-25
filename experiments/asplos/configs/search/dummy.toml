@@ -1,0 +1,22 @@
+[saerch_strategy]
+n_jobs = 1
+n_trials = 64
+timeout = 28800.0
+sampler = "TPE"
+
+[search_estimator]
+alpha_acc = 1
+alpha_mem_density = 0.08
+num_samples = 128
+compare_to = "fp32"
+early_stop_acc = 0.92
+early_stop_mem_density = 7.12
+
+[search_space]
+[search_space.quant_config_seed]
+[search_space.quant_config_seed.default]
+name = ["float_fp"]
+data_in_width = [7, 6, 5]
+data_in_exponent_width = [8]
+data_in_exponent_bias = ["!ast!None"]
+data_in_block_size = ["!ast![1, 16]"]

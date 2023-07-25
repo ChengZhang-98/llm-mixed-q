@@ -4,7 +4,6 @@ from pathlib import Path
 
 from accelerate import init_empty_weights
 
-print(str(Path(__file__).parent.parent / "src"))
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 from llm_mixed_q.models import get_model_cls, get_config_cls
 

@@ -1,0 +1,34 @@
+[search_strategy]
+n_jobs = 1
+n_trials = 128
+timeout = 28800.0
+sampler = "TPE"
+acc_threshold = 0.95
+avg_bitwidth_threshold = 4.5
+sort_by = ["avg_bitwidth", "accuracy"]
+
+[search_estimator]
+alpha_acc = 1
+alpha_mem_density = 0.20
+num_samples = 512
+compare_to = 32
+
+[search_space]
+extend_quant_config_seed = true
+[search_space.quant_config_seed]
+[search_space.quant_config_seed.default]
+name = ["block_fp"]
+bypass = ["!ast!False"]
+is_qat = ["!ast!False"]
+data_in_width = [6, 5, 4, 3]
+data_in_exponent_width = [8]
+data_in_exponent_bias = ["!ast!None"]
+data_in_block_size = ["!ast![1, 16]"]
+weight_width = [6, 5, 4, 3]
+weight_exponent_width = [8]
+weight_exponent_bias = ["!ast!None"]
+weight_block_size = ["!ast![1, 16]"]
+bias_width = [6, 5, 4, 3]
+bias_exponent_width = [8]
+bias_exponent_bias = ["!ast!None"]
+bias_block_size = ["!ast![1, 16]"]

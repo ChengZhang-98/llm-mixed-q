@@ -144,6 +144,7 @@ class LlamaRotaryEmbedding(torch.nn.Module):
         # Different from paper, but it uses a different permutation in order to obtain the same calculation
         emb = torch.cat((freqs, freqs), dim=-1)
         dtype = torch.get_default_dtype()
+        # (1, 1, max_seq_len, dim)
         self.register_buffer(
             "cos_cached", emb.cos()[None, None, :, :].to(dtype), persistent=False
         )

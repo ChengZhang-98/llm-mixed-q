@@ -375,7 +375,7 @@ class SearchQuantisationForClassification(SearchBase):
             compare_to=self.search_config["search_estimator"]["compare_to"],
         )
         # result_df.to_json(result_json_path, orient="index")
-        result_df.drop("quant_config", axis=1).to_csv(result_table_path)
+        result_df.drop("quant_config", axis=1).to_csv(result_table_path, index=False)
         joblib.dump(study, study_path)
         logger.info("========== Best Trials ==========")
         logger.info(

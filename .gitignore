@@ -1,12 +1,3 @@
 /.vscode/
 /**/__pycache__/
-/experiments/asplos/fine_tune/bert_base_sst2/
-/experiments/asplos/fine_tune/bert_large_sst2/
-/experiments/asplos/fine_tune/llama_160m_sst2/
-/experiments/**/*.bin
-/experiments/**/*.pkl
-/experiments/**/wandb/
-/experiments/asplos/search/bert_base_sst2/
-/experiments/asplos/search/bert_large_sst2/
-/experiments/asplos/search/llama_160m_sst2/
-/experiments/asplos/search/**/*.txt
+/checkpoints/

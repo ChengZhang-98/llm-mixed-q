@@ -7,7 +7,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent / "src"))
 from llm_mixed_q.models import get_model_cls, get_config_cls
 from llm_mixed_q.models.llama_quantized import profile_llama_quantized
 from llm_mixed_q.models.bert_quantized import profile_bert_quantized
-from llm_mixed_q.tools import set_logging_verbosity
+from llm_mixed_q.utils import set_logging_verbosity
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 
@@ -24,7 +24,7 @@ def test_llama_profiler():
             "data_in_exponent_bias": None,
             "data_in_exponent_width": 8,
             "data_in_width": 6,
-            "is_qat": False,
+            "is_ptq": False,
             "name": "block_fp",
             "weight_block_size": [1, 16],
             "weight_exponent_bias": None,
@@ -56,7 +56,7 @@ def test_bert_profiler():
             "data_in_exponent_bias": None,
             "data_in_exponent_width": 8,
             "data_in_width": 6,
-            "is_qat": False,
+            "is_ptq": False,
             "name": "block_fp",
             "weight_block_size": [1, 16],
             "weight_exponent_bias": None,

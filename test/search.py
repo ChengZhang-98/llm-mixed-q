@@ -22,7 +22,7 @@ def test_node_parser():
         "default": {
             "name": ["integer"],
             "bypass": [False],
-            "is_qat": [True],
+            "is_ptq": [True],
             "data_in_width": [2, 4, 8],
             "data_in_frac_width": [1, 2, 3],
             "weight_width": [2, 4, 8],
@@ -58,7 +58,7 @@ def test_ast():
             "data_in_exponent_bias": ["!ast!None"],
             "data_in_exponent_width": [8],
             "data_in_width": [7, 6, 5],
-            "is_qat": ["!ast!False"],
+            "is_ptq": ["!ast!False"],
             "name": ["block_fp"],
             "weight_block_size": ["!ast![1, 16]"],
             "weight_exponent_bias": ["!ast!None"],

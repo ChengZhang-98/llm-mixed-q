@@ -2,6 +2,7 @@ import os
 import sys
 from pathlib import Path
 
+import torch
 from accelerate import init_empty_weights
 
 sys.path.append(str(Path(__file__).parent.parent / "src"))
@@ -20,10 +21,14 @@ def test_bert():
     config_cls = get_config_cls(arch)
 
     config = config_cls.from_pretrained(name, quant_config=quant_config)
-    with init_empty_weights():
-        model = model_cls.from_pretrained(name, config=config)
+    model = model_cls.from_pretrained(name, config=config)
 
     print(model)
+    print(model.bert.encoder.layer[0].attention.self.query.weight[0, :10])
+
+    x = torch.randint(0, 1000, (2, 128))
+    y = model(x)
+    print(model.bert.encoder.layer[0].attention.self.query.weight[0, :10])
 
 
 if __name__ == "__main__":

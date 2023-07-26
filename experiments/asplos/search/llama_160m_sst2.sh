@@ -35,7 +35,7 @@ mkdir -p $save_dir
 model_arch=llama
 task=sst2
 search_config=$work_dir/experiments/asplos/configs/search/llama_160m_sst2.toml
-ckpt=$work_dir/experiments/asplos/fine_tune/llama_160m_sst2
+ckpt=$work_dir/checkpoints/asplos/fine_tune/llama_160m_sst2
 batch_size=256
 max_length=196
 

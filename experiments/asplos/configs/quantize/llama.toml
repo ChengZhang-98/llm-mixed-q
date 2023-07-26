@@ -1,7 +1,7 @@
 [default]
 bypass = false
 name = "block_fp"
-is_qat = true
+is_ptq = true
 bias_block_size = [16]
 bias_exponent_bias = 127
 bias_exponent_width = 8

@@ -19,7 +19,7 @@ extend_quant_config_seed = true # if true, tensor-wise search
 [search_space.quant_config_seed.default]
 name = ["block_fp"]
 bypass = ["!ast!False"]
-is_qat = ["!ast!False"]
+is_ptq = ["!ast!True"]
 data_in_width = [5, 4, 3]
 data_in_exponent_width = [8]
 data_in_exponent_bias = ["!ast!None"]

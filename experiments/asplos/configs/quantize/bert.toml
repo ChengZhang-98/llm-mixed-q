@@ -1,29 +1,29 @@
 by = "type"
 
-# [default]
-# name = "integer"
-# by_pass = false
-# is_qat = true
-# data_in_width = 8
-# data_in_frac_width = 4
-# weight_width = 8
-# weight_frac_width = 4
-# bias_width = 8
-# bias_frac_width = 4
-
 [default]
-bypass = false
-name = "block_fp"
-is_qat = true
-bias_block_size = [16]
-bias_exponent_bias = 127
-bias_exponent_width = 8
-bias_width = 8
-data_in_block_size = [1, 16]
-data_in_exponent_bias = 127
-data_in_exponent_width = 8
+name = "integer"
+by_pass = false
+is_ptq = true
 data_in_width = 8
-weight_block_size = [1, 16]
-weight_exponent_bias = 127
-weight_exponent_width = 8
+data_in_frac_width = 4
 weight_width = 8
+weight_frac_width = 6
+bias_width = 8
+bias_frac_width = 6
+
+# [default]
+# bypass = false
+# name = "block_fp"
+# is_ptq = true
+# bias_block_size = [16]
+# bias_exponent_bias = 127
+# bias_exponent_width = 8
+# bias_width = 8
+# data_in_block_size = [1, 16]
+# data_in_exponent_bias = 127
+# data_in_exponent_width = 8
+# data_in_width = 8
+# weight_block_size = [1, 16]
+# weight_exponent_bias = 127
+# weight_exponent_width = 8
+# weight_width = 8

@@ -14,11 +14,11 @@
 if [ $USER = "cz98" ]; then
     module purge
     module load CUDA/11.7.0 GCCcore/11.3.0 GCC/11.3.0 OpenMPI/4.1.4 Python/3.10.4
-    source /home/c/cz98/venvs/mase-sw/bin/activate
+    source /home/c/cz98/venvs/llm-mixed-q/bin/activate
 fi
 
 work_dir=$HOME/Projects/llm-mixed-q
-env_name=mase-sw
+env_name=llm-mixed-q
 
 quant_config=$work_dir/experiments/asplos/configs/quantize/bypass.toml
 run_dir=$work_dir/experiments/asplos/fine_tune

@@ -29,7 +29,7 @@ run_dir=$work_dir/experiments/asplos/search
 cd $run_dir
 echo ========== Running BERT Base SST2 ==========
 search_tag=$1
-save_dir=$work_dir/experiments/asplos/configs/search/bert_base_sst2/$search_tag
+save_dir=$work_dir/checkpoints/asplos/configs/search/bert_base_sst2/$search_tag
 mkdir -p $save_dir
 
 model_arch=bert

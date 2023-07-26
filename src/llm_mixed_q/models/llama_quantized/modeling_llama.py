@@ -130,21 +130,28 @@ class LlamaRotaryEmbedding(torch.nn.Module):
 
     def __init__(self, dim, max_position_embeddings=2048, base=10000, device=None):
         super().__init__()
+        # inv_freq is the same as `theta_i` in the blog's Eq(13)
         inv_freq = 1.0 / (base ** (torch.arange(0, dim, 2).float().to(device) / dim))
         self.register_buffer("inv_freq", inv_freq)
 
         # Build here to make `torch.jit.trace` work.
+        # t is `m` in the blog's Eq(13)
         self.max_seq_len_cached = max_position_embeddings
         t = torch.arange(
             self.max_seq_len_cached,
             device=self.inv_freq.device,
             dtype=self.inv_freq.dtype,
         )
+        # freqs has a shape of (max_seq_len_cached, dim/2)
+        # freqs[m, :] is the [m theta_0, m theta_1, ..., m theta_{dim/2-1}] in the blog's Eq(13)
         freqs = torch.einsum("i,j->ij", t, self.inv_freq)
         # Different from paper, but it uses a different permutation in order to obtain the same calculation
+        # emb has a shape of (max_seq_len_cached, dim)
+        # emb[m, :] = [m theta_0, m theta_1, ..., m theta_{dim/2-1},  m theta_0, m theta_1, ..., m theta_{dim/2-1}]
         emb = torch.cat((freqs, freqs), dim=-1)
         dtype = torch.get_default_dtype()
         # (1, 1, max_seq_len, dim)
+        # cos_cached[m, :] = [cos(m theta_0), cos(m theta_1), ..., cos(m theta_{dim/2-1}), cos(m theta_0), cos(m theta_1), ..., cos(m theta_{dim/2-1})]
         self.register_buffer(
             "cos_cached", emb.cos()[None, None, :, :].to(dtype), persistent=False
         )

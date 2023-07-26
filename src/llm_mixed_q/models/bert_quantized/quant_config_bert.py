@@ -4,7 +4,7 @@ from copy import deepcopy
 
 import toml
 from ..quantize import parse_node_config
-from ...tools.config_load import convert_str_na_to_none
+from ...utils.config_load import convert_str_na_to_none
 
 """
 An example of quant_config for bert

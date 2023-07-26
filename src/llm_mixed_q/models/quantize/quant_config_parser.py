@@ -54,7 +54,7 @@ def cp_name(config: dict, p_config: dict, entries=None):
 
 
 def cp_is_qat(config: dict, p_config: dict, entries=None):
-    cp_multi_values(config, p_config, ("is_qat",))
+    cp_multi_values(config, p_config, ("is_ptq",))
 
 
 def cp_weight_entries(config: dict, p_config: dict, entries: dict):
@@ -94,7 +94,7 @@ QUANT_ARITH_TO_CP_FN = {}
 for quant_arith, entries in QUANT_ARITH_ENTRIES.items():
     QUANT_ARITH_TO_CP_FN[quant_arith] = {
         "name": partial(cp_name, entries=entries),
-        "is_qat": partial(cp_is_qat, entries=entries),
+        "is_ptq": partial(cp_is_qat, entries=entries),
         "weight_entries": partial(cp_weight_entries, entries=entries),
         "data_in_entries": partial(cp_data_in_entries, entries=entries),
         "bias_entries": partial(cp_bias_entries, entries=entries),
@@ -104,11 +104,11 @@ for quant_arith, entries in QUANT_ARITH_ENTRIES.items():
 MASE_OP_TO_ENTRIES = {
     "add": ("name", "data_in_entries"),
     "bmm": ("name", "data_in_entries", "weight_entries"),
-    "conv1d": ("name", "is_qat", "data_in_entries", "weight_entries", "bias_entries"),
-    "conv2d": ("name", "is_qat", "data_in_entries", "weight_entries", "bias_entries"),
+    "conv1d": ("name", "is_ptq", "data_in_entries", "weight_entries", "bias_entries"),
+    "conv2d": ("name", "is_ptq", "data_in_entries", "weight_entries", "bias_entries"),
     "matmul": ("name", "data_in_entries", "weight_entries"),
     "mul": ("name", "data_in_entries"),
-    "linear": ("name", "is_qat", "data_in_entries", "weight_entries", "bias_entries"),
+    "linear": ("name", "is_ptq", "data_in_entries", "weight_entries", "bias_entries"),
     "relu": ("name", "data_in_entries"),
     "sub": ("name", "data_in_entries"),
 }

@@ -2,7 +2,7 @@ import argparse
 from typing import Any
 import toml
 from ..models import get_config_cls, get_model_cls, get_tokenizer_cls
-from ..tools import set_logging_verbosity, load_config, save_config
+from ..utils import set_logging_verbosity, load_config, save_config
 import logging
 
 import math

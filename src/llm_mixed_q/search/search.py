@@ -37,7 +37,7 @@ from ..datasets import (
     preprocess_dataset_dict,
     is_regression_task,
 )
-from ..tools import (
+from ..utils import (
     load_config,
     save_config,
     convert_none_to_str_na,

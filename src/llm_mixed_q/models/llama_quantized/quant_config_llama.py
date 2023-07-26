@@ -2,7 +2,7 @@ import re
 from copy import deepcopy
 
 import toml
-from ...tools.config_load import convert_str_na_to_none
+from ...utils.config_load import convert_str_na_to_none
 from ..quantize.quant_config_parser import parse_node_config
 
 """

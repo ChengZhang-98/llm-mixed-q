@@ -1,0 +1,12 @@
+transformers
+accelerate
+toml
+datasets
+black
+colorlog
+pytest
+ipython
+ipdb
+tabulate
+optuna
+wandb

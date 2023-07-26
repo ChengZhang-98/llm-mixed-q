@@ -9,7 +9,7 @@ sort_by = ["avg_bitwidth", "accuracy"]
 
 [search_estimator]
 alpha_acc = 1
-alpha_mem_density = 0.20
+alpha_mem_density = 0.18
 num_samples = 512
 compare_to = 32
 

@@ -31,18 +31,20 @@ def evaluate_cls_task(
     )
 
     for i, batch in enumerate(eval_dataloader):
+        references = batch.pop("labels")
         with torch.no_grad():
             batch = {
                 k: v.to(device) if isinstance(v, torch.Tensor) else v
                 for k, v in batch.items()
             }
             outputs = model(**batch)
+
         predictions = (
             outputs.logits.argmax(dim=-1)
             if not is_regression
             else outputs.logits.squeeze()
         )
-        references = batch["labels"]
+        references = references.to(outputs.logits.device)
         metric.add_batch(predictions=predictions, references=references)
         progress_bar.update(1)
         if num_samples and i >= num_batches:

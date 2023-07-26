@@ -36,7 +36,7 @@ model_arch=bert
 task=sst2
 search_config=$work_dir/experiments/asplos/configs/search/bert_large_sst2.toml
 ckpt=$work_dir/checkpoints/asplos/fine_tune/bert_large_sst2
-batch_size=128
+batch_size=16
 max_length=196
 
 if [ $USER = "cz98" ]; then

@@ -21,14 +21,12 @@ def test_bert():
     config_cls = get_config_cls(arch)
 
     config = config_cls.from_pretrained(name, quant_config=quant_config)
-    model = model_cls.from_pretrained(name, config=config)
+    model = model_cls.from_pretrained(name, config=config, device_map=None)
 
-    print(model)
-    print(model.bert.encoder.layer[0].attention.self.query.weight[0, :10])
-
-    x = torch.randint(0, 1000, (2, 128))
+    x = torch.randint(0, 1000, (16, 128))
     y = model(x)
     print(model.bert.encoder.layer[0].attention.self.query.weight[0, :10])
+    breakpoint()
 
 
 if __name__ == "__main__":

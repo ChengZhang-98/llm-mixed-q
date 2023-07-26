@@ -892,6 +892,7 @@ class BertQuantizedPreTrainedModel(PreTrainedModel):
     load_tf_weights = load_tf_weights_in_bert
     base_model_prefix = "bert"
     supports_gradient_checkpointing = True
+    _no_split_modules = ["BertQuantizedLayer"]
 
     def _init_weights(self, module):
         """Initialize the weights"""
@@ -1821,6 +1822,7 @@ class BertQuantizedForSequenceClassification(BertQuantizedPreTrainedModel):
 
         loss = None
         if labels is not None:
+            labels = labels.to(logits.dtype)
             if self.config.problem_type is None:
                 if self.num_labels == 1:
                     self.config.problem_type = "regression"

@@ -21,6 +21,12 @@ from tabulate import tabulate
 import logging
 from transformers import default_data_collator, set_seed
 import transformers
+from accelerate import (
+    load_checkpoint_and_dispatch,
+    infer_auto_device_map,
+    init_empty_weights,
+)
+from accelerate.utils import get_balanced_memory
 from torch.utils.data import DataLoader
 
 from .estimator.software_metrics import evaluate_cls_task
@@ -64,6 +70,7 @@ class SearchBase:
         search_config: dict | str,
         save_dir: str,
         device: str,
+        model_parallel: bool = False,
     ) -> None:
         self.model_name = model_name
         self.model_cls = get_model_cls(model_arch, task)
@@ -71,6 +78,7 @@ class SearchBase:
         self.tokenizer = get_tokenizer_cls(model_arch).from_pretrained(model_name)
         self.model_config = self.config_cls.from_pretrained(model_name)
         self.device = device
+        self.model_parallel = model_parallel
 
         self.search_config = (
             search_config
@@ -96,8 +104,25 @@ class SearchBase:
             config = self.config_cls.from_pretrained(
                 self.model_name, quant_config=quant_config
             )
-        model = self.model_cls.from_pretrained(self.model_name, config=config)
-        model.to(self.device)
+        if "cuda" in self.device:
+            if self.model_parallel:
+                with init_empty_weights():
+                    model = self.model_cls(config)
+                device_map = infer_auto_device_map(
+                    model,
+                    no_split_module_classes=model._no_split_modules,
+                )
+                model = load_checkpoint_and_dispatch(
+                    model, checkpoint=self.model_name, device_map=device_map
+                )
+            else:
+                model = self.model_cls.from_pretrained(
+                    self.model_name, config=config
+                ).to(self.device)
+        elif self.device == "cpu":
+            model = self.model_cls.from_pretrained(self.model_name, config=config)
+        else:
+            raise ValueError(f"Unknown device: {self.device}")
         return model
 
 
@@ -110,8 +135,17 @@ class SearchQuantisationForClassification(SearchBase):
         save_dir: str,
         num_labels: int,
         device: str,
+        model_parallel: bool = False,
     ) -> None:
-        super().__init__(model_arch, model_name, "cls", search_config, save_dir, device)
+        super().__init__(
+            model_arch,
+            model_name,
+            "cls",
+            search_config,
+            save_dir,
+            device,
+            model_parallel,
+        )
         self.q_profiler = get_q_profiler(model_arch)
         self.q_config_parser = get_quant_config_parser(model_arch)
         self.num_labels = num_labels
@@ -125,8 +159,28 @@ class SearchQuantisationForClassification(SearchBase):
             config = self.config_cls.from_pretrained(
                 self.model_name, quant_config=quant_config, num_labels=self.num_labels
             )
-        model = self.model_cls.from_pretrained(self.model_name, config=config)
-        model.to(self.device)
+        if "cuda" in self.device:
+            if self.model_parallel:
+                with init_empty_weights():
+                    model = self.model_cls(config)
+                device_map = infer_auto_device_map(
+                    model,
+                    no_split_module_classes=model._no_split_modules,
+                )
+                model = load_checkpoint_and_dispatch(
+                    model, checkpoint=self.model_name, device_map=device_map
+                )
+                logger.debug("Model parallelism enabled")
+            else:
+                model = self.model_cls.from_pretrained(
+                    self.model_name, config=config
+                ).to(self.device)
+                logger.debug(f"Running on single device: {self.device}")
+        elif self.device == "cpu":
+            model = self.model_cls.from_pretrained(self.model_name, config=config)
+            logger.debug("Running on CPU")
+        else:
+            raise ValueError(f"Unknown device: {self.device}")
         return model
 
     def search(
@@ -188,8 +242,8 @@ class SearchQuantisationForClassification(SearchBase):
                 quant_config_seed = self.q_config_parser(
                     quant_config_seed, self.model_config.num_hidden_layers
                 )
-            logger.debug(f"============= Quant Config Seed =============")
-            logger.debug("\n" + pformat(quant_config_seed))
+            # logger.debug(f"============= Quant Config Seed =============")
+            # logger.debug("\n" + pformat(quant_config_seed))
             sampled_config = sample_config(
                 trial=trial,
                 config=quant_config_seed,
@@ -199,8 +253,8 @@ class SearchQuantisationForClassification(SearchBase):
                 sampled_config, num_hidden_layers=self.model_config.num_hidden_layers
             )
 
-            logger.debug(f"============= Sampled Config =============")
-            logger.debug("\n" + pformat(sampled_config))
+            # logger.debug(f"============= Sampled Config =============")
+            # logger.debug("\n" + pformat(sampled_config))
             model = self.rebuild_model(parsed_quant_config)
             s_metric = compute_software_metric(
                 model=model,
@@ -209,7 +263,7 @@ class SearchQuantisationForClassification(SearchBase):
                 is_regression=is_regression,
                 num_samples=self.search_config["search_estimator"]["num_samples"],
             )
-            logger.debug(f"model.config.quant_config: {model.config.quant_config}")
+            # logger.debug(f"model.config.quant_config: {model.config.quant_config}")
             h_metric = compute_hardware_metric(
                 self.q_profiler,
                 model.config,
@@ -256,7 +310,7 @@ class SearchQuantisationForClassification(SearchBase):
             case "random":
                 sampler = optuna.samplers.RandomSampler()
             case "tpe":
-                sampler = optuna.samplers.MOTPESampler()
+                sampler = optuna.samplers.TPESampler()
             case "nsgaii":
                 sampler = optuna.samplers.NSGAIISampler()
             case _:
@@ -488,7 +542,8 @@ def search_quantisation_for_cls():
         default="validation",
         choices=["train", "validation", "test"],
     )
-    parser.add_argument("--accelerator", type=str, default="cuda")
+    parser.add_argument("--accelerator", type=str, default="cuda:0")
+    parser.add_argument("--model_parallel", action="store_true")
     parser.add_argument("--seed", type=int, default=None)
 
     args = parser.parse_args()
@@ -507,6 +562,7 @@ def search_quantisation_for_cls():
         save_dir=args.save_dir,
         num_labels=get_num_labels(args.task),
         device=args.accelerator,
+        model_parallel=args.model_parallel,
     )
 
     raw_dataset_dict = get_raw_dataset_dict(args.task)

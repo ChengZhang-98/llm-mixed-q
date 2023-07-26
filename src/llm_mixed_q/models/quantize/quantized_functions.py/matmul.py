@@ -1,6 +1,6 @@
 from functools import partial
 import torch
-from .quantizers import integer_quantizer, block_fp_quantizer
+from ..quantizers import integer_quantizer, block_fp_quantizer
 
 # PyTorch has torch.matmul and torch.bmm for matrix multiplication
 matmul_mapping = {"matmul": torch.matmul, "bmm": torch.bmm}
@@ -91,15 +91,3 @@ def bmm_block_fp(x, y, config):
 
 def matmul_integer(x, y, config):
     return generic_matmul_integer(x, y, config, "matmul")
-
-
-QUANTIZED_FUNC_MAP = {
-    "matmul": {
-        "block_fp": matmul_block_fp,
-        "integer": matmul_integer,
-    },
-    "bmm": {
-        "block_fp": bmm_block_fp,
-        "integer": bmm_integer,
-    },
-}

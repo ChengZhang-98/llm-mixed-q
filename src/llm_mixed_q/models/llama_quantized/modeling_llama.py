@@ -288,8 +288,19 @@ class LlamaQuantizedAttention(nn.Module):
             kv_seq_len += past_key_value[0].shape[-2]
         cos, sin = self.rotary_emb(value_states, seq_len=kv_seq_len)
         # CZ?: check if quantisation is needed here
-        query_states, key_states = apply_rotary_pos_emb(
-            query_states, key_states, cos, sin, position_ids
+        # query_states, key_states = apply_rotary_pos_emb(
+        #     query_states, key_states, cos, sin, position_ids
+        # )
+        query_states, key_states = get_quantized_func(
+            "rotary_positional_encoding",
+            self.quant_config["rotary_positional_encoding"],
+        )(
+            query_states,
+            key_states,
+            cos,
+            sin,
+            position_ids,
+            self.quant_config["rotary_positional_encoding"],
         )
 
         if past_key_value is not None:

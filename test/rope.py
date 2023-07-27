@@ -26,5 +26,5 @@ if __name__ == "__main__":
     print("arange", arange)
 
     rope = LlamaRotaryEmbedding(dim)
-    print("rope.cos_cached[.., 0, :]", rope.cos_cached[..., 0, :])
+    # print("rope.cos_cached[.., 0, :]", rope.cos_cached[..., 0, :])
     breakpoint()

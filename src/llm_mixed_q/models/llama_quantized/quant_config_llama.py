@@ -58,7 +58,10 @@ def match_a_pattern(name: str, patterns: list[str]) -> str | None:
 
 
 def create_a_layer_config(
-    linear_qc: dict = None, matmul_qc: dict = None, layer_qc=None
+    linear_qc: dict = None,
+    matmul_qc: dict = None,
+    rotary_positional_encoding_qc: dict = None,
+    layer_qc=None,
 ) -> dict:
     if (layer_qc is None and matmul_qc is None) and layer_qc is None:
         raise ValueError("Must provide either (linear_qc & matmul_qc) or layer_qc")
@@ -71,6 +74,7 @@ def create_a_layer_config(
             "k_proj": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("k_proj", linear_qc), "linear")),
             "v_proj": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("v_proj", linear_qc), "linear")),
             "o_proj": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("o_proj", linear_qc), "linear")),
+            "rotary_positional_encoding": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("rotary_positional_encoding", rotary_positional_encoding_qc), "rotary_positional_encoding")),
             "matmul_0": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("matmul_0", matmul_qc), "matmul")),
             "matmul_1": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("matmul_1", matmul_qc), "matmul")),
         },
@@ -90,6 +94,10 @@ def by_type_parser(config: dict, num_hidden_layers: int) -> dict:
     linear_qc: dict = parse_node_config(
         config.get("linear", default_qc), mase_op="linear"
     )
+    rotary_positional_encoding_qc: dict = parse_node_config(
+        config.get("rotary_positional_encoding", default_qc),
+        mase_op="rotary_positional_encoding",
+    )
     matmul_qc: dict = parse_node_config(
         config.get("matmul", default_qc), mase_op="matmul"
     )
@@ -99,7 +107,9 @@ def by_type_parser(config: dict, num_hidden_layers: int) -> dict:
     p_config = {}
     for i in range(num_hidden_layers):
         layer_entry = f"model_layer_{i}"
-        p_config[layer_entry] = create_a_layer_config(linear_qc, matmul_qc, layer_qc)
+        p_config[layer_entry] = create_a_layer_config(
+            linear_qc, matmul_qc, rotary_positional_encoding_qc, layer_qc
+        )
     p_config["default"] = default_qc
     return p_config
 
@@ -110,6 +120,10 @@ def by_name_parser(config: dict, num_hidden_layers: int) -> dict:
     linear_qc: dict = parse_node_config(
         config.get("linear", default_qc), mase_op="linear"
     )
+    rotary_positional_encoding_qc: dict = parse_node_config(
+        config.get("rotary_positional_encoding", default_qc),
+        mase_op="rotary_positional_encoding",
+    )
     matmul_qc: dict = parse_node_config(
         config.get("matmul", default_qc), mase_op="matmul"
     )
@@ -119,7 +133,9 @@ def by_name_parser(config: dict, num_hidden_layers: int) -> dict:
     for i in range(num_hidden_layers):
         layer_entry = f"model_layer_{i}"
         layer_qc = config.get(layer_entry, None)
-        p_config[layer_entry] = create_a_layer_config(linear_qc, matmul_qc, layer_qc)
+        p_config[layer_entry] = create_a_layer_config(
+            linear_qc, matmul_qc, rotary_positional_encoding_qc, layer_qc
+        )
     p_config["default"] = default_qc
     return p_config
 

@@ -110,6 +110,7 @@ MASE_OP_TO_ENTRIES = {
     "mul": ("name", "data_in_entries"),
     "linear": ("name", "is_ptq", "data_in_entries", "weight_entries", "bias_entries"),
     "relu": ("name", "data_in_entries"),
+    "rotary_positional_encoding": ("name", "data_in_entries"),
     "sub": ("name", "data_in_entries"),
 }
 

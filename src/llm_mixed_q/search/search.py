@@ -1,8 +1,5 @@
 import ast
-import copy
 import os
-import sys
-from pprint import pprint as pp
 from pprint import pformat
 from pathlib import Path
 import ast
@@ -15,8 +12,6 @@ import datasets
 import joblib
 import optuna
 import pandas as pd
-import toml
-import torch
 from tabulate import tabulate
 import logging
 from transformers import default_data_collator, set_seed
@@ -26,7 +21,6 @@ from accelerate import (
     infer_auto_device_map,
     init_empty_weights,
 )
-from accelerate.utils import get_balanced_memory
 from torch.utils.data import DataLoader
 
 from .estimator.software_metrics import evaluate_cls_task
@@ -46,9 +40,6 @@ from ..datasets import (
 from ..utils import (
     load_config,
     save_config,
-    convert_none_to_str_na,
-    convert_str_na_to_none,
-    set_logging_verbosity,
 )
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
@@ -294,7 +285,7 @@ class SearchQuantisationForClassification(SearchBase):
             # fmt: on
             self.logger.info(
                 f"{frozen_trail.number},"
-                f"{ori_s_metric:.4f},{ori_h_metric:.4f},{avg_bitwidth:.2f}),"
+                f"{ori_s_metric:.4f},{ori_h_metric:.4f},{avg_bitwidth:.2f},"
                 f"{s_metric:.4f}, {h_metric:.4f}"
             )
             logger.info(

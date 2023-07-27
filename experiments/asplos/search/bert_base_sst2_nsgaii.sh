@@ -34,7 +34,7 @@ mkdir -p $save_dir
 
 model_arch=bert
 task=sst2
-search_config=$work_dir/experiments/asplos/configs/search/block_fp/bert_base_sst2.toml
+search_config=$work_dir/experiments/asplos/configs/search/samplers/bert_base_sst2_nsgaii.toml
 ckpt=$work_dir/checkpoints/asplos/fine_tune/bert_base_sst2
 batch_size=256
 max_length=196
@@ -48,7 +48,8 @@ if [ $USER = "cz98" ]; then
         --padding max_length \
         --max_length $max_length \
         --save_dir $save_dir \
-        --search_config $search_config
+        --search_config $search_config \
+        --accelerator cuda:1
 else
     python search_cls.py \
         --model_arch $model_arch \
@@ -58,6 +59,7 @@ else
         --padding max_length \
         --max_length $max_length \
         --save_dir $save_dir \
-        --search_config $search_config
+        --search_config $search_config \
+        --accelerator cuda:1
 fi
 echo ========== Done. ==========

@@ -1,4 +1,4 @@
-import datasets
+import datasets as hf_datasets
 
 TASK_TO_KEYS = {
     "cola": ("sentence", None),
@@ -18,7 +18,7 @@ GLUE_TASKS = list(TASK_TO_KEYS.keys())
 def get_num_labels(task: str):
     assert task in TASK_TO_KEYS, f"task {task} not supported"
 
-    raw_datasets = datasets.load_dataset("glue", task)
+    raw_datasets = hf_datasets.load_dataset("glue", task)
     is_regression = task == "stsb"
 
     if not is_regression:
@@ -30,15 +30,15 @@ def get_num_labels(task: str):
     return num_labels
 
 
-def get_raw_dataset(task: str) -> datasets.DatasetDict:
+def get_raw_dataset_dict(task: str) -> hf_datasets.DatasetDict:
     assert task in TASK_TO_KEYS, f"task {task} not supported"
-    raw_datasets = datasets.load_dataset("glue", task)
+    raw_datasets = hf_datasets.load_dataset("glue", task)
     return raw_datasets
 
 
-def preprocess_datasets(
+def preprocess_dataset_dict(
     raw_dataset_dict, task: str, tokenizer, padding, max_length
-) -> datasets.DatasetDict:
+) -> hf_datasets.DatasetDict:
     assert task in TASK_TO_KEYS, f"task {task} not supported"
     sentence1_key, sentence2_key = TASK_TO_KEYS[task]
 
@@ -68,7 +68,7 @@ def preprocess_datasets(
         "validation_matched" if task == "mnli" else "validation"
     ]
     test_dataset = processed_dataset["test_matched" if task == "mnli" else "test"]
-    return datasets.DatasetDict(
+    return hf_datasets.DatasetDict(
         train=train_dataset,
         validation=val_dataset,
         test=test_dataset,

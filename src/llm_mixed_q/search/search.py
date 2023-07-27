@@ -23,7 +23,7 @@ from accelerate import (
 )
 from torch.utils.data import DataLoader
 
-from .estimator.software_metrics import evaluate_cls_task
+from ..eval import evaluate_cls_task_glue as evaluate_cls_task
 from ..models import (
     get_model_cls,
     get_config_cls,

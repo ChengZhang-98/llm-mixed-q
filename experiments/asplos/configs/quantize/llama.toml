@@ -14,3 +14,9 @@ weight_block_size = [1, 16]
 weight_exponent_bias = 127
 weight_exponent_width = 8
 weight_width = 8
+
+[rotary_positional_encoding]
+bypass = false
+name = "integer"
+data_in_width = 8
+data_in_frac_width = 7

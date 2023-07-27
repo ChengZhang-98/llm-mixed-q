@@ -34,9 +34,9 @@ mkdir -p $save_dir
 
 model_arch=bert
 task=sst2
-search_config=$work_dir/experiments/asplos/configs/search/bert_large_sst2.toml
+search_config=$work_dir/experiments/asplos/configs/search/block_fp/bert_large_sst2.toml
 ckpt=$work_dir/checkpoints/asplos/fine_tune/bert_large_sst2
-batch_size=16
+batch_size=128
 max_length=196
 
 if [ $USER = "cz98" ]; then

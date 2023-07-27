@@ -29,12 +29,12 @@ run_dir=$work_dir/experiments/asplos/search
 cd $run_dir
 echo ========== Running Llama-160M SST2 ==========
 search_tag=$1
-save_dir=$run_dir/checkpoints/asplos/configs/search/llama_160m_sst2/$search_tag
+save_dir=$work_dir/checkpoints/asplos/search/llama_160m_sst2/$search_tag
 mkdir -p $save_dir
 
 model_arch=llama
 task=sst2
-search_config=$work_dir/experiments/asplos/configs/search/llama_160m_sst2.toml
+search_config=$work_dir/experiments/asplos/configs/search/block_fp/llama_160m_sst2.toml
 ckpt=$work_dir/checkpoints/asplos/fine_tune/llama_160m_sst2
 batch_size=256
 max_length=196

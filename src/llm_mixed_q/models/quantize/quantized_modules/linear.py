@@ -3,6 +3,7 @@ import torch
 from functools import partial
 import torch.nn.functional as F
 import torch.nn as nn
+import logging
 
 from ..quantizers import (
     integer_quantizer,
@@ -13,6 +14,8 @@ from ..quantizers import (
     minifloat_denorm_quantizer,
     log_quantizer,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class _LinearBase(nn.Linear):
@@ -31,8 +34,8 @@ class _LinearBase(nn.Linear):
         self.is_ptq = config.get("is_ptq", False)
         self.weight_requires_quantisation = True if self.is_ptq else False
         self.x_quantizer = None
-        self.w_quantizer = self._w_quantizer = None
-        self.b_quantizer = self._b_quantizer = None
+        self.w_quantizer = None
+        self.b_quantizer = None
 
         if not self.bypass:
             self._setup_quantizers(config)
@@ -49,13 +52,15 @@ class _LinearBase(nn.Linear):
             return F.linear(x, self.weight, self.bias)
         elif self.is_ptq:
             with torch.no_grad():
+                x = self.x_quantizer(x)
                 if self.weight_requires_quantisation:
-                    self.weight.copy_(self._w_quantizer(self.weight.data))
+                    self.weight.copy_(self.w_quantizer(self.weight.data))
                     if self.bias is not None:
-                        self.bias.copy_(self._b_quantizer(self.bias.data))
+                        self.bias.copy_(self.b_quantizer(self.bias.data))
                     self.weight_requires_quantisation = False
             return F.linear(x, self.weight, self.bias)
         else:
+            x = self.x_quantizer(x)
             w = self.w_quantizer(self.weight)
             bias = self.b_quantizer(self.bias) if self.bias is not None else None
             return F.linear(x, w, bias)
@@ -87,14 +92,10 @@ class _LinearBase(nn.Linear):
 
 @torch.no_grad()
 def _copy_weight(linear: _LinearBase, linear_fp32: nn.Linear):
-    if linear.is_ptq:
-        linear.weight.copy_(linear_fp32.weight)
-        if linear.bias is not None:
-            linear.bias.copy_(linear_fp32.bias)
-    else:
-        linear.weight.copy_(linear._w_quantizer(linear_fp32.weight))
-        if linear.bias is not None:
-            linear.bias.copy_(linear._b_quantizer(linear_fp32.bias))
+    linear.weight.copy_(linear_fp32.weight)
+    if linear.bias is not None:
+        linear.bias.copy_(linear_fp32.bias)
+
     return linear
 
 
@@ -108,7 +109,7 @@ class LinearBlockFP(_LinearBase):
             block_size=config["data_in_block_size"],
             skip_first_dim=True,
         )
-        self._w_quantizer = partial(
+        self.w_quantizer = partial(
             block_fp_quantizer,
             width=config["weight_width"],
             exponent_width=config["weight_exponent_width"],
@@ -116,7 +117,7 @@ class LinearBlockFP(_LinearBase):
             block_size=config["weight_block_size"],
             skip_first_dim=False,
         )
-        self._b_quantizer = (
+        self.b_quantizer = (
             partial(
                 block_fp_quantizer,
                 width=config["bias_width"],
@@ -128,12 +129,6 @@ class LinearBlockFP(_LinearBase):
             if self.bias is not None
             else None
         )
-        if self.is_ptq:
-            self.w_quantizer = self._w_quantizer
-            self.b_quantizer = self._b_quantizer
-        else:
-            self.w_quantizer = lambda x: x
-            self.b_quantizer = lambda x: x
 
 
 class LinearBlockLog(_LinearBase):
@@ -145,14 +140,14 @@ class LinearBlockLog(_LinearBase):
             block_size=config["data_in_block_size"],
             skip_first_dim=True,
         )
-        self._w_quantizer = partial(
+        self.w_quantizer = partial(
             block_log_quantizer,
             width=config["weight_width"],
             exponent_bias_width=config["weight_exponent_bias_width"],
             block_size=config["weight_block_size"],
             skip_first_dim=False,
         )
-        self._b_quantizer = (
+        self.b_quantizer = (
             partial(
                 block_log_quantizer,
                 width=config["bias_width"],
@@ -163,12 +158,6 @@ class LinearBlockLog(_LinearBase):
             if self.bias is not None
             else None
         )
-        if self.is_ptq:
-            self.w_quantizer = self._w_quantizer
-            self.b_quantizer = self._b_quantizer
-        else:
-            self.w_quantizer = lambda x: x
-            self.b_quantizer = lambda x: x
 
 
 class LinearBlockMinifloat(_LinearBase):
@@ -181,7 +170,7 @@ class LinearBlockMinifloat(_LinearBase):
             block_size=config["data_in_block_size"],
             skip_first_dim=True,
         )
-        self._w_quantizer = partial(
+        self.w_quantizer = partial(
             block_minifloat_quantizer,
             width=config["weight_width"],
             exponent_width=config["weight_exponent_width"],
@@ -189,7 +178,7 @@ class LinearBlockMinifloat(_LinearBase):
             block_size=config["weight_block_size"],
             skip_first_dim=False,
         )
-        self._b_quantizer = (
+        self.b_quantizer = (
             partial(
                 block_minifloat_quantizer,
                 width=config["bias_width"],
@@ -201,12 +190,6 @@ class LinearBlockMinifloat(_LinearBase):
             if self.bias is not None
             else None
         )
-        if self.is_ptq:
-            self.w_quantizer = self._w_quantizer
-            self.b_quantizer = self._b_quantizer
-        else:
-            self.w_quantizer = lambda x: x
-            self.b_quantizer = lambda x: x
 
 
 class LinearInteger(_LinearBase):
@@ -217,13 +200,13 @@ class LinearInteger(_LinearBase):
             frac_width=config["data_in_frac_width"],
             is_signed=True,
         )
-        self._w_quantizer = partial(
+        self.w_quantizer = partial(
             integer_quantizer,
             width=config["weight_width"],
             frac_width=config["weight_frac_width"],
             is_signed=True,
         )
-        self._b_quantizer = (
+        self.b_quantizer = (
             partial(
                 integer_quantizer,
                 width=config["bias_width"],
@@ -233,12 +216,6 @@ class LinearInteger(_LinearBase):
             if self.bias is not None
             else None
         )
-        if self.is_ptq:
-            self.w_quantizer = self._w_quantizer
-            self.b_quantizer = self._b_quantizer
-        else:
-            self.w_quantizer = lambda x: x
-            self.b_quantizer = lambda x: x
 
 
 class LinearLog(_LinearBase):
@@ -249,13 +226,13 @@ class LinearLog(_LinearBase):
             exponent_width=config["data_in_exponent_width"],
             exponent_bias=config["data_in_exponent_bias"],
         )
-        self._w_quantizer = partial(
+        self.w_quantizer = partial(
             log_quantizer,
             width=config["weight_width"],
             exponent_width=config["weight_exponent_width"],
             exponent_bias=config["weight_exponent_bias"],
         )
-        self._b_quantizer = (
+        self.b_quantizer = (
             partial(
                 log_quantizer,
                 width=config["bias_width"],
@@ -265,12 +242,6 @@ class LinearLog(_LinearBase):
             if self.bias is not None
             else None
         )
-        if self.is_ptq:
-            self.w_quantizer = self._w_quantizer
-            self.b_quantizer = self._b_quantizer
-        else:
-            self.w_quantizer = lambda x: x
-            self.b_quantizer = lambda x: x
 
 
 class LinearMinifloatDenorm(_LinearBase):
@@ -281,13 +252,13 @@ class LinearMinifloatDenorm(_LinearBase):
             exponent_width=config["data_in_exponent_width"],
             exponent_bias=config["data_in_exponent_bias"],
         )
-        self._w_quantizer = partial(
+        self.w_quantizer = partial(
             minifloat_denorm_quantizer,
             width=config["weight_width"],
             exponent_width=config["weight_exponent_width"],
             exponent_bias=config["weight_exponent_bias"],
         )
-        self._b_quantizer = (
+        self.b_quantizer = (
             partial(
                 minifloat_denorm_quantizer,
                 width=config["bias_width"],
@@ -297,12 +268,6 @@ class LinearMinifloatDenorm(_LinearBase):
             if self.bias is not None
             else None
         )
-        if self.is_ptq:
-            self.w_quantizer = self._w_quantizer
-            self.b_quantizer = self._b_quantizer
-        else:
-            self.w_quantizer = lambda x: x
-            self.b_quantizer = lambda x: x
 
 
 class LinearMinifloatIEEE(_LinearBase):
@@ -313,13 +278,13 @@ class LinearMinifloatIEEE(_LinearBase):
             exponent_width=config["data_in_exponent_width"],
             exponent_bias=config["data_in_exponent_bias"],
         )
-        self._w_quantizer = partial(
+        self.w_quantizer = partial(
             minifloat_ieee_quantizer,
             width=config["weight_width"],
             exponent_width=config["weight_exponent_width"],
             exponent_bias=config["weight_exponent_bias"],
         )
-        self._b_quantizer = (
+        self.b_quantizer = (
             partial(
                 minifloat_ieee_quantizer,
                 width=config["bias_width"],
@@ -329,9 +294,3 @@ class LinearMinifloatIEEE(_LinearBase):
             if self.bias is not None
             else None
         )
-        if self.is_ptq:
-            self.w_quantizer = self._w_quantizer
-            self.b_quantizer = self._b_quantizer
-        else:
-            self.w_quantizer = lambda x: x
-            self.b_quantizer = lambda x: x

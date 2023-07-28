@@ -11,8 +11,16 @@ from .llama_quantized import (
     profile_llama_quantized,
     parse_llama_quantized_config,
 )
+from .opt_quantized import (
+    OPTQuantizedConfig,
+    OPTQuantizedForCausalLM,
+    OPTQuantizedForSequenceClassification,
+    profile_opt_quantized,
+    parse_opt_quantized_config,
+)
 from transformers.models.bert.tokenization_bert import BertTokenizer
 from transformers.models.llama.tokenization_llama import LlamaTokenizer
+from transformers import AutoTokenizer
 
 MODEL_MAP = {
     "bert": {
@@ -22,26 +30,34 @@ MODEL_MAP = {
         "cls": LlamaQuantizedForSequenceClassification,
         "lm": LlamaQuantizedForCausalLM,
     },
+    "opt": {
+        "cls": OPTQuantizedForSequenceClassification,
+        "lm": OPTQuantizedForCausalLM,
+    },
 }
 
 CONFIG_MAP = {
     "bert": BertQuantizedConfig,
     "llama": LlamaQuantizedConfig,
+    "opt": OPTQuantizedConfig,
 }
 
 TOKENIZER_MAP = {
     "bert": BertTokenizer,
     "llama": LlamaTokenizer,
+    "opt": AutoTokenizer,
 }
 
 PROFILER_MAP = {
     "bert": profile_bert_quantized,
     "llama": profile_llama_quantized,
+    "opt": profile_opt_quantized,
 }
 
 QUANT_CONFIG_PARSER_MAP = {
     "bert": parse_bert_quantized_config,
     "llama": parse_llama_quantized_config,
+    "opt": parse_opt_quantized_config,
 }
 
 

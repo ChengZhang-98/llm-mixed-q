@@ -16,6 +16,8 @@
 from transformers.configuration_utils import PretrainedConfig
 from transformers.utils import logging
 
+from .quant_config_opt import parse_opt_quantized_config
+
 
 logger = logging.get_logger(__name__)
 
@@ -118,14 +120,9 @@ class OPTQuantizedConfig(PretrainedConfig):
         eos_token_id=2,
         enable_bias=True,
         layer_norm_elementwise_affine=True,
+        quant_config: dict | str = None,
         **kwargs,
     ):
-        super().__init__(
-            pad_token_id=pad_token_id,
-            bos_token_id=bos_token_id,
-            eos_token_id=eos_token_id,
-            **kwargs,
-        )
         self.vocab_size = vocab_size
         self.max_position_embeddings = max_position_embeddings
         self.num_attention_heads = num_attention_heads
@@ -150,3 +147,26 @@ class OPTQuantizedConfig(PretrainedConfig):
         # with checkpoints that have been fine-tuned before transformers v4.20.1
         # see https://github.com/facebookresearch/metaseq/pull/164
         self._remove_final_layer_norm = _remove_final_layer_norm
+        if quant_config is not None:
+            quant_config = parse_opt_quantized_config(quant_config, num_hidden_layers)
+
+        self.quant_config = quant_config
+        super().__init__(
+            pad_token_id=pad_token_id,
+            bos_token_id=bos_token_id,
+            eos_token_id=eos_token_id,
+            **kwargs,
+        )
+
+    def __setattr__(self, key, value):
+        if key == "quant_config":
+            if value is not None:
+                value = parse_opt_quantized_config(
+                    config=value, num_hidden_layers=self.num_hidden_layers
+                )
+            else:
+                value = parse_opt_quantized_config(
+                    {"by": "type", "default": {"name": "integer", "bypass": True}},
+                    self.num_hidden_layers,
+                )
+        return super().__setattr__(key, value)

@@ -6,7 +6,12 @@ import torch
 from accelerate import init_empty_weights
 
 sys.path.append(str(Path(__file__).parent.parent / "src"))
-from llm_mixed_q.models import get_model_cls, get_config_cls
+from llm_mixed_q.models import (
+    get_model_cls,
+    get_config_cls,
+    get_tokenizer_cls,
+    get_q_profiler,
+)
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 
@@ -21,7 +26,7 @@ def test_bert():
     config_cls = get_config_cls(arch)
 
     config = config_cls.from_pretrained(name, quant_config=quant_config)
-    model = model_cls.from_pretrained(name, config=config, device_map=None)
+    model = model_cls.from_pretrained(name, config=config, device_map=None).to("cuda")
 
     x = torch.randint(0, 1000, (16, 128))
     y = model(x)
@@ -38,11 +43,36 @@ def test_llama():
     config_cls = get_config_cls(arch)
 
     config = config_cls.from_pretrained(name, quant_config=quant_config)
-    model = model_cls.from_pretrained(name, config=config, device_map=None)
+    model = model_cls.from_pretrained(name, config=config).to("cuda")
 
+    x = torch.randint(0, 1000, (16, 128))
+    y = model(x)
     breakpoint()
+
+
+def test_opt():
+    arch = "opt"
+    task = "cls"
+    name = "facebook/opt-125m"
+    quant_config = "./opt.toml"
+
+    model_cls = get_model_cls(arch, task)
+    config_cls = get_config_cls(arch)
+
+    config = config_cls.from_pretrained(name, quant_config=quant_config)
+    model = model_cls.from_pretrained(name, config=config).to("cuda")
+
+    x = torch.randint(0, 1000, (16, 128)).to("cuda")
+    y = model(x)
+
+    profiler = get_q_profiler(arch)
+    profile = profiler(config=config, seq_len=128)
+    print(profile)
+    print("avg act bitwidth:", profile["act_bits"] / profile["num_acts"])
+    print("avg param bitwidth:", profile["param_bits"] / profile["num_params"])
 
 
 if __name__ == "__main__":
     # test_bert()
-    test_llama()
+    # test_llama()
+    test_opt()

@@ -37,6 +37,7 @@ from transformers.utils import (
     replace_return_docstrings,
 )
 from .configuration_opt import OPTQuantizedConfig
+from ..quantize import get_quantized_cls, get_quantized_func
 
 
 logger = logging.get_logger(__name__)
@@ -143,7 +144,7 @@ class OPTLearnedPositionalEmbedding(nn.Embedding):
         return super().forward(positions + self.offset)
 
 
-class OPTAttention(nn.Module):
+class OPTQauntizedAttention(nn.Module):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
 
     def __init__(
@@ -153,6 +154,7 @@ class OPTAttention(nn.Module):
         dropout: float = 0.0,
         is_decoder: bool = False,
         bias: bool = True,
+        quant_config: dict = None,
     ):
         super().__init__()
         self.embed_dim = embed_dim
@@ -168,10 +170,17 @@ class OPTAttention(nn.Module):
         self.scaling = self.head_dim**-0.5
         self.is_decoder = is_decoder
 
-        self.k_proj = nn.Linear(embed_dim, embed_dim, bias=bias)
-        self.v_proj = nn.Linear(embed_dim, embed_dim, bias=bias)
-        self.q_proj = nn.Linear(embed_dim, embed_dim, bias=bias)
-        self.out_proj = nn.Linear(embed_dim, embed_dim, bias=bias)
+        # self.k_proj = nn.Linear(embed_dim, embed_dim, bias=bias)
+        # self.v_proj = nn.Linear(embed_dim, embed_dim, bias=bias)
+        # self.q_proj = nn.Linear(embed_dim, embed_dim, bias=bias)
+        # self.out_proj = nn.Linear(embed_dim, embed_dim, bias=bias)
+        # fmt:off
+        self.k_proj = get_quantized_cls("linear", quant_config["k_proj"])(embed_dim, embed_dim, bias=bias, config=quant_config["k_proj"])
+        self.q_proj = get_quantized_cls("linear", quant_config["q_proj"])(embed_dim, embed_dim, bias=bias, config=quant_config["q_proj"])
+        self.v_proj = get_quantized_cls("linear", quant_config["v_proj"])(embed_dim, embed_dim, bias=bias, config=quant_config["v_proj"])
+        self.out_proj = get_quantized_cls("linear", quant_config["out_proj"])(embed_dim, embed_dim, bias=bias, config=quant_config["out_proj"])
+        self.quant_config = quant_config
+        # fmt:on
 
     def _shape(self, tensor: torch.Tensor, seq_len: int, bsz: int):
         return (
@@ -235,7 +244,11 @@ class OPTAttention(nn.Module):
         value_states = value_states.view(*proj_shape)
 
         src_len = key_states.size(1)
-        attn_weights = torch.bmm(query_states, key_states.transpose(1, 2))
+        # *: bmm
+        # attn_weights = torch.bmm(query_states, key_states.transpose(1, 2))
+        # fmt:off
+        attn_weights = get_quantized_func("bmm", self.quant_config["bmm_0"])(query_states, key_states.transpose(1, 2), config=self.quant_config["bmm_0"])
+        # fmt:on
 
         if attn_weights.size() != (bsz * self.num_heads, tgt_len, src_len):
             raise ValueError(
@@ -297,7 +310,11 @@ class OPTAttention(nn.Module):
             attn_weights, p=self.dropout, training=self.training
         )
 
-        attn_output = torch.bmm(attn_probs, value_states)
+        # *: bmm
+        # attn_output = torch.bmm(attn_probs, value_states)
+        # fmt:off
+        attn_output = get_quantized_func("bmm", self.quant_config["bmm_1"])(attn_probs, value_states, config=self.quant_config["bmm_1"])
+        # fmt:on
 
         if attn_output.size() != (bsz * self.num_heads, tgt_len, self.head_dim):
             raise ValueError(
@@ -317,16 +334,17 @@ class OPTAttention(nn.Module):
         return attn_output, attn_weights_reshaped, past_key_value
 
 
-class OPTDecoderLayer(nn.Module):
-    def __init__(self, config: OPTQuantizedConfig):
+class OPTQuantizedDecoderLayer(nn.Module):
+    def __init__(self, config: OPTQuantizedConfig, layer_id: int):
         super().__init__()
         self.embed_dim = config.hidden_size
-        self.self_attn = OPTAttention(
+        self.self_attn = OPTQauntizedAttention(
             embed_dim=self.embed_dim,
             num_heads=config.num_attention_heads,
             dropout=config.attention_dropout,
             is_decoder=True,
             bias=config.enable_bias,
+            quant_config=config.quant_config[f"model_layer_{layer_id}"]["self_attn"],
         )
         self.do_layer_norm_before = config.do_layer_norm_before
         self.dropout = config.dropout
@@ -335,8 +353,10 @@ class OPTDecoderLayer(nn.Module):
         self.self_attn_layer_norm = nn.LayerNorm(
             self.embed_dim, elementwise_affine=config.layer_norm_elementwise_affine
         )
-        self.fc1 = nn.Linear(self.embed_dim, config.ffn_dim, bias=config.enable_bias)
-        self.fc2 = nn.Linear(config.ffn_dim, self.embed_dim, bias=config.enable_bias)
+        # fmt:off
+        self.fc1 = get_quantized_cls("linear", config.quant_config[f"model_layer_{layer_id}"]["fc1"])(self.embed_dim, config.ffn_dim, bias=config.enable_bias, config=config.quant_config[f"model_layer_{layer_id}"]["fc1"])
+        self.fc2 = get_quantized_cls("linear", config.quant_config[f"model_layer_{layer_id}"]["fc2"])(config.ffn_dim, self.embed_dim, bias=config.enable_bias, config=config.quant_config[f"model_layer_{layer_id}"]["fc2"])
+        # fmt:on
         self.final_layer_norm = nn.LayerNorm(
             self.embed_dim, elementwise_affine=config.layer_norm_elementwise_affine
         )
@@ -446,11 +466,11 @@ OPT_START_DOCSTRING = r"""
     "The bare OPT Model outputting raw hidden-states without any specific head on top.",
     OPT_START_DOCSTRING,
 )
-class OPTPreTrainedModel(PreTrainedModel):
+class OPTQuantizedPreTrainedModel(PreTrainedModel):
     config_class = OPTQuantizedConfig
     base_model_prefix = "model"
     supports_gradient_checkpointing = True
-    _no_split_modules = ["OPTDecoderLayer"]
+    _no_split_modules = ["OPTQuantizedDecoderLayer"]
     _keys_to_ignore_on_load_unexpected = [r"decoder\.version"]
 
     def _init_weights(self, module):
@@ -465,7 +485,7 @@ class OPTPreTrainedModel(PreTrainedModel):
                 module.weight.data[module.padding_idx].zero_()
 
     def _set_gradient_checkpointing(self, module, value=False):
-        if isinstance(module, (OPTDecoder)):
+        if isinstance(module, OPTQuantizedDecoder):
             module.gradient_checkpointing = value
 
 
@@ -531,7 +551,7 @@ OPT_INPUTS_DOCSTRING = r"""
 """
 
 
-class OPTDecoder(OPTPreTrainedModel):
+class OPTQuantizedDecoder(OPTQuantizedPreTrainedModel):
     """
     Transformer decoder consisting of *config.num_hidden_layers* layers. Each layer is a [`OPTDecoderLayer`]
 
@@ -580,7 +600,10 @@ class OPTDecoder(OPTPreTrainedModel):
             self.final_layer_norm = None
 
         self.layers = nn.ModuleList(
-            [OPTDecoderLayer(config) for _ in range(config.num_hidden_layers)]
+            [
+                OPTQuantizedDecoderLayer(config, i)
+                for i in range(config.num_hidden_layers)
+            ]
         )
 
         self.gradient_checkpointing = False
@@ -838,10 +861,10 @@ class OPTDecoder(OPTPreTrainedModel):
     "The bare OPT Model outputting raw hidden-states without any specific head on top.",
     OPT_START_DOCSTRING,
 )
-class OPTModel(OPTPreTrainedModel):
+class OPTQuantizedModel(OPTQuantizedPreTrainedModel):
     def __init__(self, config: OPTQuantizedConfig):
         super().__init__(config)
-        self.decoder = OPTDecoder(config)
+        self.decoder = OPTQuantizedDecoder(config)
         # Initialize weights and apply final processing
         self.post_init()
 
@@ -912,12 +935,12 @@ class OPTModel(OPTPreTrainedModel):
         )
 
 
-class OPTForCausalLM(OPTPreTrainedModel):
+class OPTQuantizedForCausalLM(OPTQuantizedPreTrainedModel):
     _keys_to_ignore_on_load_missing = [r"lm_head.weight"]
 
     def __init__(self, config):
         super().__init__(config)
-        self.model = OPTModel(config)
+        self.model = OPTQuantizedModel(config)
 
         # the lm_head weight is automatically tied to the embed tokens weight
         self.lm_head = nn.Linear(
@@ -1142,13 +1165,13 @@ class OPTForCausalLM(OPTPreTrainedModel):
     """,
     OPT_START_DOCSTRING,
 )
-class OPTForSequenceClassification(OPTPreTrainedModel):
+class OPTQuantizedForSequenceClassification(OPTQuantizedPreTrainedModel):
     _keys_to_ignore_on_load_missing = [r"lm_head.weight"]
 
     def __init__(self, config: OPTQuantizedConfig):
         super().__init__(config)
         self.num_labels = config.num_labels
-        self.model = OPTModel(config)
+        self.model = OPTQuantizedModel(config)
         self.score = nn.Linear(config.word_embed_proj_dim, self.num_labels, bias=False)
 
         # Initialize weights and apply final processing
@@ -1274,12 +1297,12 @@ class OPTForSequenceClassification(OPTPreTrainedModel):
     """,
     OPT_START_DOCSTRING,
 )
-class OPTForQuestionAnswering(OPTPreTrainedModel):
+class OPTQuantizedForQuestionAnswering(OPTQuantizedPreTrainedModel):
     _keys_to_ignore_on_load_missing = [r"lm_head.weight"]
 
     def __init__(self, config: OPTQuantizedConfig):
         super().__init__(config)
-        self.model = OPTModel(config)
+        self.model = OPTQuantizedModel(config)
         self.qa_outputs = nn.Linear(config.word_embed_proj_dim, 2)
 
         # Initialize weights and apply final processing

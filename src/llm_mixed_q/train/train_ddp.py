@@ -56,7 +56,7 @@ def parse_args():
         type=str,
         default="bert",
         help="The model architecture to be trained or fine-tuned.",
-        choices=["bert", "llama"],
+        choices=["bert", "llama", "opt"],
     )
     parser.add_argument(
         "--model_name",
@@ -205,7 +205,7 @@ def parse_args():
     return args
 
 
-def main():
+def trainer_ddp():
     args = parse_args()
 
     accelerator = Accelerator(log_with=args.report_to, project_dir=args.output_dir)
@@ -219,8 +219,8 @@ def main():
 
     logger.info(accelerator.state, main_process_only=False)
     if accelerator.is_local_main_process:
-        datasets.utils.logging.set_verbosity_warning()
-        transformers.utils.logging.set_verbosity_warning()
+        datasets.utils.logging.set_verbosity_error()
+        transformers.utils.logging.set_verbosity_error()
     else:
         datasets.utils.logging.set_verbosity_error()
         transformers.utils.logging.set_verbosity_error()
@@ -253,6 +253,7 @@ def main():
     tokenizer = get_tokenizer_cls(args.model_architecture).from_pretrained(
         args.model_name_or_path,
         use_fast=True,
+        legacy=False,
     )
 
     # preprocess datasets

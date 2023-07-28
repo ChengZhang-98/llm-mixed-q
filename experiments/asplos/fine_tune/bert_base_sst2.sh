@@ -28,8 +28,7 @@ mkdir -p $ckpt
 cd $run_dir
 
 echo ========== Running BERT Base SST2 ==========
-# conda run -n $env_name accelerate launch --multi_gpu fine_tune.py \
-accelerate launch --multi_gpu fine_tune.py \
+conda run -n $env_name --no-capture-output accelerate launch --multi_gpu fine_tune.py \
     --model_arch bert \
     --model_name bert-base-uncased \
     --task sst2 \

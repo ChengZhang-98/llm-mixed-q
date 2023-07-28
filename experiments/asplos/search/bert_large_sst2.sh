@@ -1,26 +1,13 @@
 #!/bin/bash
-#SBATCH --nodes=1
-#SBATCH --cpus-per-task=30
-#SBATCH --mem-per-cpu=3850
-#SBATCH --gres=gpu:ampere_a100:3
-#SBATCH --ntasks-per-node=1
-#SBATCH --partition=gpu
-#SBATCH --time=24:00:00
-#SBATCH --account=su114-gpu
-#SBATCH --signal=SIGUSR1@90
-#SBATCH --output=log_bert-large-uncased_search_sst2.txt
-#SBATCH --job-name=bert-large-uncased_search_sst2
 
 if [ -z $1 ]; then
-    echo "❗Requires <search_tag> as \$0"
+    echo "❗Requires <search_tag> as \$1"
     exit
 fi
 
-if [ $USER = "cz98" ]; then
-    # sulis
-    module purge
-    module load CUDA/11.7.0 GCCcore/11.3.0 GCC/11.3.0 OpenMPI/4.1.4 Python/3.10.4
-    source /home/c/cz98/venvs/llm-mixed-q/bin/activate
+if [ -z $2 ]; then
+    echo "❗Requires <search_config> as \$2"
+    exit
 fi
 
 work_dir=$HOME/Projects/llm-mixed-q
@@ -29,12 +16,11 @@ run_dir=$work_dir/experiments/asplos/search
 cd $run_dir
 echo ========== Running BERT Large SST2 ==========
 search_tag=$1
-save_dir=$work_dir/checkpoints/asplos/search/bert_large_sst2/$search_tag
-mkdir -p $save_dir
+search_config=$2
 
+save_dir=$work_dir/checkpoints/asplos/search/bert_large_sst2/$search_tag && mkdir -p $save_dir
 model_arch=bert
 task=sst2
-search_config=$work_dir/experiments/asplos/configs/search/block_fp/bert_large_sst2.toml
 ckpt=$work_dir/checkpoints/asplos/fine_tune/bert_large_sst2
 batch_size=128
 max_length=196

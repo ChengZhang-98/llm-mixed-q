@@ -128,6 +128,13 @@ class LlamaQuantizedConfig(PretrainedConfig):
         quant_config: dict | str = None,
         **kwargs,
     ):
+        super().__init__(
+            pad_token_id=pad_token_id,
+            bos_token_id=bos_token_id,
+            eos_token_id=eos_token_id,
+            tie_word_embeddings=tie_word_embeddings,
+            **kwargs,
+        )
         self.vocab_size = vocab_size
         self.max_position_embeddings = max_position_embeddings
         self.hidden_size = hidden_size
@@ -138,17 +145,9 @@ class LlamaQuantizedConfig(PretrainedConfig):
         self.initializer_range = initializer_range
         self.rms_norm_eps = rms_norm_eps
         self.use_cache = use_cache
-        if quant_config is not None:
-            quant_config = parse_llama_quantized_config(quant_config, num_hidden_layers)
+        # if quant_config is not None:
+        #     quant_config = parse_llama_quantized_config(quant_config, num_hidden_layers)
         self.quant_config = quant_config
-
-        super().__init__(
-            pad_token_id=pad_token_id,
-            bos_token_id=bos_token_id,
-            eos_token_id=eos_token_id,
-            tie_word_embeddings=tie_word_embeddings,
-            **kwargs,
-        )
 
     def __setattr__(self, key, value):
         if key == "quant_config" and value is not None:

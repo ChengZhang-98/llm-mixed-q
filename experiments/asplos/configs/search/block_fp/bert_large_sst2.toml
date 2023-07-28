@@ -9,13 +9,14 @@ sort_by = ["avg_bitwidth", "accuracy"]
 
 [search_estimator]
 alpha_acc = 1
-alpha_mem_density = 0.18
+alpha_mem_density = 0.1
 num_samples = 512
 compare_to = 32
 
 [search_space]
-extend_quant_config_seed = true # if true, tensor-wise search
+extend_quant_config_seed_first = true # if true, tensor-wise search
 [search_space.quant_config_seed]
+by = "name"
 [search_space.quant_config_seed.default]
 name = ["block_fp"]
 bypass = ["!ast!False"]

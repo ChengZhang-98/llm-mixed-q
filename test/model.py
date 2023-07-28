@@ -37,7 +37,8 @@ def test_llama():
     arch = "llama"
     task = "cls"
     name = "Cheng98/llama-160m"
-    quant_config = "./llama.toml"
+    # quant_config = "./llama.toml"
+    quant_config = "/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/table_sampler_comparison/llama_160m_sst2/random_1/best_quant_config.toml"
 
     model_cls = get_model_cls(arch, task)
     config_cls = get_config_cls(arch)
@@ -45,7 +46,7 @@ def test_llama():
     config = config_cls.from_pretrained(name, quant_config=quant_config)
     model = model_cls.from_pretrained(name, config=config).to("cuda")
 
-    x = torch.randint(0, 1000, (16, 128))
+    x = torch.randint(0, 1000, (16, 128)).to("cuda")
     y = model(x)
     breakpoint()
 
@@ -60,9 +61,9 @@ def test_opt():
     config_cls = get_config_cls(arch)
 
     config = config_cls.from_pretrained(name, quant_config=quant_config)
-    model = model_cls.from_pretrained(name, config=config).to("cuda")
+    model = model_cls.from_pretrained(name, config=config).to("cuda:0")
 
-    x = torch.randint(0, 1000, (16, 128)).to("cuda")
+    x = torch.randint(0, 1000, (16, 128)).to("cuda:0")
     y = model(x)
 
     profiler = get_q_profiler(arch)
@@ -74,5 +75,5 @@ def test_opt():
 
 if __name__ == "__main__":
     # test_bert()
-    # test_llama()
-    test_opt()
+    test_llama()
+    # test_opt()

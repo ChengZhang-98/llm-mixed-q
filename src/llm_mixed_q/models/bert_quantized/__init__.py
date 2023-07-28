@@ -4,3 +4,4 @@ from .modeling_bert import (
 )
 from .profiler_bert import profile_bert_quantized
 from .quant_config_bert import parse_bert_quantized_config
+from .sampler_bert import sample_bert_quant_config

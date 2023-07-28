@@ -3,6 +3,7 @@ from .bert_quantized import (
     BertQuantizedForSequenceClassification,
     profile_bert_quantized,
     parse_bert_quantized_config,
+    sample_bert_quant_config,
 )
 from .llama_quantized import (
     LlamaQuantizedConfig,
@@ -10,6 +11,7 @@ from .llama_quantized import (
     LlamaQuantizedForSequenceClassification,
     profile_llama_quantized,
     parse_llama_quantized_config,
+    sample_llama_quant_config,
 )
 from .opt_quantized import (
     OPTQuantizedConfig,
@@ -17,6 +19,7 @@ from .opt_quantized import (
     OPTQuantizedForSequenceClassification,
     profile_opt_quantized,
     parse_opt_quantized_config,
+    sample_opt_quant_config,
 )
 from transformers.models.bert.tokenization_bert import BertTokenizer
 from transformers.models.llama.tokenization_llama import LlamaTokenizer
@@ -60,6 +63,12 @@ QUANT_CONFIG_PARSER_MAP = {
     "opt": parse_opt_quantized_config,
 }
 
+QUANT_CONFIG_SAMPLER_MAP = {
+    "bert": sample_bert_quant_config,
+    "llama": sample_llama_quant_config,
+    "opt": sample_opt_quant_config,
+}
+
 
 def get_model_cls(arch: str, task: str):
     assert arch in MODEL_MAP, f"arch {arch} not supported"
@@ -85,3 +94,8 @@ def get_q_profiler(arch: str):
 def get_quant_config_parser(arch: str):
     assert arch in QUANT_CONFIG_PARSER_MAP, f"arch {arch} not supported"
     return QUANT_CONFIG_PARSER_MAP[arch]
+
+
+def get_q_config_sampler(arch: str):
+    assert arch in QUANT_CONFIG_SAMPLER_MAP, f"arch {arch} not supported"
+    return QUANT_CONFIG_SAMPLER_MAP[arch]

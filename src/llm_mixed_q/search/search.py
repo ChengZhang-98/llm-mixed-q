@@ -28,6 +28,7 @@ from ..models import (
     get_tokenizer_cls,
     get_q_profiler,
     get_quant_config_parser,
+    get_q_config_sampler,
 )
 
 from ..utils import (
@@ -132,6 +133,7 @@ class SearchQuantisationForClassification(SearchBase):
         )
         self.q_profiler = get_q_profiler(model_arch)
         self.q_config_parser = get_quant_config_parser(model_arch)
+        self.q_config_sampler = get_q_config_sampler(model_arch)
         self.num_labels = num_labels
 
     def rebuild_model(self, quant_config):
@@ -174,20 +176,20 @@ class SearchQuantisationForClassification(SearchBase):
         is_regression: bool,
         seq_len: int,
     ):
-        def sample_config(trial: optuna.Trial, config, name: str) -> dict:
-            if isinstance(config, dict):
-                for k, v in config.items():
-                    config[k] = sample_config(trial, v, f"{name}:{k}")
-                return config
-            elif isinstance(config, list):
-                sampled = trial.suggest_categorical(name, config)
-                # logger.debug(f"name `{name}` sampled")
-                if isinstance(sampled, str) and sampled.startswith("!ast!"):
-                    sampled = ast.literal_eval(sampled.removeprefix("!ast!"))
-                return sampled
-            else:
-                logger.error(f"Unknown config: {type(config)} = {config}")
-                raise ValueError(f"Unknown config: {type(config)} = {config}")
+        # def sample_config(trial: optuna.Trial, name: str, config_seed: dict) -> dict:
+        #     if isinstance(config_seed, dict):
+        #         for k, v in config_seed.items():
+        #             config_seed[k] = sample_config(trial, v, f"{name}:{k}")
+        #         return config_seed
+        #     elif isinstance(config_seed, list):
+        #         sampled = trial.suggest_categorical(name, deepcopy(config_seed))
+        #         # logger.debug(f"name `{name}` sampled")
+        #         if isinstance(sampled, str) and sampled.startswith("!ast!"):
+        #             sampled = ast.literal_eval(sampled.removeprefix("!ast!"))
+        #         return sampled
+        #     else:
+        #         logger.error(f"Unknown config: {type(config_seed)} = {config_seed}")
+        #         raise ValueError(f"Unknown config: {type(config_seed)} = {config_seed}")
 
         def compute_software_metric(
             model, task, eval_dataloader, is_regression, num_samples
@@ -220,26 +222,27 @@ class SearchQuantisationForClassification(SearchBase):
             logger.debug(f"hardware_metric_results: {results}")
             return mem_density
 
-        def objective(trial: optuna.Trial, quant_config_seed, seq_len: int):
-            quant_config_seed = deepcopy(quant_config_seed)
-            if self.search_config["search_space"]["extend_quant_config_seed"]:
+        def objective(
+            trial: optuna.Trial, quant_config_sampler, quant_config_seed, seq_len: int
+        ):
+            quant_config_seed = quant_config_seed
+            if self.search_config["search_space"]["extend_quant_config_seed_first"]:
                 quant_config_seed = self.q_config_parser(
                     quant_config_seed, self.model_config.num_hidden_layers
                 )
             # logger.debug(f"============= Quant Config Seed =============")
             # logger.debug("\n" + pformat(quant_config_seed))
-            sampled_config = sample_config(
+            sampled_config = quant_config_sampler(
                 trial=trial,
-                config=quant_config_seed,
                 name="root",
+                config_seed=quant_config_seed,
             )
-            parsed_quant_config = self.q_config_parser(
-                sampled_config, num_hidden_layers=self.model_config.num_hidden_layers
+            sampled_config = self.q_config_parser(
+                sampled_config, self.model_config.num_hidden_layers
             )
-
-            # logger.debug(f"============= Sampled Config =============")
-            # logger.debug("\n" + pformat(sampled_config))
-            model = self.rebuild_model(parsed_quant_config)
+            logger.debug(f"============= Sampled Config =============")
+            logger.debug("\n" + pformat(sampled_config))
+            model = self.rebuild_model(sampled_config)
             s_metric = compute_software_metric(
                 model=model,
                 task=task,
@@ -247,7 +250,6 @@ class SearchQuantisationForClassification(SearchBase):
                 is_regression=is_regression,
                 num_samples=self.search_config["search_estimator"]["num_samples"],
             )
-            # logger.debug(f"model.config.quant_config: {model.config.quant_config}")
             h_metric = compute_hardware_metric(
                 self.q_profiler,
                 model.config,
@@ -288,6 +290,8 @@ class SearchQuantisationForClassification(SearchBase):
                 f"scaled (acc, mem_density) = "
                 f"({s_metric:.4f}, {h_metric:.4f}), "
             )
+            # logger.debug(f"============= Trial {frozen_trail.number} =============")
+            # logger.debug(f"Trial {frozen_trail.number} config: {frozen_trail.params}")
 
         # create sampler and study
         match self.search_config["search_strategy"]["sampler"].lower():
@@ -297,10 +301,13 @@ class SearchQuantisationForClassification(SearchBase):
                 sampler = optuna.samplers.TPESampler()
             case "nsgaii":
                 sampler = optuna.samplers.NSGAIISampler()
+            case "nsgaiii":
+                sampler = optuna.samplers.NSGAIIISampler()
             case _:
                 raise ValueError(
                     f"Unknown sampler name: {self.search_config['search_strategy']['sampler']}"
                 )
+        logger.info(f"Using sampler: {sampler.__class__.__name__}")
         study = optuna.create_study(
             directions=["maximize", "maximize"],
             sampler=sampler,
@@ -315,6 +322,7 @@ class SearchQuantisationForClassification(SearchBase):
         study.optimize(
             func=partial(
                 objective,
+                quant_config_sampler=self.q_config_sampler,
                 quant_config_seed=q_config_seed,
                 seq_len=seq_len,
             ),
@@ -343,7 +351,7 @@ class SearchQuantisationForClassification(SearchBase):
 
         params = trial.params
 
-        quant_config = {}
+        quant_config = {"by": "name"}
         for name, value in params.items():
             keys = name.removeprefix("root:").split(":")
             if isinstance(value, str) and value.startswith("!ast!"):

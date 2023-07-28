@@ -30,7 +30,7 @@ def evaluate_lm_task_wikitext2(
 
     progress_bar = tqdm(
         eval_dataloader,
-        desc="Evaluating the best",
+        desc="Evaluating on Wikitext-2",
         total=num_batches,
         disable=not progress_bar,
     )

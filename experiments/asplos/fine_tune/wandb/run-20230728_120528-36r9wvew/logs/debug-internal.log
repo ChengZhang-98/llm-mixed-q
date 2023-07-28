@@ -1,0 +1,915 @@
+2023-07-28 12:05:28,270 INFO    StreamThr :954874 [internal.py:wandb_internal():86] W&B internal server running at pid: 954874, started at: 2023-07-28 12:05:28.269585
+2023-07-28 12:05:28,271 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status
+2023-07-28 12:05:28,274 INFO    WriterThread:954874 [datastore.py:open_for_write():85] open: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/run-36r9wvew.wandb
+2023-07-28 12:05:28,275 DEBUG   SenderThread:954874 [sender.py:send():379] send: header
+2023-07-28 12:05:28,278 DEBUG   SenderThread:954874 [sender.py:send():379] send: run
+2023-07-28 12:05:28,632 INFO    SenderThread:954874 [dir_watcher.py:__init__():211] watching files in: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files
+2023-07-28 12:05:28,633 INFO    SenderThread:954874 [sender.py:_start_run_threads():1122] run started: 36r9wvew with start time 1690542328.273088
+2023-07-28 12:05:28,633 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: summary_record
+2023-07-28 12:05:28,633 INFO    SenderThread:954874 [sender.py:_save_file():1376] saving file wandb-summary.json with policy end
+2023-07-28 12:05:28,636 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: check_version
+2023-07-28 12:05:28,636 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: check_version
+2023-07-28 12:05:28,660 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: run_start
+2023-07-28 12:05:28,676 DEBUG   HandlerThread:954874 [system_info.py:__init__():31] System info init
+2023-07-28 12:05:28,676 DEBUG   HandlerThread:954874 [system_info.py:__init__():46] System info init done
+2023-07-28 12:05:28,676 INFO    HandlerThread:954874 [system_monitor.py:start():181] Starting system monitor
+2023-07-28 12:05:28,677 INFO    SystemMonitor:954874 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2023-07-28 12:05:28,677 INFO    HandlerThread:954874 [system_monitor.py:probe():201] Collecting system info
+2023-07-28 12:05:28,677 INFO    SystemMonitor:954874 [interfaces.py:start():190] Started cpu monitoring
+2023-07-28 12:05:28,678 INFO    SystemMonitor:954874 [interfaces.py:start():190] Started disk monitoring
+2023-07-28 12:05:28,679 INFO    SystemMonitor:954874 [interfaces.py:start():190] Started gpu monitoring
+2023-07-28 12:05:28,680 INFO    SystemMonitor:954874 [interfaces.py:start():190] Started memory monitoring
+2023-07-28 12:05:28,680 INFO    SystemMonitor:954874 [interfaces.py:start():190] Started network monitoring
+2023-07-28 12:05:28,698 DEBUG   HandlerThread:954874 [system_info.py:probe():195] Probing system
+2023-07-28 12:05:28,699 DEBUG   HandlerThread:954874 [system_info.py:_probe_git():180] Probing git
+2023-07-28 12:05:28,704 DEBUG   HandlerThread:954874 [system_info.py:_probe_git():188] Probing git done
+2023-07-28 12:05:28,704 DEBUG   HandlerThread:954874 [system_info.py:probe():240] Probing system done
+2023-07-28 12:05:28,704 DEBUG   HandlerThread:954874 [system_monitor.py:probe():210] {'os': 'Linux-5.14.0-162.18.1.el9_1.x86_64-x86_64-with-glibc2.34', 'python': '3.11.0', 'heartbeatAt': '2023-07-28T11:05:28.698538', 'startedAt': '2023-07-28T11:05:28.266610', 'docker': None, 'cuda': None, 'args': ('--model_arch', 'opt', '--model_name', 'facebook/opt-125m', '--task', 'sst2', '--quant_config', '/home/zz7522/Projects/llm-mixed-q/experiments/asplos/configs/quantize/bypass.toml', '--batch_size_train', '16', '--batch_size_eval', '32', '--learning_rate', '2e-5', '--num_train_epochs', '4', '--gradient_accumulation_steps', '4', '--lr_scheduler_type', 'cosine', '--output_dir', '/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/fine_tune/opt_125m_sst2', '--project_name', 'opt_125m_sst2', '--with_tracking'), 'state': 'running', 'program': '/home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/fine_tune.py', 'codePath': 'experiments/asplos/fine_tune/fine_tune.py', 'git': {'remote': 'git@github.com:ChengZhang-98/llm-mixed-q.git', 'commit': 'd08064e1ac6d5d0e972ebb137ececa26f5f82008'}, 'email': 'chengzhang98@outlook.com', 'root': '/home/zz7522/Projects/llm-mixed-q', 'host': 'ee-kraken', 'username': 'zz7522', 'executable': '/home/zz7522/anaconda3/envs/llm-mixed-q/bin/python', 'cpu_count': 64, 'cpu_count_logical': 64, 'cpu_freq': {'current': 2068.379109375, 'min': 1500.0, 'max': 2000.0}, 'cpu_freq_per_core': [{'current': 3080.902, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 3118.069, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 3099.031, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 3098.398, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 3099.129, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}, {'current': 2000.0, 'min': 1500.0, 'max': 2000.0}], 'disk': {'total': 69.9658203125, 'used': 12.86639404296875}, 'gpu': 'NVIDIA RTX A6000', 'gpu_count': 3, 'gpu_devices': [{'name': 'NVIDIA RTX A6000', 'memory_total': 51527024640}, {'name': 'NVIDIA RTX A6000', 'memory_total': 51527024640}, {'name': 'NVIDIA RTX A6000', 'memory_total': 51527024640}], 'memory': {'total': 251.05352401733398}}
+2023-07-28 12:05:28,704 INFO    HandlerThread:954874 [system_monitor.py:probe():211] Finished collecting system info
+2023-07-28 12:05:28,704 INFO    HandlerThread:954874 [system_monitor.py:probe():214] Publishing system info
+2023-07-28 12:05:28,704 DEBUG   HandlerThread:954874 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-07-28 12:05:28,705 DEBUG   HandlerThread:954874 [system_info.py:_save_pip():67] Saving pip packages done
+2023-07-28 12:05:28,705 DEBUG   HandlerThread:954874 [system_info.py:_save_conda():74] Saving list of conda packages installed into the current environment
+2023-07-28 12:05:29,634 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_created():272] file/dir created: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/requirements.txt
+2023-07-28 12:05:29,634 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_created():272] file/dir created: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/conda-environment.yaml
+2023-07-28 12:05:29,634 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_created():272] file/dir created: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/wandb-summary.json
+2023-07-28 12:05:30,557 DEBUG   HandlerThread:954874 [system_info.py:_save_conda():86] Saving conda packages done
+2023-07-28 12:05:30,557 INFO    HandlerThread:954874 [system_monitor.py:probe():216] Finished publishing system info
+2023-07-28 12:05:30,563 DEBUG   SenderThread:954874 [sender.py:send():379] send: files
+2023-07-28 12:05:30,563 INFO    SenderThread:954874 [sender.py:_save_file():1376] saving file wandb-metadata.json with policy now
+2023-07-28 12:05:30,567 DEBUG   SenderThread:954874 [sender.py:send():379] send: telemetry
+2023-07-28 12:05:30,568 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:05:30,568 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:05:30,635 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/conda-environment.yaml
+2023-07-28 12:05:30,635 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_created():272] file/dir created: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/wandb-metadata.json
+2023-07-28 12:05:30,726 DEBUG   SenderThread:954874 [sender.py:send():379] send: config
+2023-07-28 12:05:31,007 INFO    wandb-upload_0:954874 [upload_job.py:push():131] Uploaded file /tmp/tmpgpfbeq7swandb/qz8j4zfs-wandb-metadata.json
+2023-07-28 12:05:31,635 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_created():272] file/dir created: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:33,401 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:05:33,635 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:35,636 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:37,636 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:38,664 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:05:39,637 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:41,637 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:43,638 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:43,697 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:05:45,566 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:05:45,567 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:05:45,638 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:47,643 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:48,767 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:05:49,644 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:51,644 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:53,645 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:54,110 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:05:55,645 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:57,645 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:05:59,239 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:05:59,646 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/config.yaml
+2023-07-28 12:05:59,646 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:00,566 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:06:00,566 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:06:01,646 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:03,647 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:04,590 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:06:05,647 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:07,648 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:09,648 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:10,055 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:06:11,648 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:13,649 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:15,525 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:06:15,566 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:06:15,566 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:06:15,649 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:17,650 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:19,650 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:20,862 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:06:21,651 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:23,651 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:25,651 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:25,892 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:06:27,652 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:28,680 DEBUG   SystemMonitor:954874 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2023-07-28 12:06:28,691 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:06:29,653 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:30,566 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:06:30,566 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:06:30,939 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:06:31,653 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:33,654 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:35,654 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:36,199 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:06:37,655 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:39,655 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:41,287 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:06:41,656 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:43,656 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:45,566 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:06:45,566 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:06:45,657 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:46,604 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:06:47,657 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:49,658 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:51,658 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:52,021 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:06:53,659 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:55,659 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:57,458 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:06:57,660 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:06:58,683 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:06:59,660 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:00,566 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:07:00,567 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:07:01,661 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:02,925 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:07:03,661 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:05,662 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:07,662 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:08,083 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:07:09,663 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:11,663 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:13,119 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:07:13,664 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:15,566 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:07:15,566 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:07:15,664 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:17,664 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:18,290 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:07:19,665 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:21,666 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:23,433 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:07:23,666 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:25,667 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:27,668 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:28,625 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:07:28,683 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:07:29,668 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:30,566 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:07:30,567 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:07:31,669 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:33,669 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:34,044 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:07:35,670 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:37,670 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:39,472 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:07:39,671 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:41,672 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:43,672 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:44,984 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:07:45,566 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:07:45,567 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:07:45,673 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:47,673 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:49,674 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:50,279 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:07:51,674 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:53,675 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:55,367 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:07:55,675 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:57,676 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:07:58,684 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:07:59,678 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:00,567 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:08:00,567 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:08:00,720 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:08:01,678 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:03,679 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:05,679 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:06,088 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:08:07,680 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:09,680 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:11,250 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:08:11,680 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:13,681 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:15,567 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:08:15,567 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:08:15,681 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:16,701 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:08:17,682 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:19,682 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:21,683 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:22,158 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:08:23,683 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:25,683 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:27,676 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:08:27,684 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:28,685 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:08:29,684 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:30,567 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:08:30,567 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:08:31,685 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:33,031 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:08:33,685 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:35,686 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:37,686 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:38,041 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:08:39,686 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:41,687 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:43,281 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:08:43,688 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:45,567 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:08:45,567 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:08:45,688 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:47,689 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:48,434 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:08:49,689 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:51,690 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:53,616 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:08:53,690 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:55,691 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:57,691 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:08:58,686 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:08:58,686 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:08:59,692 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:00,567 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:09:00,568 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:09:01,269 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: partial_history
+2023-07-28 12:09:01,692 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:03,693 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:03,740 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:09:05,693 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:07,694 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:09,185 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:09:09,694 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:11,695 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:13,695 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:14,209 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:09:15,567 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:09:15,568 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:09:15,696 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:17,696 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:19,223 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:09:19,696 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:21,697 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:23,697 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:24,283 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:09:25,698 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:27,698 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:28,686 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:09:29,553 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:09:29,698 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:30,567 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:09:30,568 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:09:31,699 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:33,699 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:34,665 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:09:35,699 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:37,700 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:39,700 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:40,016 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:09:41,700 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:43,701 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:45,510 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:09:45,567 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:09:45,568 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:09:45,701 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:47,702 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:49,702 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:50,932 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:09:51,702 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:53,703 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:55,704 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:56,033 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:09:57,704 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:09:58,687 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:09:59,705 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:00,568 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:10:00,568 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:10:01,063 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:10:01,705 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:03,706 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:05,706 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:06,164 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:10:07,706 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:09,707 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:11,707 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:11,776 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:10:13,708 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:15,568 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:10:15,568 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:10:15,708 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:16,960 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:10:17,709 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:19,710 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:21,710 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:22,313 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:10:23,711 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:25,711 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:27,712 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:27,781 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:10:28,688 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:10:29,712 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:30,568 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:10:30,568 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:10:31,712 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:33,121 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:10:33,713 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:35,713 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:37,714 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:38,594 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:10:39,714 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:41,715 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:43,660 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:10:43,715 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:45,568 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:10:45,569 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:10:45,716 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:47,716 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:48,686 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:10:49,716 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:51,717 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:53,717 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:53,914 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:10:55,718 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:57,718 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:10:58,698 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:10:59,000 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:10:59,718 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:00,568 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:11:00,569 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:11:01,719 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:03,719 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:04,252 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:11:05,719 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:07,720 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:09,657 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:11:09,720 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:11,721 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:13,721 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:15,036 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:11:15,568 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:11:15,569 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:11:15,722 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:17,722 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:19,723 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:20,392 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:11:21,723 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:23,724 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:25,441 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:11:25,725 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:27,725 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:28,690 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:11:29,725 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:30,498 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:11:30,568 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:11:30,568 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:11:31,726 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:33,726 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:35,710 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:11:35,727 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:37,727 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:39,728 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:40,898 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:11:41,728 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:43,729 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:45,568 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:11:45,569 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:11:45,729 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:46,110 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:11:47,729 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:49,730 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:51,573 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:11:51,730 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:53,731 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:55,732 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:57,007 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:11:57,732 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:11:58,690 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:11:59,732 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:00,569 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:12:00,569 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:12:01,733 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:02,507 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:12:03,733 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:05,734 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:07,733 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:12:07,735 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:09,735 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:11,735 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:12,747 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:12:13,736 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:15,569 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:12:15,569 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:12:15,737 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:17,737 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:17,963 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:12:19,738 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:21,738 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:23,057 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:12:23,739 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:25,739 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:27,739 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:28,691 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:12:28,692 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:12:29,469 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: partial_history
+2023-07-28 12:12:29,470 DEBUG   SenderThread:954874 [sender.py:send():379] send: history
+2023-07-28 12:12:29,470 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: summary_record
+2023-07-28 12:12:29,470 INFO    SenderThread:954874 [sender.py:_save_file():1376] saving file wandb-summary.json with policy end
+2023-07-28 12:12:29,740 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:29,740 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/wandb-summary.json
+2023-07-28 12:12:30,569 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:12:30,569 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:12:31,741 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:33,741 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:34,292 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:12:35,742 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:37,742 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:39,704 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:12:39,743 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:41,743 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:43,744 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:45,160 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:12:45,569 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:12:45,569 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:12:45,744 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:47,745 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:49,745 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:50,293 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:12:51,746 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:53,746 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:55,349 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:12:55,746 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:57,747 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:12:58,692 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:12:59,747 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:00,443 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:13:00,569 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:13:00,569 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:13:01,748 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:03,748 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:05,749 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:05,791 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:13:07,749 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:09,749 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:10,939 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:13:11,750 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:13,750 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:15,569 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:13:15,569 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:13:15,750 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:16,288 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:13:17,751 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:19,751 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:21,735 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:13:21,752 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:23,752 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:25,753 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:27,195 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:13:27,753 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:28,693 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:13:29,753 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:30,569 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:13:30,570 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:13:31,754 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:32,540 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:13:33,754 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:35,755 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:37,600 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:13:37,755 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:39,756 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:41,756 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:42,661 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:13:43,757 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:45,569 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:13:45,569 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:13:45,757 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:47,738 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:13:47,758 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:49,758 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:51,758 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:52,914 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:13:53,759 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:55,759 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:57,760 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:13:58,233 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:13:58,694 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:13:59,760 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:00,569 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:14:00,570 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:14:01,760 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:03,704 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:14:03,761 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:05,761 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:07,762 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:09,148 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:14:09,762 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:11,763 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:13,763 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:14,615 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:14:15,569 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:14:15,570 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:14:15,764 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:17,764 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:19,764 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:19,933 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:14:21,765 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:23,765 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:24,978 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:14:25,765 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:27,766 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:28,695 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:14:29,766 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:30,188 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:14:30,569 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:14:30,570 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:14:31,767 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:33,767 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:35,324 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:14:35,767 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:37,768 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:39,768 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:40,585 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:14:41,769 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:43,769 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:45,569 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:14:45,570 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:14:45,770 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:45,811 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:14:47,770 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:49,771 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:51,483 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:14:51,771 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:53,772 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:55,772 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:56,911 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:14:57,773 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:14:58,695 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:14:59,773 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:00,570 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:15:00,571 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:15:01,774 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:02,245 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:15:03,774 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:05,775 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:07,642 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:15:07,775 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:09,776 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:11,776 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:13,213 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:15:13,777 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:15,570 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:15:15,570 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:15:15,778 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:17,778 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:18,381 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:15:19,779 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:21,779 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:23,613 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:15:23,780 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:25,780 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:27,780 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:28,696 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:15:28,697 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:15:29,781 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:30,570 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:15:30,570 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:15:31,781 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:33,782 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:34,460 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:15:35,782 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:37,783 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:39,783 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:39,907 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:15:41,783 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:43,784 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:45,195 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:15:45,570 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:15:45,571 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:15:45,784 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:47,785 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:49,785 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:50,598 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:15:51,786 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:53,786 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:55,729 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:15:55,787 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:57,787 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:15:58,630 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: partial_history
+2023-07-28 12:15:58,631 DEBUG   SenderThread:954874 [sender.py:send():379] send: history
+2023-07-28 12:15:58,631 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: summary_record
+2023-07-28 12:15:58,631 INFO    SenderThread:954874 [sender.py:_save_file():1376] saving file wandb-summary.json with policy end
+2023-07-28 12:15:58,697 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:15:58,787 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/wandb-summary.json
+2023-07-28 12:15:59,788 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:00,570 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:16:00,570 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:16:00,823 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:16:01,788 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:03,789 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:05,789 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:06,115 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:16:07,789 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:09,790 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:11,567 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:16:11,791 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:13,791 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:15,570 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:16:15,570 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:16:15,792 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:16,961 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:16:17,792 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:19,793 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:21,793 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:22,384 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:16:23,794 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:25,794 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:27,754 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:16:27,795 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:28,698 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:16:29,795 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:30,570 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:16:30,570 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:16:31,796 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:32,756 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:16:33,796 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:35,797 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:37,781 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:16:37,797 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:39,798 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:41,798 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:42,871 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:16:43,799 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:45,570 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:16:45,571 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:16:45,799 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:47,800 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:48,009 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:16:49,800 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:51,801 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:53,451 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:16:53,801 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:55,802 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:57,802 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:16:58,698 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:16:58,699 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:16:59,803 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:00,570 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:17:00,571 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:17:01,803 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:03,804 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:04,335 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:17:05,804 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:07,805 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:09,530 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:17:09,805 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:11,806 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:13,806 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:14,568 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:17:15,570 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:17:15,570 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:17:15,813 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:17,814 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:19,814 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:19,954 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:17:21,815 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:23,815 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:25,051 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:17:25,816 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:27,816 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:28,699 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:17:29,817 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:30,220 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:17:30,570 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:17:30,571 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:17:31,817 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:33,818 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:35,643 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:17:35,818 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:37,819 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:39,819 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:41,046 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:17:41,820 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:43,820 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:45,571 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:17:45,571 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:17:45,820 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:46,531 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:17:47,821 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:49,821 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:51,822 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:51,873 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:17:53,822 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:55,823 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:56,881 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:17:57,823 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:17:58,700 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:17:59,824 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:00,571 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:18:00,571 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:18:01,824 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:01,928 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:18:03,825 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:05,825 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:07,181 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:18:07,826 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:09,826 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:11,827 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:12,270 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:18:13,827 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:15,571 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:18:15,571 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:18:15,827 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:17,603 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:18:17,828 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:19,828 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:21,828 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:22,946 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:18:23,829 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:25,829 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:27,830 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:28,412 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:18:28,701 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:18:29,830 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:30,571 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:18:30,571 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:18:31,831 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:33,521 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:18:33,831 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:35,831 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:37,832 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:38,907 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:18:39,833 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:41,833 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:43,834 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:43,935 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:18:45,571 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:18:45,571 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:18:45,834 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:47,834 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:49,065 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:18:49,835 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:51,836 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:53,836 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:54,224 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:18:55,837 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:57,837 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:18:58,701 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:18:59,468 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:18:59,837 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:00,571 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:19:00,571 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:19:01,838 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:03,838 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:04,890 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:19:05,839 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:07,839 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:09,840 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:10,328 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:19:11,840 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:13,840 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:15,571 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: stop_status
+2023-07-28 12:19:15,571 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: stop_status
+2023-07-28 12:19:15,756 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:19:15,841 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:17,841 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:19,842 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:21,117 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:19:21,842 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:23,843 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:25,844 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:26,162 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:19:27,844 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:28,577 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: partial_history
+2023-07-28 12:19:28,578 DEBUG   SenderThread:954874 [sender.py:send():379] send: history
+2023-07-28 12:19:28,578 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: summary_record
+2023-07-28 12:19:28,579 INFO    SenderThread:954874 [sender.py:_save_file():1376] saving file wandb-summary.json with policy end
+2023-07-28 12:19:28,579 DEBUG   SenderThread:954874 [sender.py:send():379] send: telemetry
+2023-07-28 12:19:28,579 DEBUG   SenderThread:954874 [sender.py:send():379] send: exit
+2023-07-28 12:19:28,579 INFO    SenderThread:954874 [sender.py:send_exit():584] handling exit code: 0
+2023-07-28 12:19:28,579 INFO    SenderThread:954874 [sender.py:send_exit():586] handling runtime: 839
+2023-07-28 12:19:28,582 INFO    SenderThread:954874 [sender.py:_save_file():1376] saving file wandb-summary.json with policy end
+2023-07-28 12:19:28,582 INFO    SenderThread:954874 [sender.py:send_exit():592] send defer
+2023-07-28 12:19:28,582 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:28,582 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 0
+2023-07-28 12:19:28,583 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:28,583 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 0
+2023-07-28 12:19:28,583 INFO    SenderThread:954874 [sender.py:transition_state():612] send defer: 1
+2023-07-28 12:19:28,583 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:28,583 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 1
+2023-07-28 12:19:28,583 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:28,583 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 1
+2023-07-28 12:19:28,583 INFO    SenderThread:954874 [sender.py:transition_state():612] send defer: 2
+2023-07-28 12:19:28,583 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:28,583 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 2
+2023-07-28 12:19:28,583 INFO    HandlerThread:954874 [system_monitor.py:finish():190] Stopping system monitor
+2023-07-28 12:19:28,583 INFO    HandlerThread:954874 [interfaces.py:finish():202] Joined cpu monitor
+2023-07-28 12:19:28,584 DEBUG   SystemMonitor:954874 [system_monitor.py:_start():166] Finished system metrics aggregation loop
+2023-07-28 12:19:28,584 DEBUG   SystemMonitor:954874 [system_monitor.py:_start():170] Publishing last batch of metrics
+2023-07-28 12:19:28,589 INFO    HandlerThread:954874 [interfaces.py:finish():202] Joined disk monitor
+2023-07-28 12:19:28,746 INFO    HandlerThread:954874 [interfaces.py:finish():202] Joined gpu monitor
+2023-07-28 12:19:28,747 INFO    HandlerThread:954874 [interfaces.py:finish():202] Joined memory monitor
+2023-07-28 12:19:28,747 INFO    HandlerThread:954874 [interfaces.py:finish():202] Joined network monitor
+2023-07-28 12:19:28,747 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:28,747 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 2
+2023-07-28 12:19:28,747 INFO    SenderThread:954874 [sender.py:transition_state():612] send defer: 3
+2023-07-28 12:19:28,747 DEBUG   SenderThread:954874 [sender.py:send():379] send: stats
+2023-07-28 12:19:28,748 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:28,748 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 3
+2023-07-28 12:19:28,748 DEBUG   SenderThread:954874 [sender.py:send():379] send: history
+2023-07-28 12:19:28,748 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: summary_record
+2023-07-28 12:19:28,749 INFO    SenderThread:954874 [sender.py:_save_file():1376] saving file wandb-summary.json with policy end
+2023-07-28 12:19:28,749 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:28,749 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 3
+2023-07-28 12:19:28,749 INFO    SenderThread:954874 [sender.py:transition_state():612] send defer: 4
+2023-07-28 12:19:28,749 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:28,749 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 4
+2023-07-28 12:19:28,749 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:28,749 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 4
+2023-07-28 12:19:28,749 INFO    SenderThread:954874 [sender.py:transition_state():612] send defer: 5
+2023-07-28 12:19:28,749 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:28,750 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 5
+2023-07-28 12:19:28,750 DEBUG   SenderThread:954874 [sender.py:send():379] send: summary
+2023-07-28 12:19:28,750 INFO    SenderThread:954874 [sender.py:_save_file():1376] saving file wandb-summary.json with policy end
+2023-07-28 12:19:28,750 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:28,750 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 5
+2023-07-28 12:19:28,750 INFO    SenderThread:954874 [sender.py:transition_state():612] send defer: 6
+2023-07-28 12:19:28,750 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:28,750 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 6
+2023-07-28 12:19:28,751 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:28,751 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 6
+2023-07-28 12:19:28,753 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: status_report
+2023-07-28 12:19:28,844 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/wandb-summary.json
+2023-07-28 12:19:28,910 INFO    SenderThread:954874 [sender.py:transition_state():612] send defer: 7
+2023-07-28 12:19:28,910 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:28,910 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 7
+2023-07-28 12:19:28,911 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:28,911 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 7
+2023-07-28 12:19:29,458 INFO    SenderThread:954874 [sender.py:transition_state():612] send defer: 8
+2023-07-28 12:19:29,458 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:29,458 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 8
+2023-07-28 12:19:29,458 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:29,458 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 8
+2023-07-28 12:19:29,459 INFO    SenderThread:954874 [job_builder.py:build():280] Attempting to build job artifact
+2023-07-28 12:19:29,459 INFO    SenderThread:954874 [job_builder.py:_get_source_type():389] is repo sourced job
+2023-07-28 12:19:29,460 INFO    SenderThread:954874 [job_builder.py:build():363] adding wandb-job metadata file
+2023-07-28 12:19:29,467 INFO    SenderThread:954874 [sender.py:transition_state():612] send defer: 9
+2023-07-28 12:19:29,467 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:29,467 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 9
+2023-07-28 12:19:29,468 DEBUG   SenderThread:954874 [sender.py:send():379] send: artifact
+2023-07-28 12:19:29,579 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: poll_exit
+2023-07-28 12:19:29,844 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/config.yaml
+2023-07-28 12:19:29,845 INFO    Thread-12 :954874 [dir_watcher.py:_on_file_modified():289] file/dir modified: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:30,547 INFO    wandb-upload_0:954874 [upload_job.py:push():89] Uploaded file /home/zz7522/.local/share/wandb/artifacts/staging/tmp3mrpelid
+2023-07-28 12:19:30,556 INFO    wandb-upload_1:954874 [upload_job.py:push():89] Uploaded file /home/zz7522/.local/share/wandb/artifacts/staging/tmpvj0ikxy0
+2023-07-28 12:19:31,624 INFO    SenderThread:954874 [sender.py:send_artifact():1476] sent artifact job-git_github.com_ChengZhang-98_llm-mixed-q.git_experiments_asplos_fine_tune_fine_tune.py - {'id': 'QXJ0aWZhY3Q6NTI1NjU5NjEx', 'digest': '8f0b2541053b56ad9edd4f6bf978e1a0', 'state': 'PENDING', 'aliases': [], 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjg2MjgyNDQ2', 'latestArtifact': None}, 'version': 'latest'}
+2023-07-28 12:19:31,624 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:31,624 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 9
+2023-07-28 12:19:31,624 INFO    SenderThread:954874 [dir_watcher.py:finish():359] shutting down directory watcher
+2023-07-28 12:19:31,845 INFO    SenderThread:954874 [dir_watcher.py:finish():389] scan: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files
+2023-07-28 12:19:31,845 INFO    SenderThread:954874 [dir_watcher.py:finish():403] scan save: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/config.yaml config.yaml
+2023-07-28 12:19:31,845 INFO    SenderThread:954874 [dir_watcher.py:finish():403] scan save: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/wandb-summary.json wandb-summary.json
+2023-07-28 12:19:31,846 INFO    SenderThread:954874 [dir_watcher.py:finish():403] scan save: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/requirements.txt requirements.txt
+2023-07-28 12:19:31,846 INFO    SenderThread:954874 [dir_watcher.py:finish():403] scan save: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/conda-environment.yaml conda-environment.yaml
+2023-07-28 12:19:31,846 INFO    SenderThread:954874 [dir_watcher.py:finish():403] scan save: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/wandb-metadata.json wandb-metadata.json
+2023-07-28 12:19:31,846 INFO    SenderThread:954874 [dir_watcher.py:finish():403] scan save: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log output.log
+2023-07-28 12:19:31,848 INFO    SenderThread:954874 [sender.py:transition_state():612] send defer: 10
+2023-07-28 12:19:31,849 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: poll_exit
+2023-07-28 12:19:31,851 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:31,851 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 10
+2023-07-28 12:19:31,854 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:31,854 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 10
+2023-07-28 12:19:31,854 INFO    SenderThread:954874 [file_pusher.py:finish():159] shutting down file pusher
+2023-07-28 12:19:32,226 INFO    wandb-upload_3:954874 [upload_job.py:push():131] Uploaded file /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/conda-environment.yaml
+2023-07-28 12:19:32,266 INFO    wandb-upload_4:954874 [upload_job.py:push():131] Uploaded file /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/output.log
+2023-07-28 12:19:32,275 INFO    wandb-upload_2:954874 [upload_job.py:push():131] Uploaded file /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/requirements.txt
+2023-07-28 12:19:32,276 INFO    wandb-upload_1:954874 [upload_job.py:push():131] Uploaded file /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/wandb-summary.json
+2023-07-28 12:19:32,307 INFO    wandb-upload_0:954874 [upload_job.py:push():131] Uploaded file /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/files/config.yaml
+2023-07-28 12:19:32,507 INFO    Thread-11 (_thread_body):954874 [sender.py:transition_state():612] send defer: 11
+2023-07-28 12:19:32,507 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:32,508 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 11
+2023-07-28 12:19:32,508 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:32,509 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 11
+2023-07-28 12:19:32,509 INFO    SenderThread:954874 [file_pusher.py:join():164] waiting for file pusher
+2023-07-28 12:19:32,509 INFO    SenderThread:954874 [sender.py:transition_state():612] send defer: 12
+2023-07-28 12:19:32,509 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:32,509 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 12
+2023-07-28 12:19:32,509 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:32,509 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 12
+2023-07-28 12:19:33,080 INFO    SenderThread:954874 [sender.py:transition_state():612] send defer: 13
+2023-07-28 12:19:33,080 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:33,080 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 13
+2023-07-28 12:19:33,080 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:33,080 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 13
+2023-07-28 12:19:33,080 INFO    SenderThread:954874 [sender.py:transition_state():612] send defer: 14
+2023-07-28 12:19:33,081 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: defer
+2023-07-28 12:19:33,081 INFO    HandlerThread:954874 [handler.py:handle_request_defer():170] handle defer: 14
+2023-07-28 12:19:33,081 DEBUG   SenderThread:954874 [sender.py:send():379] send: final
+2023-07-28 12:19:33,081 DEBUG   SenderThread:954874 [sender.py:send():379] send: footer
+2023-07-28 12:19:33,081 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: defer
+2023-07-28 12:19:33,081 INFO    SenderThread:954874 [sender.py:send_request_defer():608] handle sender defer: 14
+2023-07-28 12:19:33,081 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: poll_exit
+2023-07-28 12:19:33,082 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: server_info
+2023-07-28 12:19:33,082 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: get_summary
+2023-07-28 12:19:33,082 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: poll_exit
+2023-07-28 12:19:33,082 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: sampled_history
+2023-07-28 12:19:33,082 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: server_info
+2023-07-28 12:19:33,082 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: job_info
+2023-07-28 12:19:33,233 DEBUG   SenderThread:954874 [sender.py:send_request():406] send_request: job_info
+2023-07-28 12:19:33,233 DEBUG   HandlerThread:954874 [handler.py:handle_request():144] handle_request: shutdown
+2023-07-28 12:19:33,233 INFO    HandlerThread:954874 [handler.py:finish():857] shutting down handler
+2023-07-28 12:19:34,083 INFO    WriterThread:954874 [datastore.py:close():294] close: /home/zz7522/Projects/llm-mixed-q/experiments/asplos/fine_tune/wandb/run-20230728_120528-36r9wvew/run-36r9wvew.wandb
+2023-07-28 12:19:34,233 INFO    SenderThread:954874 [sender.py:finish():1552] shutting down sender
+2023-07-28 12:19:34,233 INFO    SenderThread:954874 [file_pusher.py:finish():159] shutting down file pusher
+2023-07-28 12:19:34,233 INFO    SenderThread:954874 [file_pusher.py:join():164] waiting for file pusher

@@ -77,15 +77,16 @@ class _LinearBase(nn.Linear):
         return linear
 
     def __repr__(self):
-        txt = (
-            "{}(in_features={}, out_features={}, bias={}, bypass={}, is_ptq={})".format(
-                self.__class__.__name__,
-                self.in_features,
-                self.out_features,
-                self.bias is not None,
-                self.bypass,
-                self.is_ptq,
-            )
+        txt = "{}(in_features={}, out_features={}, bias={}, bypass={}, is_ptq={}, x/w/b-width={}/{}/{})".format(
+            self.__class__.__name__,
+            self.in_features,
+            self.out_features,
+            self.bias is not None,
+            self.bypass,
+            self.is_ptq,
+            self.config["data_in_width"],
+            self.config["weight_width"],
+            self.config["bias_width"],
         )
         return txt
 

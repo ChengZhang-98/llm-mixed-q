@@ -14,8 +14,9 @@ num_samples = 512
 compare_to = 32
 
 [search_space]
-extend_quant_config_seed = true
+extend_quant_config_seed_first = true
 [search_space.quant_config_seed]
+by = "name"
 [search_space.quant_config_seed.default]
 name = ["block_fp"]
 bypass = ["!ast!False"]

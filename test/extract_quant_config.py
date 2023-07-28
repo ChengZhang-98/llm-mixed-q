@@ -28,10 +28,13 @@ os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 
 
 def extract_quant_config_llama_160m():
-    study_pkl = "/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/table_sampler_comparison/llama_160m_sst2/random/study.pkl"
-    # save_path = "./extracted_quant_config.toml"
+    # study_pkl = "/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/table_sampler_comparison/llama_160m_sst2/random/study.pkl"
+    # study_pkl = "/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/table_sampler_comparison/llama_160m_sst2/tpe_1/study.pkl"
+    # study_pkl = "/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/table_sampler_comparison/llama_160m_sst2/nsgaii_1/study.pkl"
+    study_pkl = "/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/table_sampler_comparison/llama_160m_sst2/nsgaiii_0/study.pkl"
+    # save_path = "./extracted_quant_config_llama_160m_sst2.toml"
     save_path = None
-    target_idx = 112
+    target_idx = 113
     model_arch = "llama"
     model_name = (
         "/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/fine_tune/llama_160m_sst2"
@@ -132,6 +135,6 @@ def extract_quant_config_bert_base():
 
 
 if __name__ == "__main__":
-    set_logging_verbosity("debug")
-    # extract_quant_config_llama_160m()
-    extract_quant_config_bert_base()
+    set_logging_verbosity("info")
+    extract_quant_config_llama_160m()
+    # extract_quant_config_bert_base()

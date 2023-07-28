@@ -14,6 +14,7 @@ early_stop_mem_density = 7.12
 
 [search_space]
 [search_space.quant_config_seed]
+by = "name"
 [search_space.quant_config_seed.default]
 name = ["float_fp"]
 data_in_width = [7, 6, 5]

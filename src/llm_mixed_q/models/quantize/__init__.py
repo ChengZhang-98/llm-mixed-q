@@ -7,6 +7,7 @@ from .quantized_layer_profiler import (
     profile_matmul_layer,
     update_profile,
 )
+from .quant_config_sampler import sample_a_dict_of_list
 
 
 def get_quantized_cls(op: str, config: dict):

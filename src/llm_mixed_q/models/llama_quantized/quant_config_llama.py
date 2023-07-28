@@ -140,18 +140,26 @@ def by_name_parser(config: dict, num_hidden_layers: int) -> dict:
     return p_config
 
 
-def parse_llama_quantized_config(config: str | dict, num_hidden_layers: int) -> dict:
+def parse_llama_quantized_config(
+    config: str | dict | None, num_hidden_layers: int
+) -> dict:
     assert isinstance(
-        config, (str, dict)
-    ), "config must be a str path to config toml or dict"
+        config, (str, dict, type(None))
+    ), "config must be a str path to config toml, None or dict"
+    if config is None:
+        return None
     if isinstance(config, str):
         config = toml.load(config)
     config = convert_str_na_to_none(config)
-    by = config.pop("by", "type")
+    by = config.pop("by", "name")
+    assert by in ["type", "name"], f"Unknown `by`: {by}"
     match by:
         case "type":
-            return by_type_parser(config, num_hidden_layers)
+            parsed_config = by_type_parser(config, num_hidden_layers)
         case "name":
-            return by_name_parser(config, num_hidden_layers)
+            parsed_config = by_name_parser(config, num_hidden_layers)
         case _:
             raise ValueError(f"Unknown by: {by}")
+    parsed_config["by"] = by
+
+    return parsed_config

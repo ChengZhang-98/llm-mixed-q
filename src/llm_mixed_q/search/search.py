@@ -8,20 +8,18 @@ from functools import partial
 from argparse import ArgumentParser
 import json
 
+from accelerate import (
+    load_checkpoint_and_dispatch,
+    infer_auto_device_map,
+    init_empty_weights,
+)
 import datasets
 import joblib
 import optuna
 import pandas as pd
 from tabulate import tabulate
 import logging
-from transformers import default_data_collator, set_seed
 import transformers
-from accelerate import (
-    load_checkpoint_and_dispatch,
-    infer_auto_device_map,
-    init_empty_weights,
-)
-from torch.utils.data import DataLoader
 
 from ..eval import evaluate_cls_task_glue as evaluate_cls_task
 from ..models import (
@@ -31,12 +29,7 @@ from ..models import (
     get_q_profiler,
     get_quant_config_parser,
 )
-from ..datasets import (
-    get_num_labels,
-    get_raw_dataset_dict,
-    preprocess_dataset_dict,
-    is_regression_task,
-)
+
 from ..utils import (
     load_config,
     save_config,
@@ -511,6 +504,16 @@ class SearchQuantisationForClassification(SearchBase):
 
 
 def search_quantisation_for_cls():
+    from transformers import default_data_collator, set_seed
+
+    from torch.utils.data import DataLoader
+    from ..datasets import (
+        get_num_labels,
+        get_raw_dataset_dict,
+        preprocess_dataset_dict,
+        is_regression_task,
+    )
+
     parser = ArgumentParser()
     parser.add_argument("--model_arch", type=str, required=True)
     parser.add_argument("--model_name", type=str, required=True)

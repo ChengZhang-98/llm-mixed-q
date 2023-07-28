@@ -1,0 +1,19 @@
+[default]
+bypass = false
+name = "block_log"
+is_ptq = true
+weight_exponent_bias_width = 8
+weight_width = 8
+data_in_exponent_bias_width = 8
+data_in_width = 8
+weight_block_size = [1, 16]
+data_in_block_size = [1, 16]
+bias_exponent_bias_width = 8
+bias_width = 8
+bias_block_size = [16]
+
+[rotary_positional_encoding]
+bypass = false
+name = "integer"
+data_in_width = 8
+data_in_frac_width = 7

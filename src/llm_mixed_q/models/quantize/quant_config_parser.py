@@ -20,11 +20,42 @@ def has_multi_keys(src: dict, keys: tuple):
     return True
 
 
-QUANT_ARITH_ENTRIES = {
+QUANT_ARITH_ENTRIES = QUANT_ARITH_ENTRIES = {
     "integer": {
         "weight_entries": ("weight_width", "weight_frac_width"),
         "data_in_entries": ("data_in_width", "data_in_frac_width"),
         "bias_entries": ("bias_width", "bias_frac_width"),
+    },
+    "minifloat_ieee": {
+        "weight_entries": (
+            "weight_width",
+            "weight_exponent_width",
+            "weight_exponent_bias",
+        ),
+        "data_in_entries": (
+            "data_in_width",
+            "data_in_exponent_width",
+            "data_in_exponent_bias",
+        ),
+        "bias_entries": ("bias_width", "bias_exponent_width", "bias_exponent_bias"),
+    },
+    "minifloat_denorm": {
+        "weight_entries": (
+            "weight_width",
+            "weight_exponent_width",
+            "weight_exponent_bias",
+        ),
+        "data_in_entries": (
+            "data_in_width",
+            "data_in_exponent_width",
+            "data_in_exponent_bias",
+        ),
+        "bias_entries": ("bias_width", "bias_exponent_width", "bias_exponent_bias"),
+    },
+    "log": {
+        "weight_entries": ("weight_width", "weight_exponent_bias"),
+        "data_in_entries": ("data_in_width", "data_in_exponent_bias"),
+        "bias_entries": ("bias_width", "bias_exponent_bias"),
     },
     "block_fp": {
         "weight_entries": (
@@ -43,6 +74,43 @@ QUANT_ARITH_ENTRIES = {
             "bias_width",
             "bias_exponent_width",
             "bias_exponent_bias",
+            "bias_block_size",
+        ),
+    },
+    "block_minifloat": {
+        "weight_entries": (
+            "weight_width",
+            "weight_exponent_width",
+            "weight_exponent_bias_width",
+            "weight_block_size",
+        ),
+        "data_in_entries": (
+            "data_in_width",
+            "data_in_exponent_width",
+            "data_in_exponent_bias_width",
+            "data_in_block_size",
+        ),
+        "bias_entries": (
+            "bias_width",
+            "bias_exponent_width",
+            "bias_exponent_bias_width",
+            "bias_block_size",
+        ),
+    },
+    "block_log": {
+        "weight_entries": (
+            "weight_width",
+            "weight_exponent_bias_width",
+            "weight_block_size",
+        ),
+        "data_in_entries": (
+            "data_in_width",
+            "data_in_exponent_bias_width",
+            "data_in_block_size",
+        ),
+        "bias_entries": (
+            "bias_width",
+            "bias_exponent_bias_width",
             "bias_block_size",
         ),
     },

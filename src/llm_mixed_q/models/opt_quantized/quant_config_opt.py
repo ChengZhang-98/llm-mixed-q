@@ -6,7 +6,7 @@ from ...utils.config_load import convert_str_na_to_none
 from ..quantize.quant_config_parser import parse_node_config
 
 """
-An example of quant_config for llama
+An example of quant_config for opt
 
 {
     "model_layer": {
@@ -14,16 +14,12 @@ An example of quant_config for llama
             "q_proj": {},
             "k_proj": {},
             "v_proj": {},
-            "o_proj": {},
-            "rotary_positional_encoding": {},
+            "out_proj": {},
             "matmul_0": {},
             "matmul_1": {},
         },
-        "mlp": {
-            "gate_proj": {},
-            "down_proj": {},
-            "up_proj": {},
-        },
+        "fc1": {},
+        "fc2": {},
     }
     "linear_default": {},
     "matmul_default": {},
@@ -60,7 +56,6 @@ def match_a_pattern(name: str, patterns: list[str]) -> str | None:
 def create_a_layer_config(
     linear_qc: dict = None,
     matmul_qc: dict = None,
-    rotary_positional_encoding_qc: dict = None,
     layer_qc=None,
 ) -> dict:
     if (layer_qc is None and matmul_qc is None) and layer_qc is None:
@@ -74,15 +69,11 @@ def create_a_layer_config(
             "k_proj": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("k_proj", linear_qc), "linear")),
             "v_proj": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("v_proj", linear_qc), "linear")),
             "o_proj": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("o_proj", linear_qc), "linear")),
-            "rotary_positional_encoding": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("rotary_positional_encoding", rotary_positional_encoding_qc), "rotary_positional_encoding")),
             "matmul_0": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("matmul_0", matmul_qc), "matmul")),
             "matmul_1": deepcopy(parse_node_config(layer_qc.get("self_attn", {}).get("matmul_1", matmul_qc), "matmul")),
         },
-        "mlp": {
-            "gate_proj": deepcopy(parse_node_config(layer_qc.get("mlp", {}).get("gate_proj", linear_qc), "linear")),
-            "down_proj": deepcopy(parse_node_config(layer_qc.get("mlp", {}).get("down_proj", linear_qc), "linear")),
-            "up_proj": deepcopy(parse_node_config(layer_qc.get("mlp", {}).get("up_proj", linear_qc), "linear"))
-        },
+        "fc1": deepcopy(parse_node_config(layer_qc.get("fc1", linear_qc), "linear")),
+        "fc2": deepcopy(parse_node_config(layer_qc.get("fc2", linear_qc), "linear")),
     }
     # fmt: on
     return qc
@@ -138,20 +129,3 @@ def by_name_parser(config: dict, num_hidden_layers: int) -> dict:
         )
     p_config["default"] = default_qc
     return p_config
-
-
-def parse_llama_quantized_config(config: str | dict, num_hidden_layers: int) -> dict:
-    assert isinstance(
-        config, (str, dict)
-    ), "config must be a str path to config toml or dict"
-    if isinstance(config, str):
-        config = toml.load(config)
-    config = convert_str_na_to_none(config)
-    by = config.pop("by", "type")
-    match by:
-        case "type":
-            return by_type_parser(config, num_hidden_layers)
-        case "name":
-            return by_name_parser(config, num_hidden_layers)
-        case _:
-            raise ValueError(f"Unknown by: {by}")

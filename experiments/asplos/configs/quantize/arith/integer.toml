@@ -1,0 +1,16 @@
+[default]
+bypass = false
+name = "integer"
+is_ptq = true
+bias_width = 8
+bias_frac_width = 8
+data_in_width = 8
+data_in_frac_width = 4
+weight_width = 8
+weight_frac_width = 7
+
+[rotary_positional_encoding]
+bypass = false
+name = "integer"
+data_in_width = 8
+data_in_frac_width = 7

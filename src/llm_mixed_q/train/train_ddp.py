@@ -205,7 +205,7 @@ def parse_args():
     return args
 
 
-def trainer_ddp():
+def ddp_train_runner():
     args = parse_args()
 
     accelerator = Accelerator(log_with=args.report_to, project_dir=args.output_dir)

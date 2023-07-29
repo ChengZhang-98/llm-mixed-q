@@ -13,7 +13,7 @@ import datasets as hf_datasets
 
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 from llm_mixed_q.models import get_model_cls, get_config_cls, get_tokenizer_cls
-from llm_mixed_q.eval import evaluate_lm_task_wikitext2
+from llm_mixed_q.eval import evaluate_lm_wikitext2_fn
 from llm_mixed_q.datasets import get_raw_dataset_dict, preprocess_dataset_dict
 from llm_mixed_q.utils import set_logging_verbosity
 
@@ -73,7 +73,7 @@ def test_perplexity():
         num_workers=os.cpu_count(),
     )
 
-    results = evaluate_lm_task_wikitext2(
+    results = evaluate_lm_wikitext2_fn(
         model,
         eval_dataloader,
         num_samples=None,

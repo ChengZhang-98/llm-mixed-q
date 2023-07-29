@@ -176,8 +176,8 @@ class BertQuantizedConfig(PretrainedConfig):
         self.position_embedding_type = position_embedding_type
         self.use_cache = use_cache
         self.classifier_dropout = classifier_dropout
-        if quant_config is not None:
-            quant_config = parse_bert_quantized_config(quant_config, num_hidden_layers)
+        # if quant_config is not None:
+        #     quant_config = parse_bert_quantized_config(quant_config, num_hidden_layers)
         self.quant_config = quant_config
 
     def __setattr__(self, key, value):

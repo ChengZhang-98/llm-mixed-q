@@ -148,16 +148,24 @@ def by_name_parser(config: dict, num_hidden_layers: int) -> dict:
     return p_config
 
 
-def parse_bert_quantized_config(config: str | dict, num_hidden_layers: int) -> dict:
-    assert isinstance(config, (str, dict)), "Must provide either a path or a dict"
+def parse_bert_quantized_config(
+    config: str | dict | None, num_hidden_layers: int
+) -> dict:
+    assert isinstance(
+        config, (str, dict, type(None))
+    ), "Must provide either a path, None or a dict"
+    if config is None:
+        return None
     if isinstance(config, str):
         config = toml.load(config)
     config = convert_str_na_to_none(config)
-    by = config.pop("by", "type")
+    by = config.pop("by", "name")
     match by:
         case "type":
-            return by_type_parser(config, num_hidden_layers)
+            parsed_config = by_type_parser(config, num_hidden_layers)
         case "name":
-            return by_name_parser(config, num_hidden_layers)
+            parsed_config = by_name_parser(config, num_hidden_layers)
         case _:
             raise ValueError(f"Unknown quantized config type: {by}")
+    parsed_config["by"] = by
+    return parsed_config

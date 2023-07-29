@@ -11,7 +11,7 @@ from transformers.utils.logging import set_verbosity_error
 
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
-from llm_mixed_q.eval import evaluate_cls_task_glue
+from llm_mixed_q.eval import evaluate_cls_glue_fn
 from llm_mixed_q.utils import set_logging_verbosity
 
 from llm_mixed_q.models import (
@@ -115,7 +115,7 @@ def test_llama_cls():
     )
 
     model = model.to("cuda")
-    results = evaluate_cls_task_glue(
+    results = evaluate_cls_glue_fn(
         model,
         task=task,
         eval_dataloader=eval_dataloader,
@@ -138,7 +138,7 @@ def test_llama_lm():
     4-bit RoPE: {'loss': 2.011227269021292, 'perplexity': 7.472482468379838, 'num_samples': 126, 'seq_len': 2048, 'batch_size': 1}
     """
     from llm_mixed_q.datasets import get_raw_dataset_dict, preprocess_dataset_dict
-    from llm_mixed_q.eval import evaluate_lm_task_wikitext2
+    from llm_mixed_q.eval import evaluate_lm_wikitext2_fn
     from transformers import DataCollatorForLanguageModeling
     from accelerate import (
         load_checkpoint_and_dispatch,
@@ -192,7 +192,7 @@ def test_llama_lm():
         num_workers=os.cpu_count(),
     )
 
-    results = evaluate_lm_task_wikitext2(
+    results = evaluate_lm_wikitext2_fn(
         model,
         eval_dataloader,
         num_samples=None,

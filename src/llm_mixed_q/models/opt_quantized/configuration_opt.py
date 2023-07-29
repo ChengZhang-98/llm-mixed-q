@@ -147,8 +147,8 @@ class OPTQuantizedConfig(PretrainedConfig):
         # with checkpoints that have been fine-tuned before transformers v4.20.1
         # see https://github.com/facebookresearch/metaseq/pull/164
         self._remove_final_layer_norm = _remove_final_layer_norm
-        if quant_config is not None:
-            quant_config = parse_opt_quantized_config(quant_config, num_hidden_layers)
+        # if quant_config is not None:
+        #     quant_config = parse_opt_quantized_config(quant_config, num_hidden_layers)
 
         self.quant_config = quant_config
         super().__init__(
@@ -159,14 +159,8 @@ class OPTQuantizedConfig(PretrainedConfig):
         )
 
     def __setattr__(self, key, value):
-        if key == "quant_config":
-            if value is not None:
-                value = parse_opt_quantized_config(
-                    config=value, num_hidden_layers=self.num_hidden_layers
-                )
-            else:
-                value = parse_opt_quantized_config(
-                    {"by": "type", "default": {"name": "integer", "bypass": True}},
-                    self.num_hidden_layers,
-                )
+        if key == "quant_config" and value is not None:
+            value = parse_opt_quantized_config(
+                config=value, num_hidden_layers=self.num_hidden_layers
+            )
         return super().__setattr__(key, value)

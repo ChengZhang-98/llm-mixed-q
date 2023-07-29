@@ -1,3 +1,4 @@
+by = "type"
 [default]
 bypass = false
 name = "integer"

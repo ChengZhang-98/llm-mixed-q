@@ -7,7 +7,7 @@ from tqdm import tqdm
 logger = logging.getLogger(__name__)
 
 
-def evaluate_lm_task_wikitext2(
+def evaluate_lm_wikitext2_fn(
     model,
     eval_dataloader,
     num_samples: int = None,
@@ -143,7 +143,7 @@ def eval_lm_runner():
         num_workers=os.cpu_count(),
     )
 
-    results = evaluate_lm_task_wikitext2(
+    results = evaluate_lm_wikitext2_fn(
         model,
         eval_dataloader=eval_dataloader,
         num_samples=None,

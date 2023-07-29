@@ -13,7 +13,7 @@ def sample_a_list(trial: optuna.Trial, name: str, choices: list):
     sampled = trial.suggest_categorical(name, deepcopy(choices))
     if isinstance(sampled, str) and sampled.startswith("!ast!"):
         sampled = ast.literal_eval(sampled.removeprefix("!ast!"))
-    logger.debug(f"sampled {name} = {sampled}")
+    # logger.debug(f"sampled {name} = {sampled}")
     return sampled
 
 

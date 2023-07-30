@@ -43,14 +43,14 @@ def sample_llama_quant_config(
     sampled_config = {}
 
     for k, v in config_seed.items():
-        if k == "by":
-            sampled_config[k] = v
-        elif k == "default":
+        if k == "default":
             sampled_config[k] = sample_a_dict_of_list(trial, f"{name}:{k}", v)
         elif k == "model_layer":
             sampled_config[k] = sample_a_layer_quant_config(trial, f"{name}:{k}", v)
         elif "model_layer_" in k:
             sampled_config[k] = sample_a_layer_quant_config(trial, f"{name}:{k}", v)
+        elif k == "rotary_positional_encoding":
+            sampled_config[k] = sample_a_dict_of_list(trial, f"{name}:{k}", v)
         else:
             logger.warning(f"Unknown key: {k}, ignored")
     return sampled_config

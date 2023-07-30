@@ -340,7 +340,7 @@ class SearchQuantisationForClassification(SearchBase):
 
         params = trial.params
 
-        quant_config = {"by": "name"}
+        quant_config = {}
         for name, value in params.items():
             keys = name.removeprefix("root:").split(":")
             if isinstance(value, str) and value.startswith("!ast!"):
@@ -745,7 +745,7 @@ class SearchQuantisationForPromptingCLS(SearchBase):
 
         params = trial.params
 
-        quant_config = {"by": "name"}
+        quant_config = {}
         for name, value in params.items():
             keys = name.removeprefix("root:").split(":")
             if isinstance(value, str) and value.startswith("!ast!"):

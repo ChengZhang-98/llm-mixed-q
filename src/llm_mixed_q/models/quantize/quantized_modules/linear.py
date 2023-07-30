@@ -86,7 +86,7 @@ class _LinearBase(nn.Linear):
             self.is_ptq,
             self.config["data_in_width"],
             self.config["weight_width"],
-            self.config["bias_width"],
+            self.config.get("bias_width", "NA"),
         )
         return txt
 

@@ -88,30 +88,30 @@ def create_a_layer_config(
     return qc
 
 
-def by_type_parser(config: dict, num_hidden_layers: int) -> dict:
-    assert "default" in config, "Must provide default config for by_class_parser"
-    default_qc: dict = config["default"]
-    linear_qc: dict = parse_node_config(
-        config.get("linear", default_qc), mase_op="linear"
-    )
-    rotary_positional_encoding_qc: dict = parse_node_config(
-        config.get("rotary_positional_encoding", default_qc),
-        mase_op="rotary_positional_encoding",
-    )
-    matmul_qc: dict = parse_node_config(
-        config.get("matmul", default_qc), mase_op="matmul"
-    )
-    layer_qc: dict = config.get("model_layer", None)
+# def by_type_parser(config: dict, num_hidden_layers: int) -> dict:
+#     assert "default" in config, "Must provide default config for by_class_parser"
+#     default_qc: dict = config["default"]
+#     linear_qc: dict = parse_node_config(
+#         config.get("linear", default_qc), mase_op="linear"
+#     )
+#     rotary_positional_encoding_qc: dict = parse_node_config(
+#         config.get("rotary_positional_encoding", default_qc),
+#         mase_op="rotary_positional_encoding",
+#     )
+#     matmul_qc: dict = parse_node_config(
+#         config.get("matmul", default_qc), mase_op="matmul"
+#     )
+#     layer_qc: dict = config.get("model_layer", None)
 
-    # parsed config
-    p_config = {}
-    for i in range(num_hidden_layers):
-        layer_entry = f"model_layer_{i}"
-        p_config[layer_entry] = create_a_layer_config(
-            linear_qc, matmul_qc, rotary_positional_encoding_qc, layer_qc
-        )
-    p_config["default"] = default_qc
-    return p_config
+#     # parsed config
+#     p_config = {}
+#     for i in range(num_hidden_layers):
+#         layer_entry = f"model_layer_{i}"
+#         p_config[layer_entry] = create_a_layer_config(
+#             linear_qc, matmul_qc, rotary_positional_encoding_qc, layer_qc
+#         )
+#     p_config["default"] = default_qc
+#     return p_config
 
 
 def by_name_parser(config: dict, num_hidden_layers: int) -> dict:
@@ -127,12 +127,13 @@ def by_name_parser(config: dict, num_hidden_layers: int) -> dict:
     matmul_qc: dict = parse_node_config(
         config.get("matmul", default_qc), mase_op="matmul"
     )
+    general_layer_qc: dict = config.get("model_layer", None)
 
     # parsed config
     p_config = {}
     for i in range(num_hidden_layers):
         layer_entry = f"model_layer_{i}"
-        layer_qc = config.get(layer_entry, None)
+        layer_qc = config.get(layer_entry, general_layer_qc)
         p_config[layer_entry] = create_a_layer_config(
             linear_qc, matmul_qc, rotary_positional_encoding_qc, layer_qc
         )
@@ -140,26 +141,42 @@ def by_name_parser(config: dict, num_hidden_layers: int) -> dict:
     return p_config
 
 
-def parse_llama_quantized_config(
-    config: str | dict | None, num_hidden_layers: int
-) -> dict:
+# def parse_llama_quantized_config(
+#     config: str | dict | None, num_hidden_layers: int
+# ) -> dict:
+#     assert isinstance(
+#         config, (str, dict, type(None))
+#     ), "config must be a str path to config toml, None or dict"
+#     if config is None:
+#         return None
+#     if isinstance(config, str):
+#         config = toml.load(config)
+#     config = convert_str_na_to_none(config)
+#     by = config.pop("by", "name")
+#     assert by in ["type", "name"], f"Unknown `by`: {by}"
+#     match by:
+#         case "type":
+#             parsed_config = by_type_parser(config, num_hidden_layers)
+#         case "name":
+#             parsed_config = by_name_parser(config, num_hidden_layers)
+#         case _:
+#             raise ValueError(f"Unknown by: {by}")
+#     parsed_config["by"] = by
+
+#     return parsed_config
+
+
+def parse_llama_quantized_config(config: str | dict | None, num_hidden_layers: int):
     assert isinstance(
         config, (str, dict, type(None))
     ), "config must be a str path to config toml, None or dict"
+
     if config is None:
         return None
+
     if isinstance(config, str):
         config = toml.load(config)
-    config = convert_str_na_to_none(config)
-    by = config.pop("by", "name")
-    assert by in ["type", "name"], f"Unknown `by`: {by}"
-    match by:
-        case "type":
-            parsed_config = by_type_parser(config, num_hidden_layers)
-        case "name":
-            parsed_config = by_name_parser(config, num_hidden_layers)
-        case _:
-            raise ValueError(f"Unknown by: {by}")
-    parsed_config["by"] = by
 
+    config = convert_str_na_to_none(config)
+    parsed_config = by_name_parser(config, num_hidden_layers)
     return parsed_config

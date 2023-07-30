@@ -1,5 +1,9 @@
 from functools import partial
 from copy import deepcopy
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 def cp_multi_values(src: dict, dst: dict, src_keys: tuple, dst_keys: tuple = None):
@@ -20,7 +24,7 @@ def has_multi_keys(src: dict, keys: tuple):
     return True
 
 
-QUANT_ARITH_ENTRIES = QUANT_ARITH_ENTRIES = {
+QUANT_ARITH_ENTRIES = {
     "integer": {
         "weight_entries": ("weight_width", "weight_frac_width"),
         "data_in_entries": ("data_in_width", "data_in_frac_width"),
@@ -137,6 +141,11 @@ def cp_bias_entries(config: dict, p_config: dict, entries: dict):
     cp_multi_values(config, p_config, entries["bias_entries"])
 
 
+def cp_optional_bias_entries(config: dict, p_config: dict, entries: dict):
+    if has_multi_keys(config, entries["bias_entries"]):
+        cp_multi_values(config, p_config, entries["bias_entries"])
+
+
 def cp_weight_entries_to_bias(config: dict, p_config: dict, entries: dict):
     if has_multi_keys(config, entries["bias_entries"]):
         cp_multi_values(config, p_config, entries["bias_entries"])
@@ -170,26 +179,54 @@ for quant_arith, entries in QUANT_ARITH_ENTRIES.items():
     }
 
 MASE_OP_TO_ENTRIES = {
-    "add": ("name", "data_in_entries"),
-    "bmm": ("name", "data_in_entries", "weight_entries"),
-    "conv1d": ("name", "is_ptq", "data_in_entries", "weight_entries", "bias_entries"),
-    "conv2d": ("name", "is_ptq", "data_in_entries", "weight_entries", "bias_entries"),
-    "matmul": ("name", "data_in_entries", "weight_entries"),
-    "mul": ("name", "data_in_entries"),
-    "linear": ("name", "is_ptq", "data_in_entries", "weight_entries", "bias_entries"),
-    "relu": ("name", "data_in_entries"),
-    "rotary_positional_encoding": ("name", "data_in_entries"),
-    "sub": ("name", "data_in_entries"),
+    # <op_name> : (<entries>, <optional_entries>)
+    "add": (("name", "data_in_entries"), ()),
+    "bmm": (("name", "data_in_entries", "weight_entries"), ()),
+    "conv1d": (
+        ("name", "is_ptq", "data_in_entries", "weight_entries"),
+        ("bias_entries",),
+    ),
+    "conv2d": (
+        ("name", "is_ptq", "data_in_entries", "weight_entries"),
+        ("bias_entries",),
+    ),
+    "matmul": (("name", "data_in_entries", "weight_entries"), ()),
+    "mul": (("name", "data_in_entries"), ()),
+    "linear": (
+        ("name", "is_ptq", "data_in_entries", "weight_entries"),
+        ("bias_entries",),
+    ),
+    "relu": (("name", "data_in_entries"), ()),
+    "rotary_positional_encoding": (("name", "data_in_entries"), ()),
+    "sub": (("name", "data_in_entries"), ()),
 }
+
+
+def optional_entry_exists(config: dict, entry_name: str) -> bool:
+    entry_name = entry_name.removesuffix("_entries")
+    for key in config.keys():
+        if key.startswith(entry_name):
+            return True
+    return False
 
 
 def parse_node_config(config: dict, mase_op: str) -> dict:
     assert mase_op in MASE_OP_TO_ENTRIES, f"Unknown mase op: {mase_op}"
     if config.get("bypass", False):
         return config
-    op_entries = MASE_OP_TO_ENTRIES[mase_op]
+    op_entries, op_entries_optional = MASE_OP_TO_ENTRIES[mase_op]
+    assert isinstance(
+        op_entries, tuple
+    ), f"op_entries must be a tuple, check MASE_OP_TO_ENTRIES[{mase_op}]"
+    assert isinstance(
+        op_entries_optional, tuple
+    ), f"op_entries_optional must be a tuple, check MASE_OP_TO_ENTRIES[{mase_op}]"
     p_config = {}
     for entry in op_entries:
         entry_cp_fn = QUANT_ARITH_TO_CP_FN[config["name"]][entry]
         entry_cp_fn(config, p_config)
+    for entry in op_entries_optional:
+        if optional_entry_exists(config, entry):
+            entry_cp_fn = QUANT_ARITH_TO_CP_FN[config["name"]][entry]
+            entry_cp_fn(config, p_config)
     return p_config

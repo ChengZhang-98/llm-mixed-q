@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 import json
+from pathlib import Path
 import logging
 import os
 from pprint import pformat
@@ -9,6 +10,7 @@ from lm_eval import tasks as lm_eval_tasks
 from lm_eval import evaluator as lm_eval_evaluator
 from .evaluator import simple_evaluate_llm_mixed_q
 from .model_wrapper import QuantizedCausalLM
+from ...utils import load_config
 
 logger = logging.getLogger(__name__)
 
@@ -32,22 +34,10 @@ def evaluate_prompting_fn(
     description_dict = {}
 
     model_args = f"model_arch={model_arch},model_name={model_name}"
-    # results = lm_eval_evaluator.simple_evaluate(
-    #     model=model_wrapper,
-    #     model_args=model_args,
-    #     tasks=task_names,
-    #     num_fewshot=num_fewshot,
-    #     batch_size=batch_size,
-    #     max_batch_size=max_batch_size,
-    #     device=device,
-    #     no_cache=no_cache,
-    #     limit=limit,
-    #     description_dict=description_dict,
-    #     decontamination_ngrams_path=None,
-    #     check_integrity=False,
-    #     write_out=False,
-    #     output_base_path=None,
-    # )
+
+    if isinstance(quant_config, str):
+        quant_config = load_config(quant_config)
+
     results = simple_evaluate_llm_mixed_q(
         model=model_wrapper,
         model_args=model_args,
@@ -72,16 +62,22 @@ def evaluate_prompting_runner():
     parser = ArgumentParser()
 
     parser.add_argument(
-        "--model",
+        "--model_wrapper",
         help="lm-eval model wrapper name",
         choices=list(MODEL_REGISTRY.keys()),
         default="llm-mixed-q",
     )
     parser.add_argument(
-        "--model_args", required=True, help="model arguments separated by commas"
+        "--model_arch",
+        help="model architecture",
+        choices=["bert", "opt", "llama"],
+    )
+    parser.add_argument("--model_name", required=True, help="model name")
+    parser.add_argument(
+        "--quant_config", required=True, help="path to quant config file"
     )
     parser.add_argument(
-        "--tasks", required=True, help="comma-separated list of tasks to evaluate on"
+        "--tasks", required=True, nargs="+", help="a list of tasks to evaluate on"
     )
     parser.add_argument("--provide_description", action="store_true")
     parser.add_argument("--num_fewshot", type=int, default=0)
@@ -93,7 +89,7 @@ def evaluate_prompting_runner():
         help="Maximal batch size to try with --batch_size auto",
     )
     parser.add_argument("--device", type=str, default=None)
-    parser.add_argument("--output_path", default=None)
+    parser.add_argument("--save_dir", default=None)
     parser.add_argument(
         "--limit",
         type=float,
@@ -102,7 +98,8 @@ def evaluate_prompting_runner():
         "If <1, limit is a percentage of the total number of examples.",
     )
     parser.add_argument("--data_sampling", type=float, default=None)
-    parser.add_argument("--no_cache", action="store_true")
+    # parser.add_argument("--no_cache", action="store_true")
+    parser.add_argument("--use_cache", action="store_true")
     parser.add_argument("--decontamination_ngrams_path", default=None)
     parser.add_argument("--description_dict_path", default=None)
     parser.add_argument("--check_integrity", action="store_true")
@@ -113,46 +110,33 @@ def evaluate_prompting_runner():
 
     logger.info(f"========== Running eval_prompting ==========")
     logger.info(pformat(vars(args)))
-
-    task_names = lm_eval_utils.pattern_match(
-        args.tasks.split(","), lm_eval_tasks.ALL_TASKS
-    )
-
-    logger.info(f"Selected Tasks: {task_names}")
-
-    description_dict = {}
-    if args.description_dict_path:
-        with open(args.description_dict_path, "r") as f:
-            description_dict = json.load(f)
-
-    results = lm_eval_evaluator.simple_evaluate(
-        model=args.model,
-        model_args=args.model_args,
-        tasks=task_names,
+    results = evaluate_prompting_fn(
+        model_wrapper=args.model_wrapper,
+        model_arch=args.model_arch,
+        model_name=args.model_name,
+        quant_config=args.quant_config,
+        tasks=args.tasks,
         num_fewshot=args.num_fewshot,
         batch_size=args.batch_size,
         max_batch_size=args.max_batch_size,
         device=args.device,
-        no_cache=args.no_cache,
         limit=args.limit,
-        description_dict=description_dict,
-        decontamination_ngrams_path=args.decontamination_ngrams_path,
-        check_integrity=args.check_integrity,
-        write_out=args.write_out,
-        output_base_path=args.output_base_path,
+        no_cache=not args.use_cache,
     )
 
     dumped = json.dumps(results, indent=2)
-    print(dumped)
+    logger.info(dumped)
 
-    if args.output_path:
-        os.makedirs(os.path.dirname(args.output_path), exist_ok=True)
-        with open(args.output_path, "w") as f:
+    if args.save_dir:
+        save_dir = Path(args.save_dir)
+        save_dir.mkdir(parents=True, exist_ok=True)
+        save_path = save_dir / "results.json"
+        with open(save_path, "w") as f:
             f.write(dumped)
 
     batch_sizes = ",".join(map(str, results["config"]["batch_sizes"]))
-    print(
-        f"{args.model} ({args.model_args}), limit: {args.limit}, provide_description: {args.provide_description}, "
+    logger.info(
+        f"({args.model_wrapper},{args.model_arch, args.model_name}), limit: {args.limit}, provide_description: {args.provide_description}, "
         f"num_fewshot: {args.num_fewshot}, batch_size: {args.batch_size}{f' ({batch_sizes})' if batch_sizes else ''}"
     )
-    print(lm_eval_evaluator.make_table(results))
+    logger.info(lm_eval_evaluator.make_table(results))

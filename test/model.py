@@ -37,15 +37,17 @@ def test_llama():
     arch = "llama"
     task = "cls"
     name = "Cheng98/llama-160m"
+    # name = "lmsys/vicuna-7b-v1.3"
     # quant_config = "./llama.toml"
-    quant_config = "/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/table_sampler_comparison/llama_160m_sst2/random_1/best_quant_config.toml"
+    quant_config = "/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/search/llama_160m_sst2/1/best_quant_config.toml"
+    # quant_config = "/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/search/vicuna_7b/buggy_default/best_quant_config.toml"
 
     model_cls = get_model_cls(arch, task)
     config_cls = get_config_cls(arch)
 
     config = config_cls.from_pretrained(name, quant_config=quant_config)
     model = model_cls.from_pretrained(name, config=config).to("cuda")
-
+    breakpoint()
     x = torch.randint(0, 1000, (16, 128)).to("cuda")
     y = model(x)
     breakpoint()

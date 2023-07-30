@@ -1,25 +1,29 @@
 import argparse
 from typing import Any
 import toml
-from ..models import get_config_cls, get_model_cls, get_tokenizer_cls
-from ..utils import set_logging_verbosity, load_config, save_config
-import logging
-
 import math
 import os
 from functools import partial
-from pathlib import Path
-import transformers
-import datasets
-from tqdm import tqdm
 
+from tqdm import tqdm
+import logging
+from accelerate import Accelerator, FullyShardedDataParallelPlugin
+import transformers
 import numpy as np
 import torch
 import evaluate as hf_evaluate
-from accelerate import Accelerator
 from accelerate.logging import get_logger
 from torch.utils.data import DataLoader
-
+from torch.distributed.fsdp import FullStateDictConfig
+from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
+from torch.distributed.fsdp import StateDictType
+from torch.distributed.fsdp.fully_sharded_data_parallel import (
+    CPUOffload,
+    ShardingStrategy,
+)
+import datasets as hf_datasets
+import evaluate as hf_evaluate
+from torch.distributed.fsdp.wrap import transformer_auto_wrap_policy
 from transformers import (
     AutoTokenizer,
     SchedulerType,
@@ -30,7 +34,12 @@ from transformers import (
     get_scheduler,
 )
 
-logger = get_logger("TrainerDDP")
+
+from ..models import get_config_cls, get_model_cls, get_tokenizer_cls
+from ..utils import set_logging_verbosity, load_config, save_config
+
+
+logger = get_logger("TrainerFSDP")
 
 TASK_TO_KEYS = {
     "cola": ("sentence", None),
@@ -205,30 +214,112 @@ def parse_args():
     return args
 
 
-def ddp_train_runner():
+def get_transformer_layer_class(model):
+    model_layer_cls_name = model._no_split_modules
+    layer_dict = dict(model.named_modules())
+    layer_cls_set = set(map(lambda x: type(x), layer_dict.values()))
+    no_split_layer_cls_set = set(
+        filter(lambda x: x.__name__ in model_layer_cls_name, layer_cls_set)
+    )
+    return no_split_layer_cls_set
+
+
+def checkpoint_model(accelerator: Accelerator, model: torch.nn.Module, save_dir):
+    # gather the checkpoint to rank 0's CPU memory to avoid GPU OOM
+    # this requires enough CPU memory
+    accelerator.wait_for_everyone()
+    unwrapped_model = accelerator.unwrap_model(model)
+    if accelerator.num_processes > 1:
+        full_state_dict_config = FullStateDictConfig(
+            offload_to_cpu=True, rank0_only=True
+        )
+        with FSDP.state_dict_type(
+            unwrapped_model, StateDictType.FULL_STATE_DICT, full_state_dict_config
+        ):
+            state = accelerator.get_state_dict(unwrapped_model)
+            # unwrapped_model is HuggingFace AutoPretrainedModel, so we can use save_pretrained() to save the checkpoint
+            unwrapped_model.save_pretrained(
+                save_dir,
+                is_main_process=accelerator.is_main_process,
+                save_function=accelerator.save,
+                state_dict=state,
+            )
+    else:
+        unwrapped_model.save_pretrained(
+            save_dir,
+            is_main_process=accelerator.is_main_process,
+            save_function=accelerator.save,
+            state_dict=accelerator.get_state_dict(model),
+        )
+
+
+def fsdp_train_runner():
     args = parse_args()
 
-    accelerator = Accelerator(log_with=args.report_to, project_dir=args.output_dir)
+    # model & tokenizer
+    # model_cls = get_model_cls(args.model_architecture, "cls")
+    # config_cls = get_config_cls(args.model_architecture)
+    # config = config_cls.from_pretrained(
+    #     args.model_name_or_path,
+    #     quant_config=args.quant_config,
+    #     num_labels=num_labels,
+    # )
+    # model = model_cls.from_pretrained(
+    #     args.model_name_or_path,
+    #     config=config,
+    #     ignore_mismatched_sizes=args.ignore_mismatched_sizes,
+    # )
+    # tokenizer = get_tokenizer_cls(args.model_architecture).from_pretrained(
+    #     args.model_name_or_path,
+    #     use_fast=True,
+    #     legacy=False,
+    # )
+
+    # no_split_layer_cls = get_transformer_layer_class(model)
+    # fsdp_plugin = FullyShardedDataParallelPlugin(
+    #     cpu_offload=CPUOffload(offload_params=False),
+    #     auto_wrap_policy=partial(
+    #         transformer_auto_wrap_policy,
+    #         transformer_layer_cls=no_split_layer_cls,
+    #     ),
+    #     sharding_strategy=ShardingStrategy.FULL_SHARD,
+    #     limit_all_gathers=True,
+    #     use_orig_params=True,
+    # )
+    fsdp_plugin = FullyShardedDataParallelPlugin(
+        cpu_offload=CPUOffload(offload_params=False),
+        auto_wrap_policy=partial(
+            transformer_auto_wrap_policy,
+            transformer_layer_cls={},
+        ),
+        sharding_strategy=ShardingStrategy.FULL_SHARD,
+        limit_all_gathers=True,
+        use_orig_params=True,
+    )
+    accelerator = Accelerator(
+        log_with=args.report_to, project_dir=args.output_dir, fsdp_plugin=fsdp_plugin
+    )
 
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
         datefmt="%m/%d/%Y %H:%M:%S",
         level=logging.INFO,
     )
-    logger.info(accelerator.state, main_process_only=False)
+    logger.info(accelerator.state)
+    # logger.info(f"Transformer layer cls:{no_split_layer_cls}")
 
     if accelerator.is_local_main_process:
-        datasets.utils.logging.set_verbosity_error()
+        hf_datasets.utils.logging.set_verbosity_error()
         transformers.utils.logging.set_verbosity_error()
     else:
-        datasets.utils.logging.set_verbosity_error()
+        hf_datasets.utils.logging.set_verbosity_error()
         transformers.utils.logging.set_verbosity_error()
 
     if args.seed is not None:
         set_seed(args.seed)
 
     # raw datasets
-    raw_datasets = datasets.load_dataset("glue", args.task_name)
+    raw_datasets = hf_datasets.load_dataset("glue", args.task_name)
     is_regression = args.task_name == "stsb"
     if not is_regression:
         label_list = raw_datasets["train"].features["label"].names
@@ -236,7 +327,7 @@ def ddp_train_runner():
     else:
         num_labels = 1
 
-    # model & tokenizer
+    # model
     model_cls = get_model_cls(args.model_architecture, "cls")
     config_cls = get_config_cls(args.model_architecture)
     config = config_cls.from_pretrained(
@@ -344,6 +435,8 @@ def ddp_train_runner():
         batch_size=args.per_device_eval_batch_size,
     )
 
+    # *: prepare model before creating optimizer
+    model = accelerator.prepare(model)
     # Optimizer
     # Split weights in two groups, one with weight decay and the other not.
     no_decay = ["bias", "LayerNorm.weight"]
@@ -383,16 +476,13 @@ def ddp_train_runner():
         num_training_steps=args.max_train_steps,
     )
 
-    # Prepare everything with our `accelerator`.
+    # *: prepare everything except model which is already prepared
     (
-        model,
         optimizer,
         train_dataloader,
         eval_dataloader,
         lr_scheduler,
-    ) = accelerator.prepare(
-        model, optimizer, train_dataloader, eval_dataloader, lr_scheduler
-    )
+    ) = accelerator.prepare(optimizer, train_dataloader, eval_dataloader, lr_scheduler)
 
     if overrode_max_train_steps:
         args.max_train_steps = args.num_train_epochs * num_update_steps_per_epoch
@@ -565,15 +655,15 @@ def ddp_train_runner():
         accelerator.end_training()
 
     if args.output_dir is not None:
-        accelerator.wait_for_everyone()
-        unwrapped_model = accelerator.unwrap_model(model)
-        unwrapped_model.save_pretrained(
-            args.output_dir,
-            is_main_process=accelerator.is_main_process,
-            save_function=accelerator.save,
-        )
-        if accelerator.is_main_process:
-            tokenizer.save_pretrained(args.output_dir)
+        checkpoint_model(accelerator, model, args.output_dir)
+        # unwrapped_model = accelerator.unwrap_model(model)
+        # unwrapped_model.save_pretrained(
+        #     args.output_dir,
+        #     is_main_process=accelerator.is_main_process,
+        #     save_function=accelerator.save,
+        # )
+        # if accelerator.is_main_process:
+        #     tokenizer.save_pretrained(args.output_dir)
 
     if args.task_name == "mnli":
         # Final evaluation on mismatched validation set

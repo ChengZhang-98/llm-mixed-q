@@ -74,7 +74,7 @@ def create_a_layer_config(
 #     return p_config
 
 
-def by_name_parser(config: dict, num_hidden_layers: int) -> dict:
+def _parse_and_complete_config(config: dict, num_hidden_layers: int) -> dict:
     assert "default" in config, "Must provide default config for by_name_parser"
     default_qc: dict = config["default"]
     linear_qc: dict = parse_node_config(
@@ -93,24 +93,6 @@ def by_name_parser(config: dict, num_hidden_layers: int) -> dict:
     return p_config
 
 
-# def parse_opt_quantized_config(config: str | dict, num_hidden_layers: int) -> dict:
-#     assert isinstance(
-#         config, (str, dict)
-#     ), f"config must be either str or dict, got {type(config)}"
-#     if isinstance(config, str):
-#         config = toml.load(config)
-#     config = convert_str_na_to_none(config)
-#     by = config.get("by", "name")
-#     match by:
-#         case "type":
-#             parsed_config = by_type_parser(config, num_hidden_layers)
-#         case "name":
-#             parsed_config = by_name_parser(config, num_hidden_layers)
-#         case _:
-#             raise ValueError(f"Unknown by: {by}")
-#     return parsed_config
-
-
 def parse_opt_quantized_config(
     config: str | dict | None, num_hidden_layers: int
 ) -> dict:
@@ -123,5 +105,5 @@ def parse_opt_quantized_config(
     if isinstance(config, str):
         config = toml.load(config)
     config = convert_str_na_to_none(config)
-    parsed_config = by_name_parser(config, num_hidden_layers)
+    parsed_config = _parse_and_complete_config(config, num_hidden_layers)
     return parsed_config

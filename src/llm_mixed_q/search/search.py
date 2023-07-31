@@ -135,6 +135,7 @@ class SearchQuantisationForClassification(SearchBase):
         )
         self.q_profiler = get_q_profiler(model_arch)
         self.q_config_parser = get_quant_config_parser(model_arch)
+        # TODO: use a general recursive quant config parser, which traverses dict to samples leaf values (a list of choices)
         self.q_config_sampler = get_q_config_sampler(model_arch)
         self.num_labels = num_labels
 
@@ -221,6 +222,7 @@ class SearchQuantisationForClassification(SearchBase):
                 )
             # logger.debug(f"============= Quant Config Seed =============")
             # logger.debug("\n" + pformat(quant_config_seed))
+            # TODO: create a general recursive quant config parser
             sampled_config = self.q_config_sampler(
                 trial=trial,
                 name="root",

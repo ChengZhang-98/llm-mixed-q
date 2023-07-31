@@ -43,7 +43,7 @@ All Transformer blocks use the same integer quantisation config. Rotary position
 | Transformer block | layer entry | Notes |
 | ----------------- | ------------ | ----- |
 | `Q <= X_n W_Q` | `model_layer_i.self_attn.q_proj` | |
-| `Q <= RoPE(Q)` | `model_layer_i.self_attn.self_attn.rotary_positional_encoding` | 4-bit **integer** quantisation |
+| `Q <= RoPE(Q)` | `model_layer_i.self_attn.rotary_positional_encoding` | 4-bit **integer** quantisation |
 | `K <= X_n W_K` | `model_layer_i.self_attn.k_proj` | |
 | `V <= X_n W_V` | `model_layer_i.self_attn.v_proj` | |
 | `A <= QK^T` | `model_layer_i.self_attn.matmul_0` | |

@@ -15,11 +15,11 @@ task=sst2
 batch_size_train=2
 batch_size_eval=32
 learning_rate=0.6e-5
-num_train_epochs=4
+num_train_epochs=3
 gradient_accumulation_steps=32
 lr_scheduler_type=cosine
 
-conda run -n llm-mixed-q --no-capture-output accelerate launch --use_fsdp fine_tune_fsdp.py \
+conda run -n llm-mixed-q --no-capture-output accelerate launch --multi_gpu fine_tune.py \
     --model_arch $model_arch \
     --model_name $model_name \
     --task $task \

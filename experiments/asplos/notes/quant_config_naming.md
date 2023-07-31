@@ -32,7 +32,7 @@ including opt-125m, opt-350m
 | `B1 <= B0 W_1 + b` | `model_layer_i.fc1` | The 1st linear of FFN |
 | `B2 <= B1 W_2 + b` | `model_layer_i.fc2` | The 2nd linear of FFN |
 
-For opt-1.3b, opt-2.7b, opt-6.7b, the only block config `model_layer_config` is shared across all blocks.
+For opt-1.3b, opt-2.7b, opt-6.7b, the only block config with entry `model_layer` is shared across all blocks.
 
 ## Llama
 
@@ -53,9 +53,10 @@ All Transformer blocks use the same integer quantisation config. Rotary position
 | `U <= B_n W_U` | `model_layer_i.mlp.up_proj` | up linear |
 | `D <= [SiLU(G ⊗ U)] W_D` | `model_layer_i.mlp.down` | down linear |
 
-For llama-7b, alpaca-b, and vicuna-7b, the only block config `model_layer_config` is shared across all blocks.
+For llama-7b, alpaca-b, and vicuna-7b, the only block config with entry `model_layer` is shared across all blocks.
 
 ```text
+# Llama Transformer block
 # Norm
 X_n = RMSNorm(X)
 

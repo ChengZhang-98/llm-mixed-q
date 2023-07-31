@@ -55,7 +55,9 @@ def extract_quant_config_and_eval_cls_glue_runner():
 
     logger.info("============== Evaluating on GLUE ==============")
 
-    tokenizer = get_tokenizer_cls(args.model_arch).from_pretrained(args.model_name)
+    tokenizer = get_tokenizer_cls(args.model_arch).from_pretrained(
+        args.model_name, legacy=False
+    )
     config = get_config_cls(args.model_arch).from_pretrained(
         args.model_name, quant_config=quant_config
     )

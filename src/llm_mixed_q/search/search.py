@@ -392,7 +392,7 @@ class SearchQuantisationForClassification(SearchBase):
                 scaled_h_metric,
                 quant_config,
             ]
-            return result_df
+        return result_df
 
     def save_study_and_results(self, study: optuna.Study):
         save_dir = Path(self.save_dir)
@@ -797,7 +797,7 @@ class SearchQuantisationForPromptingCLS(SearchBase):
                 scaled_h_metric,
                 quant_config,
             ]
-            return result_df
+        return result_df
 
     def save_study_and_results(self, study: optuna.Study):
         save_dir = Path(self.save_dir)

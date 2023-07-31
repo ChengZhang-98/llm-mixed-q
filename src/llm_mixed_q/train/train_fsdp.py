@@ -256,36 +256,6 @@ def checkpoint_model(accelerator: Accelerator, model: torch.nn.Module, save_dir)
 def fsdp_train_runner():
     args = parse_args()
 
-    # model & tokenizer
-    # model_cls = get_model_cls(args.model_architecture, "cls")
-    # config_cls = get_config_cls(args.model_architecture)
-    # config = config_cls.from_pretrained(
-    #     args.model_name_or_path,
-    #     quant_config=args.quant_config,
-    #     num_labels=num_labels,
-    # )
-    # model = model_cls.from_pretrained(
-    #     args.model_name_or_path,
-    #     config=config,
-    #     ignore_mismatched_sizes=args.ignore_mismatched_sizes,
-    # )
-    # tokenizer = get_tokenizer_cls(args.model_architecture).from_pretrained(
-    #     args.model_name_or_path,
-    #     use_fast=True,
-    #     legacy=False,
-    # )
-
-    # no_split_layer_cls = get_transformer_layer_class(model)
-    # fsdp_plugin = FullyShardedDataParallelPlugin(
-    #     cpu_offload=CPUOffload(offload_params=False),
-    #     auto_wrap_policy=partial(
-    #         transformer_auto_wrap_policy,
-    #         transformer_layer_cls=no_split_layer_cls,
-    #     ),
-    #     sharding_strategy=ShardingStrategy.FULL_SHARD,
-    #     limit_all_gathers=True,
-    #     use_orig_params=True,
-    # )
     fsdp_plugin = FullyShardedDataParallelPlugin(
         cpu_offload=CPUOffload(offload_params=False),
         auto_wrap_policy=partial(

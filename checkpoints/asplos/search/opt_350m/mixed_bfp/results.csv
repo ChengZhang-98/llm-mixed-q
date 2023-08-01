@@ -1,2 +1,0 @@
-trial_id,accuracy,memory_density,avg_bitwidth,quant_config_path,scaled_acc,scaled_mem_density
-31,0.9778645833333334,7.280371496242144,4.395380100660688,/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/search/opt_350m/0/quant_configs/quant_config_0.toml,0.9778645833333334,1.4560742992484288

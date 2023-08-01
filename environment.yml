@@ -1,22 +1,36 @@
 name: llm-mixed-q
 channels:
   - nvidia
-  - conda-forge
   - anaconda
+  - conda-forge
   - defaults
 dependencies:
   - _libgcc_mutex=0.1=main
   - _openmp_mutex=5.1=1_gnu
+  - asttokens=2.2.1=pyhd8ed1ab_0
+  - backcall=0.2.0=pyh9f0ad1d_0
+  - backports=1.0=pyhd8ed1ab_3
+  - backports.functools_lru_cache=1.6.5=pyhd8ed1ab_0
   - bzip2=1.0.8=h7b6447c_0
   - c-ares=1.18.1=h7f8727e_0
   - ca-certificates=2023.7.22=hbcca054_0
   - cudatoolkit=11.7.0=hd8887f6_10
   - curl=7.87.0=h5eee18b_0
+  - debugpy=1.5.1=py311h6a678d5_0
+  - decorator=5.1.1=pyhd8ed1ab_0
+  - executing=1.2.0=pyhd8ed1ab_0
   - expat=2.4.9=h6a678d5_0
   - gdbm=1.18=hd4cb3f1_4
   - gettext=0.21.0=hf68c758_0
   - git=2.34.1=pl5262hc120c5b_0
   - icu=58.2=he6710b0_3
+  - importlib-metadata=6.8.0=pyha770c72_0
+  - importlib_metadata=6.8.0=hd8ed1ab_0
+  - ipykernel=6.15.0=pyh210e3f2_0
+  - ipython=8.14.0=pyh41d4057_0
+  - jedi=0.18.2=pyhd8ed1ab_0
+  - jupyter_client=8.3.0=pyhd8ed1ab_0
+  - jupyter_core=5.3.1=py311h38be061_0
   - krb5=1.19.4=h568e23c_0
   - ld_impl_linux-64=2.38=h1181459_1
   - libcurl=7.87.0=h91b91d3_0
@@ -27,23 +41,48 @@ dependencies:
   - libgcc-ng=11.2.0=h1234567_1
   - libgomp=11.2.0=h1234567_1
   - libnghttp2=1.46.0=hce63b2e_0
+  - libsodium=1.0.18=h36c2ea0_1
   - libssh2=1.10.0=h8f2d780_0
   - libstdcxx-ng=11.2.0=h1234567_1
   - libuuid=1.41.5=h5eee18b_0
   - libxml2=2.9.14=h74e7548_0
+  - matplotlib-inline=0.1.6=pyhd8ed1ab_0
   - ncurses=6.4=h6a678d5_0
+  - nest-asyncio=1.5.6=pyhd8ed1ab_0
   - openssl=1.1.1u=h7f8727e_0
+  - packaging=23.1=pyhd8ed1ab_0
+  - parso=0.8.3=pyhd8ed1ab_0
   - pcre2=10.37=he7ceb23_1
   - perl=5.34.0=h5eee18b_2
+  - pexpect=4.8.0=pyh1a96a4e_2
+  - pickleshare=0.7.5=py_1003
   - pip=23.2.1=py311h06a4308_0
+  - platformdirs=3.9.1=pyhd8ed1ab_0
+  - prompt-toolkit=3.0.39=pyha770c72_0
+  - prompt_toolkit=3.0.39=hd8ed1ab_0
+  - ptyprocess=0.7.0=pyhd3deb0d_0
+  - pure_eval=0.2.2=pyhd8ed1ab_0
+  - pygments=2.15.1=pyhd8ed1ab_0
   - python=3.11.0=h7a1cb2a_2
+  - python-dateutil=2.8.2=pyhd8ed1ab_0
+  - python_abi=3.11=2_cp311
+  - pyzmq=25.1.0=py311h6a678d5_0
   - readline=8.2=h5eee18b_0
   - setuptools=68.0.0=py311h06a4308_0
+  - six=1.16.0=pyh6c4a22f_0
   - sqlite=3.41.2=h5eee18b_0
+  - stack_data=0.6.2=pyhd8ed1ab_0
   - tk=8.6.12=h1ccaba5_0
   - tmux=3.3a=h5eee18b_1
+  - tornado=6.2=py311h5eee18b_0
+  - traitlets=5.9.0=pyhd8ed1ab_0
+  - typing-extensions=4.7.1=hd8ed1ab_0
+  - typing_extensions=4.7.1=pyha770c72_0
+  - wcwidth=0.2.6=pyhd8ed1ab_0
   - wheel=0.38.4=py311h06a4308_0
   - xz=5.4.2=h5eee18b_0
+  - zeromq=4.3.4=h9c3ff4c_1
+  - zipp=3.16.2=pyhd8ed1ab_0
   - zlib=1.2.13=h5eee18b_0
   - pip:
       - absl-py==1.4.0
@@ -53,10 +92,9 @@ dependencies:
       - alembic==1.11.1
       - antlr4-python3-runtime==4.9.3
       - appdirs==1.4.4
-      - asttokens==2.2.1
       - async-timeout==4.0.2
       - attrs==23.1.0
-      - backcall==0.2.0
+      - bitsandbytes==0.41.0
       - black==23.7.0
       - cachetools==5.3.1
       - certifi==2023.7.22
@@ -69,12 +107,11 @@ dependencies:
       - colorlog==6.7.0
       - dataproperty==1.0.1
       - datasets==2.14.0
-      - decorator==5.1.1
       - dill==0.3.7
       - docker-pycreds==0.4.0
       - evaluate==0.4.0
-      - executing==1.2.0
       - filelock==3.12.2
+      - fire==0.5.0
       - frozenlist==1.4.0
       - fsspec==2023.6.0
       - gitdb==4.0.10
@@ -84,15 +121,12 @@ dependencies:
       - idna==3.4
       - iniconfig==2.0.0
       - ipdb==0.13.13
-      - ipython==8.14.0
-      - jedi==0.18.2
       - jinja2==3.1.2
       - joblib==1.3.1
       - jsonlines==3.1.0
       - lit==16.0.6
       - mako==1.2.4
       - markupsafe==2.1.3
-      - matplotlib-inline==0.1.6
       - mbstrdecoder==1.1.3
       - mpmath==1.3.0
       - multidict==6.0.4
@@ -118,31 +152,21 @@ dependencies:
       - omegaconf==2.3.0
       - openai==0.27.8
       - optuna==3.2.0
-      - packaging==23.1
       - pandas==2.0.3
-      - parso==0.8.3
       - pathspec==0.11.1
       - pathtools==0.1.2
       - pathvalidate==3.1.0
       - peft==0.4.0
-      - pexpect==4.8.0
-      - pickleshare==0.7.5
       - pillow==10.0.0
-      - platformdirs==3.9.1
       - pluggy==1.2.0
       - portalocker==2.7.0
-      - prompt-toolkit==3.0.39
       - protobuf==4.23.4
       - psutil==5.9.5
-      - ptyprocess==0.7.0
-      - pure-eval==0.2.2
       - pyarrow==12.0.1
       - pybind11==2.11.1
       - pycountry==22.3.5
-      - pygments==2.15.1
       - pytablewriter==1.0.0
       - pytest==7.4.0
-      - python-dateutil==2.8.2
       - pytz==2023.3
       - pyyaml==6.0.1
       - regex==2023.6.3
@@ -156,11 +180,9 @@ dependencies:
       - sentencepiece==0.1.99
       - sentry-sdk==1.28.1
       - setproctitle==1.3.2
-      - six==1.16.0
       - smmap==5.0.0
       - sqlalchemy==2.0.19
       - sqlitedict==2.1.0
-      - stack-data==0.6.2
       - sympy==1.12
       - tabledata==1.3.1
       - tabulate==0.9.0
@@ -174,15 +196,12 @@ dependencies:
       - torchvision==0.15.2
       - tqdm==4.65.0
       - tqdm-multiprocess==0.0.11
-      - traitlets==5.9.0
       - transformers==4.31.0
       - triton==2.0.0
       - typepy==1.3.1
-      - typing-extensions==4.7.1
       - tzdata==2023.3
       - urllib3==2.0.4
       - wandb==0.15.7
-      - wcwidth==0.2.6
       - xxhash==3.2.0
       - yarl==1.9.2
       - zstandard==0.21.0

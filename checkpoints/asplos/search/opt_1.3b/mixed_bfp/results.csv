@@ -1,0 +1,7 @@
+trial_id,accuracy,memory_density,avg_bitwidth,quant_config_path,scaled_acc,scaled_mem_density
+46,0.75,6.364498667694525,5.027890124705089,/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/search/opt_1.3b/2/quant_configs/quant_config_0.toml,0.75,0.6364498667694525
+85,0.78125,6.327056450582079,5.057644143044757,/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/search/opt_1.3b/2/quant_configs/quant_config_1.toml,0.78125,0.6327056450582079
+86,0.84375,6.26031201790755,5.111566309868321,/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/search/opt_1.3b/2/quant_configs/quant_config_2.toml,0.84375,0.626031201790755
+96,0.765625,6.343855445282214,5.0442511302488295,/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/search/opt_1.3b/2/quant_configs/quant_config_3.toml,0.765625,0.6343855445282215
+123,0.7265625,6.603388241134654,4.84599705960973,/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/search/opt_1.3b/2/quant_configs/quant_config_4.toml,0.7265625,0.6603388241134655
+124,0.7265625,6.603388241134654,4.84599705960973,/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/search/opt_1.3b/2/quant_configs/quant_config_5.toml,0.7265625,0.6603388241134655

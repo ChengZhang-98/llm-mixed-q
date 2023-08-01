@@ -1,0 +1,23 @@
+{
+    "results": {
+        "sst": {
+            "acc": 0.890625,
+            "acc_stderr": 0.02769520686450485
+        }
+    },
+    "versions": {
+        "sst": 0
+    },
+    "config": {
+        "model": "llm-mixed-q",
+        "model_args": "model_arch=llama,model_name=Cheng98/Acapla-7b",
+        "num_fewshot": 0,
+        "batch_size": null,
+        "batch_sizes": [],
+        "device": null,
+        "no_cache": true,
+        "limit": 128.0,
+        "bootstrap_iters": 100000,
+        "description_dict": {}
+    }
+}

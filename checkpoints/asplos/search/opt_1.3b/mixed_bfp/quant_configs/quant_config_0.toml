@@ -1,0 +1,3280 @@
+[default]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_0.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_0.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_1.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_1.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_2.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_2.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_3.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_3.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_4.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_4.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_5.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_5.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_6.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_6.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_7.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_7.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_8.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_8.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_9.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_9.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_10.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_10.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_11.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_11.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_12.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_12.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_13.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_13.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_14.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_14.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_15.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_15.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_16.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_16.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_17.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_17.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_18.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_18.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_19.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_19.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_20.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_20.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_21.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_21.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_22.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_22.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_23.fc1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_23.fc2]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_0.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_0.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_0.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_0.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_0.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_0.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_1.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_1.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_1.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_1.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_1.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_1.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_2.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_2.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_2.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_2.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_2.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_2.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_3.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_3.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_3.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_3.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_3.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_3.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_4.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_4.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_4.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_4.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_4.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_4.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_5.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_5.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_5.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_5.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_5.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_5.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_6.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_6.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_6.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_6.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_6.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_6.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_7.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_7.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_7.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_7.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_7.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_7.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_8.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_8.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_8.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_8.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_8.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_8.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_9.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_9.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_9.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_9.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_9.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_9.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_10.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_10.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_10.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_10.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_10.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_10.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_11.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_11.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_11.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_11.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_11.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_11.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_12.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_12.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_12.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_12.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_12.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_12.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_13.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_13.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_13.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_13.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_13.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_13.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_14.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_14.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_14.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_14.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_14.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_14.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_15.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_15.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_15.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_15.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_15.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_15.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_16.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_16.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_16.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_16.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_16.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_16.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_17.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_17.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_17.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_17.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_17.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_17.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_18.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_18.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_18.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_18.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_18.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_18.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_19.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_19.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_19.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_19.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_19.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_19.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_20.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_20.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_20.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_20.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_20.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_20.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_21.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_21.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_21.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_21.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_21.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_21.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_22.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_22.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_22.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_22.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_22.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_22.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_23.self_attn.q_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 7
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 4
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_23.self_attn.k_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 6
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 6
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_23.self_attn.v_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 6
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_23.self_attn.out_proj]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 4
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 3
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 5
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_23.self_attn.bmm_0]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 5
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]
+
+[model_layer_23.self_attn.bmm_1]
+name = "block_fp"
+bypass = false
+is_ptq = true
+data_in_width = 5
+data_in_exponent_width = 8
+data_in_exponent_bias = "NA"
+data_in_block_size = [ 1, 16,]
+weight_width = 4
+weight_exponent_width = 8
+weight_exponent_bias = "NA"
+weight_block_size = [ 1, 16,]
+bias_width = 3
+bias_exponent_width = 8
+bias_exponent_bias = "NA"
+bias_block_size = [ 1, 16,]

@@ -1,0 +1,4 @@
+trial,unscaled_acc,unscaled_mem_density,avg_bitwidth,scaled_acc,scaled_mem_density
+trial,unscaled_acc,unscaled_mem_density,avg_bitwidth,scaled_acc,scaled_mem_density
+0,0.9531,7.2876,4.39,0.9531, 0.7288
+1,0.9570,7.3160,4.37,0.9570, 0.7316

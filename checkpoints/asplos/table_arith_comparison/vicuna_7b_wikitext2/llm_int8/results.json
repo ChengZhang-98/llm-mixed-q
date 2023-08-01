@@ -1,0 +1,7 @@
+{
+    "loss": 1.9544464528155165,
+    "perplexity": 7.060009893258115,
+    "num_samples": 147,
+    "seq_len": 2048,
+    "batch_size": 1
+}

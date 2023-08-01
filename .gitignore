@@ -1,5 +1,6 @@
 /.vscode/
 /**/__pycache__/
+/local_backup/
 /checkpoints/asplos/fine_tune/
 /checkpoints/get_amall.ipynb
 /**/lm_cache/

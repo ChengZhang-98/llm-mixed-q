@@ -1,11 +1,15 @@
+import torch
 from ..quantize.quantized_layer_profiler import (
     profile_linear_layer,
     profile_matmul_layer,
     update_profile,
 )
+from ...statstic_profiler import (
+    StatManager,
+)  # FIXME: will this lead to circular import?
 
 
-def _profile_opt_layer(
+def _profile_bitwidth_opt_layer(
     layer_quant_config: dict,
     hidden_size: int,
     intermediate_size: int,
@@ -109,7 +113,7 @@ def _profile_opt_layer(
     return profile
 
 
-def profile_opt_quantized(config, seq_len: int):
+def profile_bitwidth_opt_quantized(config, seq_len: int):
     """
     Profile opt quantized model
 
@@ -132,7 +136,7 @@ def profile_opt_quantized(config, seq_len: int):
         layer_quant_config = config.quant_config[f"model_layer_{i}"]
         update_profile(
             profile=profile,
-            delta=_profile_opt_layer(
+            delta=_profile_bitwidth_opt_layer(
                 layer_quant_config,
                 hidden_size=hidden_size,
                 intermediate_size=intermediate_size,
@@ -142,3 +146,15 @@ def profile_opt_quantized(config, seq_len: int):
             ),
         )
     return profile
+
+
+# ================================================================================
+# Register statistic profiler hooks
+# ================================================================================
+
+
+def _register_stat_hook_opt_layer(
+    decoder_layer: torch.nn.Module, stat_manager: StatManager, name: str
+):
+    stat_manager.get_pre_forward_act_hook()
+    pass

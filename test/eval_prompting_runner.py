@@ -10,7 +10,7 @@ from llm_mixed_q.models import (
     get_model_cls,
     get_config_cls,
     get_tokenizer_cls,
-    get_q_profiler,
+    get_bitwidth_profiler,
 )
 from llm_mixed_q.eval import evaluate_prompting_runner
 from llm_mixed_q.eval import evaluate_prompting_fn

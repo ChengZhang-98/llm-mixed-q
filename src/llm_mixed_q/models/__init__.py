@@ -1,7 +1,7 @@
 from .bert_quantized import (
     BertQuantizedConfig,
     BertQuantizedForSequenceClassification,
-    profile_bert_quantized,
+    profile_bitwidth_bert_quantized,
     parse_bert_quantized_config,
     sample_bert_quant_config,
 )
@@ -9,7 +9,7 @@ from .llama_quantized import (
     LlamaQuantizedConfig,
     LlamaQuantizedForCausalLM,
     LlamaQuantizedForSequenceClassification,
-    profile_llama_quantized,
+    profile_bitwidth_llama_quantized,
     parse_llama_quantized_config,
     sample_llama_quant_config,
 )
@@ -17,7 +17,7 @@ from .opt_quantized import (
     OPTQuantizedConfig,
     OPTQuantizedForCausalLM,
     OPTQuantizedForSequenceClassification,
-    profile_opt_quantized,
+    profile_bitwidth_opt_quantized,
     parse_opt_quantized_config,
     sample_opt_quant_config,
 )
@@ -51,10 +51,10 @@ TOKENIZER_MAP = {
     "opt": AutoTokenizer,
 }
 
-PROFILER_MAP = {
-    "bert": profile_bert_quantized,
-    "llama": profile_llama_quantized,
-    "opt": profile_opt_quantized,
+BITWIDTH_PROFILER_MAP = {
+    "bert": profile_bitwidth_bert_quantized,
+    "llama": profile_bitwidth_llama_quantized,
+    "opt": profile_bitwidth_opt_quantized,
 }
 
 QUANT_CONFIG_PARSER_MAP = {
@@ -86,9 +86,9 @@ def get_tokenizer_cls(arch: str):
     return TOKENIZER_MAP[arch]
 
 
-def get_q_profiler(arch: str):
-    assert arch in PROFILER_MAP, f"arch {arch} not supported"
-    return PROFILER_MAP[arch]
+def get_bitwidth_profiler(arch: str):
+    assert arch in BITWIDTH_PROFILER_MAP, f"arch {arch} not supported"
+    return BITWIDTH_PROFILER_MAP[arch]
 
 
 def get_quant_config_parser(arch: str):
@@ -96,6 +96,6 @@ def get_quant_config_parser(arch: str):
     return QUANT_CONFIG_PARSER_MAP[arch]
 
 
-def get_q_config_sampler(arch: str):
+def get_quant_config_sampler(arch: str):
     assert arch in QUANT_CONFIG_SAMPLER_MAP, f"arch {arch} not supported"
     return QUANT_CONFIG_SAMPLER_MAP[arch]

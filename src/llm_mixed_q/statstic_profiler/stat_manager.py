@@ -75,7 +75,7 @@ class StatManager:
         self.registered_stats = {}
         self.weight_collect_updated = {}
 
-    def get_pre_forward_act_hook_(self, name: str) -> callable:
+    def get_pre_forward_act_hook(self, name: str) -> callable:
         assert (
             name not in self.registered_stats
         ), f"The name `{name}` has been registered for a collection of input activations"
@@ -88,7 +88,7 @@ class StatManager:
 
         return hook
 
-    def get_post_forward_act_hook_(self, name: str) -> callable:
+    def get_post_forward_act_hook(self, name: str) -> callable:
         assert (
             name not in self.registered_stats
         ), f"The name `{name}` has been registered for a collection of output activations"

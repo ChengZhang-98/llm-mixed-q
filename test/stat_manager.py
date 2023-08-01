@@ -10,7 +10,7 @@ from llm_mixed_q.models import (
     get_model_cls,
     get_config_cls,
     get_tokenizer_cls,
-    get_q_profiler,
+    get_bitwidth_profiler,
 )
 from llm_mixed_q.statstic_profiler.stat_manager import StatManager
 
@@ -26,11 +26,11 @@ def test_stat_manager():
         act_stats=["range_min_max"], weight_stats=["range_min_max"]
     )
 
-    fc.register_forward_pre_hook(stat_manager.get_pre_forward_act_hook_("fc.data_in"))
+    fc.register_forward_pre_hook(stat_manager.get_pre_forward_act_hook("fc.data_in"))
     fc.register_forward_pre_hook(
         stat_manager.get_pre_forward_weight_hook(name="fc.weight", weight_name="weight")
     )
-    fc.register_forward_hook(stat_manager.get_post_forward_act_hook_("fc.data_out"))
+    fc.register_forward_hook(stat_manager.get_post_forward_act_hook("fc.data_out"))
 
     x = torch.randn((16, 10)).to("cuda")
 

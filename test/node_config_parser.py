@@ -10,7 +10,7 @@ from llm_mixed_q.models import (
     get_model_cls,
     get_config_cls,
     get_tokenizer_cls,
-    get_q_profiler,
+    get_bitwidth_profiler,
 )
 
 from llm_mixed_q.models.quantize.quant_config_parser import parse_node_config

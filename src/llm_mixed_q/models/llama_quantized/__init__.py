@@ -39,6 +39,6 @@ from .modeling_llama import (
     LlamaQuantizedForCausalLM,
     LlamaQuantizedForSequenceClassification,
 )
-from .profiler_llama import profile_llama_quantized
+from .profiler_llama import profile_bitwidth_llama_quantized
 from .quant_config_llama import parse_llama_quantized_config
 from .sampler_llama import sample_llama_quant_config

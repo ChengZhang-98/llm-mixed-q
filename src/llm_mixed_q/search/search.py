@@ -27,9 +27,9 @@ from ..models import (
     get_model_cls,
     get_config_cls,
     get_tokenizer_cls,
-    get_q_profiler,
+    get_bitwidth_profiler,
     get_quant_config_parser,
-    get_q_config_sampler,
+    get_quant_config_sampler,
 )
 
 from ..utils import (
@@ -133,10 +133,10 @@ class SearchQuantisationForClassification(SearchBase):
             device,
             model_parallel,
         )
-        self.q_profiler = get_q_profiler(model_arch)
+        self.q_bitwidth_profiler = get_bitwidth_profiler(model_arch)
         self.q_config_parser = get_quant_config_parser(model_arch)
         # TODO: use a general recursive quant config parser, which traverses dict to samples leaf values (a list of choices)
-        self.q_config_sampler = get_q_config_sampler(model_arch)
+        self.q_config_sampler = get_quant_config_sampler(model_arch)
         self.num_labels = num_labels
 
     def rebuild_model(self, quant_config):
@@ -242,7 +242,7 @@ class SearchQuantisationForClassification(SearchBase):
                 num_samples=self.search_config["search_estimator"]["num_samples"],
             )
             h_metric = compute_hardware_metric(
-                self.q_profiler,
+                self.q_bitwidth_profiler,
                 model.config,
                 seq_len=seq_len,
                 compare_to=self.search_config["search_estimator"]["compare_to"],
@@ -294,6 +294,8 @@ class SearchQuantisationForClassification(SearchBase):
                 sampler = optuna.samplers.NSGAIISampler()
             case "nsgaiii":
                 sampler = optuna.samplers.NSGAIIISampler()
+            case "qmc":
+                sampler = optuna.samplers.QMCSampler()
             case _:
                 raise ValueError(
                     f"Unknown sampler name: {self.search_config['search_strategy']['sampler']}"
@@ -519,9 +521,9 @@ class SearchQuantisationForPromptingCLS(SearchBase):
             device=None,
             model_parallel=False,
         )
-        self.q_profiler = get_q_profiler(model_arch)
+        self.q_bitwidth_profiler = get_bitwidth_profiler(model_arch)
         self.q_config_parser = get_quant_config_parser(model_arch)
-        self.q_config_sampler = get_q_config_sampler(model_arch)
+        self.q_config_sampler = get_quant_config_sampler(model_arch)
 
     def rebuild_model(self, quant_config):
         raise NotImplementedError
@@ -642,7 +644,7 @@ class SearchQuantisationForPromptingCLS(SearchBase):
                 self.model_name, quant_config=sampled_config
             )
             h_metric = compute_hardware_metric(
-                self.q_profiler,
+                self.q_bitwidth_profiler,
                 config,
                 seq_len=seq_len,
                 compare_to=self.search_config["search_estimator"]["compare_to"],
@@ -694,6 +696,8 @@ class SearchQuantisationForPromptingCLS(SearchBase):
                 sampler = optuna.samplers.NSGAIISampler()
             case "nsgaiii":
                 sampler = optuna.samplers.NSGAIIISampler()
+            case "qmc":
+                sampler = optuna.samplers.QMCSampler()
             case _:
                 raise ValueError(
                     f"Unknown sampler name: {self.search_config['search_strategy']['sampler']}"

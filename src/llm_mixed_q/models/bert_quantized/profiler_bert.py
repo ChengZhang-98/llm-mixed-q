@@ -17,7 +17,7 @@ def log_avg_bitwidth(profile, tag=None):
     return profile
 
 
-def _profile_bert_attention_layer(
+def _profile_bitwidth_bert_attention_layer(
     attn_quant_config: dict,
     hidden_size: int,
     num_attention_heads: int,
@@ -87,7 +87,7 @@ def _profile_bert_attention_layer(
     return profile
 
 
-def _profile_bert_layer(
+def _profile_bitwidth_bert_layer(
     layer_quant_config: dict,
     hidden_size: int,
     intermediate_size: int,
@@ -103,7 +103,7 @@ def _profile_bert_layer(
 
     delta_list = []
     delta_list.append(
-        _profile_bert_attention_layer(
+        _profile_bitwidth_bert_attention_layer(
             layer_quant_config["attention"],
             hidden_size=hidden_size,
             num_attention_heads=num_attention_heads,
@@ -136,7 +136,7 @@ def _profile_bert_layer(
     return profile
 
 
-def profile_bert_quantized(config, seq_len: int):
+def profile_bitwidth_bert_quantized(config, seq_len: int):
     """
     Profile a quantized bert model
 
@@ -159,7 +159,7 @@ def profile_bert_quantized(config, seq_len: int):
         layer_quant_config = config.quant_config[f"model_layer_{i}"]
         update_profile(
             profile,
-            _profile_bert_layer(
+            _profile_bitwidth_bert_layer(
                 layer_quant_config,
                 hidden_size=hidden_size,
                 intermediate_size=intermediate_size,

@@ -9,8 +9,8 @@ sort_by = ["accuracy", "avg_bitwidth"]
 
 [search_estimator]
 alpha_acc = 1
-alpha_mem_density = 0.1
-num_samples = 512
+alpha_mem_density = 0.06
+num_samples = 256
 compare_to = 32
 
 [search_space]
@@ -20,9 +20,9 @@ extend_quant_config_seed_first = true
 name = ["integer"]
 bypass = ["!ast!False"]
 is_ptq = ["!ast!True"]
-data_in_width = [16]
-data_in_frac_width = [16, 15, 14, 13, 12, 11, 10]
-weight_width = [4]
-weight_frac_width = [8, 7, 6, 5, 4]
-bias_width = [4]
-bias_frac_width = [8, 7, 6, 5, 4]
+data_in_width = [16, 8, 4, 2]
+data_in_frac_width = [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+weight_width = [16, 8, 4, 2]
+weight_frac_width = [18, 17, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3]
+bias_width = [8, 4, 2]
+bias_frac_width = [10, 9, 8, 7, 6, 5, 4, 3]

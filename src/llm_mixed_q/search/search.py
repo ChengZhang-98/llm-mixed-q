@@ -231,9 +231,14 @@ class SearchQuantisationForClassification(SearchBase):
             sampled_config = self.q_config_parser(
                 sampled_config, self.model_config.num_hidden_layers
             )
-            logger.debug(f"============= Sampled Config =============")
-            logger.debug("\n" + pformat(sampled_config))
+            # logger.debug(f"============= Sampled Config =============")
+            # logger.debug("\n" + pformat(sampled_config["model_layer_0"]))
             model = self.rebuild_model(sampled_config)
+            logger.debug(f"============== Sampled model layer 0 =============")
+            logger.debug(f"Model layer 0:{model.bert.encoder.layer[0]}")
+            logger.debug(
+                f"Model layer 0:{model.bert.encoder.layer[0].attention.self.query.w_quantizer}"
+            )
             s_metric = compute_software_metric(
                 model=model,
                 task=task,
@@ -619,15 +624,15 @@ class SearchQuantisationForPromptingCLS(SearchBase):
             sampled_config = self.q_config_parser(
                 sampled_config, self.model_config.num_hidden_layers
             )
-            logger.debug(f"============= Sampled Config (layer 0.k_proj) =============")
-            logger.debug(
-                "\n"
-                + pformat(
-                    sampled_config["model_layer_0"]["self_attn"].get(
-                        "k_proj", "failed to get k_proj"
-                    )
-                )
-            )
+            # logger.debug(f"============= Sampled Config (layer 0.k_proj) =============")
+            # logger.debug(
+            #     "\n"
+            #     + pformat(
+            #         sampled_config["model_layer_0"]["self_attn"].get(
+            #             "k_proj", "failed to get k_proj"
+            #         )
+            #     )
+            # )
             s_metric = compute_software_metric(
                 model_arch=self.model_arch,
                 model_name=self.model_name,

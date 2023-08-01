@@ -20,6 +20,7 @@ from .opt_quantized import (
     profile_bitwidth_opt_quantized,
     parse_opt_quantized_config,
     sample_opt_quant_config,
+    register_stat_hooks_opt_quantized,
 )
 from transformers.models.bert.tokenization_bert import BertTokenizer
 from transformers.models.llama.tokenization_llama import LlamaTokenizer
@@ -69,6 +70,12 @@ QUANT_CONFIG_SAMPLER_MAP = {
     "opt": sample_opt_quant_config,
 }
 
+STAT_PROFILER_HOOK_MAP = {
+    # "bert": register_stat_hooks_opt_quantized,
+    # "llama": register_stat_hooks_opt_quantized,
+    "opt": register_stat_hooks_opt_quantized,
+}
+
 
 def get_model_cls(arch: str, task: str):
     assert arch in MODEL_MAP, f"arch {arch} not supported"
@@ -99,3 +106,8 @@ def get_quant_config_parser(arch: str):
 def get_quant_config_sampler(arch: str):
     assert arch in QUANT_CONFIG_SAMPLER_MAP, f"arch {arch} not supported"
     return QUANT_CONFIG_SAMPLER_MAP[arch]
+
+
+def get_stat_profiler_hook(arch: str):
+    assert arch in STAT_PROFILER_HOOK_MAP, f"arch {arch} not supported"
+    return STAT_PROFILER_HOOK_MAP[arch]

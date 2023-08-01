@@ -53,7 +53,7 @@ def eval_perplexity_wikitext_runner():
             args.model_name,
             load_in_8bit=args.load_in_8bit,
             load_in_4bit=args.load_in_4bit,
-        ).to("cuda")
+        )
     else:
         model = AutoModelForCausalLM.from_pretrained(
             args.model_name,

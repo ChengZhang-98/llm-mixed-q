@@ -9,3 +9,7 @@ from .extract_quant_config_cls import extract_quant_config_and_eval_cls_glue_run
 from .extract_quant_config_promting_cls import (
     extract_quant_config_and_eval_prompting_runner,
 )
+from .profiler_statistics import (
+    profile_statistics_cls_glue_runner,
+    profile_statistics_lm_runner,
+)

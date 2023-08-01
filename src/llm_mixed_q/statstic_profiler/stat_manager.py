@@ -1,4 +1,5 @@
 import torch
+from tqdm import tqdm
 from .stats import create_new_stat, _StatBase
 
 
@@ -121,7 +122,7 @@ class StatManager:
 
         return hook
 
-    def finalize(self) -> dict[str, dict[str, dict]]:
+    def finalize(self, show_progress_bar: bool = False) -> dict[str, dict[str, dict]]:
         """
         {
             <name>: {
@@ -131,8 +132,18 @@ class StatManager:
 
         <name> is the name of the registered stat collection.
         """
+        if show_progress_bar:
+            stat_iter = tqdm(
+                self.registered_stats.items(),
+                desc="Finalizing stats",
+                total=len(self.registered_stats),
+            )
+        else:
+            stat_iter = self.registered_stats.items()
         results = {}
-        for name, stat in self.registered_stats.items():
+        for name, stat in stat_iter:
             delta = {name: stat.compute()}
             results.update(delta)
+            if show_progress_bar:
+                stat_iter.update(1)
         return results

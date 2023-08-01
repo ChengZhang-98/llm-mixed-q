@@ -2,26 +2,26 @@ import logging
 
 from colorlog import ColoredFormatter
 
-formatter = ColoredFormatter(
-    "%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s",
-    datefmt=None,
-    reset=True,
-    log_colors={
-        "DEBUG": "cyan",
-        "INFO": "green",
-        "WARNING": "yellow",
-        "ERROR": "red",
-        "CRITICAL": "red,bg_white",
-    },
-    secondary_log_colors={},
-    style="%",
-)
+# formatter = ColoredFormatter(
+#     "%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s",
+#     datefmt=None,
+#     reset=True,
+#     log_colors={
+#         "DEBUG": "cyan",
+#         "INFO": "green",
+#         "WARNING": "yellow",
+#         "ERROR": "red",
+#         "CRITICAL": "red,bg_white",
+#     },
+#     secondary_log_colors={},
+#     style="%",
+# )
 
-handler = logging.StreamHandler()
-handler.setFormatter(formatter)
+# handler = logging.StreamHandler()
+# handler.setFormatter(formatter)
 
 root_logger = logging.getLogger("llm_mixed_q")
-root_logger.addHandler(handler)
+# root_logger.addHandler(handler)
 
 
 def set_logging_verbosity(level: str = "info"):

@@ -25,7 +25,7 @@ def evaluate_cls_glue_fn(
 
     progress_bar = tqdm(
         eval_dataloader,
-        desc="Evaluating the best",
+        desc=f"Evaluating on {task}",
         total=num_batches,
         disable=not progress_bar,
     )

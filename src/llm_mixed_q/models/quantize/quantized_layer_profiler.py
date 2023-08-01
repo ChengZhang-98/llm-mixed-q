@@ -1,3 +1,4 @@
+import torch
 import numpy as np
 import math
 import logging
@@ -171,3 +172,23 @@ def update_profile(profile, delta):
     profile["param_bits"] += delta["param_bits"]
     profile["act_bits"] += delta["act_bits"]
     return profile
+
+
+def register_a_stat_hook(stat_manager, name: str, module: torch.nn.Module, entry: str):
+    match entry:
+        case "data_in":
+            module.register_forward_pre_hook(
+                stat_manager.get_pre_forward_act_hook(name)
+            )
+        case "weight":
+            module.register_forward_pre_hook(
+                stat_manager.get_pre_forward_weight_hook(name, weight_name="weight")
+            )
+        case "bias":
+            module.register_forward_pre_hook(
+                stat_manager.get_pre_forward_weight_hook(name, weight_name="bias")
+            )
+        case "data_out":
+            module.register_forward_hook(stat_manager.get_post_forward_act_hook(name))
+        case _:
+            raise ValueError(f"Unknown entry: {entry}")

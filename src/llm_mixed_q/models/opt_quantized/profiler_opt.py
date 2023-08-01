@@ -3,10 +3,16 @@ from ..quantize.quantized_layer_profiler import (
     profile_linear_layer,
     profile_matmul_layer,
     update_profile,
+    register_a_stat_hook,
 )
-from ...statstic_profiler import (
-    StatManager,
-)  # FIXME: will this lead to circular import?
+
+# from ...statstic_profiler import (
+#     StatManager,
+# )  # FIXME: will this lead to circular import?
+from .modeling_opt import (
+    OPTQuantizedDecoderLayer,
+    OPTQuantizedForSequenceClassification,
+)
 
 
 def _profile_bitwidth_opt_layer(
@@ -153,8 +159,81 @@ def profile_bitwidth_opt_quantized(config, seq_len: int):
 # ================================================================================
 
 
+# def _register_a_stat_hook(
+#     stat_manager: StatManager, name: str, module: torch.nn.Module, entry: str
+# ):
+#     match entry:
+#         case "data_in":
+#             module.register_module_forward_pre_hook(
+#                 stat_manager.get_pre_forward_act_hook(name)
+#             )
+#         case "weight":
+#             module.register_module_forward_pre_hook(
+#                 stat_manager.get_pre_forward_weight_hook(name)
+#             )
+#         case "bias":
+#             module.register_module_forward_pre_hook(
+#                 stat_manager.get_pre_forward_weight_hook(name)
+#             )
+#         case "data_out":
+#             module.register_module_forward_hook(
+#                 stat_manager.get_post_forward_act_hook(name)
+#             )
+#         case _:
+#             raise ValueError(f"Unknown entry: {entry}")
+
+
 def _register_stat_hook_opt_layer(
-    decoder_layer: torch.nn.Module, stat_manager: StatManager, name: str
+    stat_manager, decoder_layer: OPTQuantizedDecoderLayer, name: str
 ):
-    stat_manager.get_pre_forward_act_hook()
-    pass
+    hooks_to_register = {
+        # "self_attn:q_proj": ["data_in", "weight", "bias", "data_out"],
+        # "self_attn:k_proj": ["data_in", "weight", "bias", "data_out"],
+        # "self_attn:v_proj": ["data_in", "weight", "bias", "data_out"],
+        # "self_attn:out_proj": ["data_in", "weight", "bias"],
+        "self_attn": {
+            "q_proj": ["data_in", "weight", "bias", "data_out"],
+            "k_proj": ["data_in", "weight", "bias", "data_out"],
+            "v_proj": ["data_in", "weight", "bias", "data_out"],
+            "out_proj": ["data_in", "weight", "bias"],
+        },
+        "fc1": ["data_in", "weight", "bias"],
+        "fc2": ["data_in", "weight", "bias"],
+    }
+    # fmt: off
+
+    # k, q, v, o_proj
+    self_attn_name = f"{name}:self_attn"
+    for layer, entries in hooks_to_register["self_attn"].items():
+        for entry in entries:
+            entry_name = f"{self_attn_name}:{layer}:{entry}"
+            register_a_stat_hook(stat_manager, name=entry_name, module=getattr(decoder_layer.self_attn, layer), entry=entry)
+
+    # fc1, fc2
+    for layer in ["fc1", "fc2"]:
+        for entry in hooks_to_register[layer]:
+            entry_name = f"{name}:{layer}:{entry}"
+            register_a_stat_hook(stat_manager, name=entry_name, module=getattr(decoder_layer, layer), entry=entry)
+
+
+def register_stat_hooks_opt_quantized(
+    stat_manager,
+    name: str,
+    model: OPTQuantizedForSequenceClassification,
+    num_hidden_layers: int,
+):
+    """
+    Register statistic profiler hooks for opt quantized model
+
+    Args:
+        decoder (OPTQuantizedDecoder): opt quantized decoder
+        stat_manager (StatManager): statistic profiler
+    """
+    for i in range(num_hidden_layers):
+        model_layer = model.model.decoder.layers[i]
+        layer_name = f"{name}:model_layer_{i}"
+        _register_stat_hook_opt_layer(
+            decoder_layer=model_layer,
+            stat_manager=stat_manager,
+            name=layer_name,
+        )

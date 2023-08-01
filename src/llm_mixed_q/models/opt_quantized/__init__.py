@@ -1,5 +1,8 @@
 from .configuration_opt import OPTQuantizedConfig
-from .profiler_opt import profile_bitwidth_opt_quantized
+from .profiler_opt import (
+    profile_bitwidth_opt_quantized,
+    register_stat_hooks_opt_quantized,
+)
 from .modeling_opt import OPTQuantizedForCausalLM, OPTQuantizedForSequenceClassification
 from .quant_config_opt import parse_opt_quantized_config
 from .sampler_opt import sample_opt_quant_config

@@ -18,7 +18,7 @@ else
     quant_config=$2
 fi
 
-save_dir=$work_dir/checkpoints/asplos/profile_statistics/opt_125m/$profile_tag && mkdir -p $save_dir
+save_dir=$work_dir/checkpoints/asplos/profile_statistics/opt_125m_sst2/$profile_tag && mkdir -p $save_dir
 
 model_arch=opt
 task=sst2

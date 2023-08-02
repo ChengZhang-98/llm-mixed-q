@@ -9,7 +9,7 @@ work_dir=$HOME/Projects/llm-mixed-q
 env_name=llm-mixed-q
 run_dir=$work_dir/experiments/asplos/profile_statistics
 cd $run_dir
-echo ========== Running OPT-125M SST2 ==========
+echo ========== Running OPT-350M SST2 ==========
 profile_tag=$1
 if [ -z $2 ]; then
     echo "ℹ️ Use bypass.toml as <quant_config> (\$2)"
@@ -18,11 +18,11 @@ else
     quant_config=$2
 fi
 
-save_dir=$work_dir/checkpoints/asplos/profile_statistics/opt_125m/$profile_tag && mkdir -p $save_dir
+save_dir=$work_dir/checkpoints/asplos/profile_statistics/opt_350m_sst2/$profile_tag && mkdir -p $save_dir
 
 model_arch=opt
 task=sst2
-ckpt=$work_dir/checkpoints/asplos/fine_tune/opt_125m_sst2
+ckpt=$work_dir/checkpoints/asplos/fine_tune/opt_350m_sst2
 batch_size=128
 max_length=196
 num_samples=128

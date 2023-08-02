@@ -18,7 +18,7 @@ else
     quant_config=$2
 fi
 
-save_dir=$work_dir/checkpoints/asplos/profile_statistics/opt_1.3b/$profile_tag && mkdir -p $save_dir
+save_dir=$work_dir/checkpoints/asplos/profile_statistics/opt_1.3b_wikitext2/$profile_tag && mkdir -p $save_dir
 
 model_arch=opt
 model_name=facebook/opt-1.3b

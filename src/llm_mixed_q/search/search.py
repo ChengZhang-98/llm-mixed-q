@@ -114,6 +114,12 @@ class SearchBase:
 
 
 class SearchQuantisationForClassification(SearchBase):
+    """
+    Perform quantisation search for bert-like models on classification tasks
+    - Bert-like model refers to a network consisting of the base model and a classifier head, already fine-tuned on downstream tasked.
+    - This class calls a evaluation function to get the results on glue tasks
+    """
+
     def __init__(
         self,
         model_arch: str,
@@ -135,7 +141,7 @@ class SearchQuantisationForClassification(SearchBase):
         )
         self.q_bitwidth_profiler = get_bitwidth_profiler(model_arch)
         self.q_config_parser = get_quant_config_parser(model_arch)
-        # TODO: use a general recursive quant config parser, which traverses dict to samples leaf values (a list of choices)
+        # TODO: use a general recursive quant config parser, which traverses dict to sample leaf values (each leaf value is a list of choices)
         self.q_config_sampler = get_quant_config_sampler(model_arch)
         self.num_labels = num_labels
 
@@ -510,6 +516,12 @@ class SearchQuantisationForClassification(SearchBase):
 
 
 class SearchQuantisationForPromptingCLS(SearchBase):
+    """
+    Perform quantisation search for GPT-like models on downstream tasks
+    - GPT-like model refers to a network performing language modeling only (no classifier head).
+    - This class calls lm-eval-harness to get the results on downstream tasks.
+    """
+
     def __init__(
         self,
         model_arch: str,

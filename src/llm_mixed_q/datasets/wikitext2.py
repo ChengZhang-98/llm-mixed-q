@@ -12,7 +12,7 @@ def preprocess_dataset_dict(
     tokenizer,
     max_length,
 ) -> hf_datasets.DatasetDict:
-    if tokenizer.pad_token == "<unk>":
+    if tokenizer.pad_token in ["<unk>", None]:
         tokenizer.pad_token = tokenizer.eos_token
 
     def tokenize_function(examples):

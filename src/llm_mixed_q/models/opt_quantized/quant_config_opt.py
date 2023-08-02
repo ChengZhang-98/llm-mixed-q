@@ -99,6 +99,8 @@ def format_stat_profiled_int_config_opt_quantized(
     bypass: bool = False,
 ):
     """
+    Format the quantisation config created from model statistics
+
     nn.Module forward hook cannot be used to collect the statistics of torch functions (bmm, matmul)
     Thus a hack is to collect the previous nn.Module's output
 

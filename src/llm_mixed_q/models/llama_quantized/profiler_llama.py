@@ -1,7 +1,9 @@
+from .modeling_llama import LlamaQuantizedDecoderLayer, LlamaQuantizedForCausalLM
 from ..quantize.quantized_layer_profiler import (
     profile_linear_layer,
     profile_matmul_layer,
     update_profile,
+    register_a_stat_hook,
 )
 
 
@@ -148,3 +150,57 @@ def profile_bitwidth_llama_quantized(config, seq_len: int):
             ),
         )
     return profile
+
+
+def _register_stat_hook_opt_layer(
+    stat_manager, decoder_layer: LlamaQuantizedDecoderLayer, name: str
+):
+    hooks_to_register = {
+        "self_attn": {
+            "q_proj": ["data_in", "weight", "data_out"],
+            "k_proj": ["data_in", "weight", "data_out"],
+            "v_proj": ["data_in", "weight", "data_out"],
+            "o_proj": ["data_in", "weight"],
+        },
+        "mlp": {
+            "gate_proj": ["data_in", "weight"],
+            "down_proj": ["data_in", "weight"],
+            "up_proj": ["data_in", "weight"],
+        },
+    }
+
+    self_attn_name = f"{name}:self_attn"
+    for layer, entries in hooks_to_register["self_attn"].items():
+        for entry in entries:
+            entry_name = f"{self_attn_name}:{layer}:{entry}"
+            register_a_stat_hook(
+                stat_manager=stat_manager,
+                name=entry_name,
+                module=getattr(decoder_layer.self_attn, layer),
+                entry=entry,
+            )
+    for layer in ["gate_proj", "down_proj", "up_proj"]:
+        for entry in hooks_to_register["mlp"][layer]:
+            entry_name = f"{name}:mlp:{layer}:{entry}"
+            register_a_stat_hook(
+                stat_manager,
+                name=entry_name,
+                module=getattr(decoder_layer.mlp, layer),
+                entry=entry,
+            )
+
+
+def register_stat_hooks_llama_quantized(
+    stat_manager,
+    name: str,
+    model: LlamaQuantizedForCausalLM,
+    num_hidden_layers: int,
+):
+    for i in range(num_hidden_layers):
+        model_layer = model.model.layers[i]
+        layer_name = f"{name}:model_layer_{i}"
+        _register_stat_hook_opt_layer(
+            stat_manager=stat_manager,
+            decoder_layer=model_layer,
+            name=layer_name,
+        )

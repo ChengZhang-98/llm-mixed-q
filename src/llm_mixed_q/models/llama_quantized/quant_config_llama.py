@@ -155,3 +155,69 @@ def parse_llama_quantized_config(config: str | dict | None, num_hidden_layers: i
     config = convert_str_na_to_none(config)
     parsed_config = _parse_and_complete_config(config, num_hidden_layers)
     return parsed_config
+
+
+def format_stat_profiled_int_config_llama_quantized(
+    config: dict,
+    num_hidden_layers: int,
+    default_config: dict = None,
+    is_ptq: bool = True,
+    bypass: bool = False,
+):
+    if default_config is None:
+        default_config = {
+            "name": "integer",
+            "bypass": bypass,
+            "is_ptq": is_ptq,
+            "data_in_width": 8,
+            "data_in_frac_width": 4,
+            "weight_width": 8,
+            "weight_frac_width": 8,
+            "bias_width": 8,
+            "bias_frac_width": 8,
+        }
+
+    for i in range(num_hidden_layers):
+        layer_entry = f"model_layer_{i}"
+        if layer_entry not in config:
+            raise ValueError(
+                f"Cannot find {layer_entry} in config. Please check the config"
+            )
+        layer_config = config[layer_entry]
+        # fmt: off
+        layer_config["self_attn"]["matmul_0"] = {
+            "name": "integer",
+            "bypass": bypass,
+            "is_ptq": is_ptq,
+            "data_in_width": layer_config["self_attn"]["q_proj"]["data_out_width"],
+            # we can't profile the Q and K after rotary positional encoding with forward hooks
+            # so we estimate a coarse frac_width
+            "data_in_frac_width": layer_config["self_attn"]["q_proj"]["data_out_frac_width"] - 1,
+            "weight_width": layer_config["self_attn"]["k_proj"]["data_out_width"],
+            "weight_frac_width": layer_config["self_attn"]["k_proj"]["data_out_frac_width"] - 1,
+        }
+        layer_config["self_attn"]["matmul_1"] = {
+            "name": "integer",
+            "bypass": bypass,
+            "is_ptq": is_ptq,
+            "data_in_width": default_config["data_in_width"],
+            "data_in_frac_width": default_config["data_in_width"] - 1,
+            "weight_width": layer_config["self_attn"]["v_proj"]["data_out_width"],
+            "weight_frac_width": layer_config["self_attn"]["v_proj"]["data_out_frac_width"],
+        }
+        layer_config["self_attn"]["rotary_positional_encoding"] = {
+            "name": "integer",
+            "bypass": bypass,
+            "is_ptq": is_ptq,
+            "data_in_width": default_config["data_in_width"],
+            "data_in_frac_width": default_config["data_in_width"] - 1,
+        }
+        layer_config["self_attn"]["k_proj"].pop("data_out_width")
+        layer_config["self_attn"]["k_proj"].pop("data_out_frac_width")
+        layer_config["self_attn"]["q_proj"].pop("data_out_width")
+        layer_config["self_attn"]["q_proj"].pop("data_out_frac_width")
+        layer_config["self_attn"]["v_proj"].pop("data_out_width")
+        layer_config["self_attn"]["v_proj"].pop("data_out_frac_width")
+        # fmt: on
+    config["default"] = default_config
+    return config

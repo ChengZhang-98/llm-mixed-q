@@ -135,6 +135,8 @@ def profile_statistics_lm_runner():
     tokenizer = get_tokenizer_cls(args.model_arch).from_pretrained(
         args.model_name, legacy=False
     )
+    if tokenizer.pad_token in ["<unk>", None]:
+        tokenizer.pad_token = tokenizer.eos_token
     if not args.model_parallelism:
         model = model_cls.from_pretrained(args.model_name, config=config).to("cuda")
     else:
@@ -152,6 +154,7 @@ def profile_statistics_lm_runner():
         padding="max_length",
         max_length=args.max_length,
     )
+
     data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
     eval_dataloader = DataLoader(

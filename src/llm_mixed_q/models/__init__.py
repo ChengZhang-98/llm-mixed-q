@@ -14,6 +14,8 @@ from .llama_quantized import (
     profile_bitwidth_llama_quantized,
     parse_llama_quantized_config,
     sample_llama_quant_config,
+    format_stat_profiled_int_config_llama_quantized,
+    register_stat_hooks_llama_quantized,
 )
 from .opt_quantized import (
     OPTQuantizedConfig,
@@ -75,13 +77,13 @@ QUANT_CONFIG_SAMPLER_MAP = {
 
 STAT_PROFILER_HOOK_MAP = {
     "bert": register_stat_hooks_bert_quantized,
-    # "llama": register_stat_hooks_llama_quantized,
+    "llama": register_stat_hooks_llama_quantized,
     "opt": register_stat_hooks_opt_quantized,
 }
 
 STAT_CONFIG_FORMATTER_MAP = {
     "bert": format_stat_profiled_int_config_bert_quantized,
-    # "llama": format_stat_profiled_int_config_llama_quantized,
+    "llama": format_stat_profiled_int_config_llama_quantized,
     "opt": format_stat_profiled_int_config_opt_quantized,
 }
 

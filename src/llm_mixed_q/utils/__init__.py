@@ -6,3 +6,4 @@ from .config_load import (
     convert_str_na_to_none,
 )
 from .trial_extractor import extract_quant_config_fn
+from .dict_tools import flatten_dict, expand_dict

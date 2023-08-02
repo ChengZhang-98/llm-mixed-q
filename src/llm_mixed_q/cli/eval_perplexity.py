@@ -24,7 +24,7 @@ def eval_perplexity_runner():
     parser.add_argument("--model_arch", type=str, required=True)
     parser.add_argument("--model_name", type=str, required=True)
     parser.add_argument("--task", type=str, choices=["wikitext2"], required=True)
-    parser.add_argument("--quant_config", type=str, required=True)
+    parser.add_argument("--quant_config", type=str, default=None)
     parser.add_argument("--save_dir", type=str, default=None)
 
     parser.add_argument("--batch_size", type=int, default=16)
@@ -38,6 +38,13 @@ def eval_perplexity_runner():
     )
 
     args = parser.parse_args()
+    if args.quant_config is None:
+        args.quant_config = {
+            "default": {
+                "name": "integer",
+                "bypass": True,
+            }
+        }
 
     model_cls = get_model_cls(args.model_arch, "lm")
     config_cls = get_config_cls(args.model_arch)

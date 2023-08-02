@@ -56,24 +56,6 @@ def create_a_layer_config(
     return qc
 
 
-# def by_type_parser(config: dict, num_hidden_layers: int) -> dict:
-#     assert "default" in config, "Must provide default config for by_class_parser"
-#     default_qc: dict = config["default"]
-#     linear_qc: dict = parse_node_config(
-#         config.get("linear", default_qc), mase_op="linear"
-#     )
-#     bmm_qc: dict = parse_node_config(config.get("bmm", default_qc), mase_op="bmm")
-#     layer_qc: dict = config.get("model_layer", None)
-
-#     # parsed config
-#     p_config = {}
-#     for i in range(num_hidden_layers):
-#         layer_entry = f"model_layer_{i}"
-#         p_config[layer_entry] = create_a_layer_config(linear_qc, bmm_qc, layer_qc)
-#     p_config["default"] = default_qc
-#     return p_config
-
-
 def _parse_and_complete_config(config: dict, num_hidden_layers: int) -> dict:
     assert "default" in config, "Must provide default config for by_name_parser"
     default_qc: dict = config["default"]
@@ -107,3 +89,52 @@ def parse_opt_quantized_config(
     config = convert_str_na_to_none(config)
     parsed_config = _parse_and_complete_config(config, num_hidden_layers)
     return parsed_config
+
+
+def format_stat_profiled_int_config(
+    config: dict, num_hidden_layers: int, default_config: dict = None
+):
+    if default_config is None:
+        default_config = {
+            "name": "integer",
+            "bypass": False,
+            "is_ptq": False,
+            "data_in_width": 8,
+            "data_in_frac_width": 4,
+            "weight_width": 8,
+            "weight_frac_width": 8,
+            "bias_width": 8,
+            "bias_frac_width": 8,
+        }
+
+    for i in range(num_hidden_layers):
+        layer_entry = f"model_layer_{i}"
+        if layer_entry not in config:
+            raise ValueError(
+                f"Cannot find {layer_entry} in config. Please check the config"
+            )
+
+        layer_config = config[layer_entry]
+        # fmt: off
+        layer_config["self_attn"]["bmm_0"] = {
+            "name": "integer",
+            "bypass": False,
+            "is_ptq": True,
+            "data_in_width": layer_config["self_attn"]["q_proj"]["data_out_width"],
+            "data_in_frac_width": layer_config["self_attn"]["q_proj"]["data_out_frac_width"],
+            "weight_width": layer_config["self_attn"]["k_proj"]["data_out_width"],
+            "weight_frac_width": layer_config["self_attn"]["k_proj"]["data_out_frac_width"],
+        }
+        layer_config["self_attn"]["bmm_1"] = {
+            "name": "integer",
+            "bypass": False,
+            "is_ptq": True,
+            "data_in_width": default_config["data_in_width"], # output of softmax
+            "data_in_frac_width": default_config["data_in_width"]-1,
+            "weight_width": layer_config["self_attn"]["v_proj"]["data_out_width"],
+            "weight_frac_width": layer_config["self_attn"]["v_proj"]["data_out_frac_width"],
+        }
+
+        # fmt: on
+    config["default"] = default_config
+    return config

@@ -8,6 +8,7 @@ from .quantized_layer_profiler import (
     update_profile,
 )
 from .quant_config_sampler import sample_a_dict_of_list
+from .stat_profile_to_quant_config import transform_stat_profile_to_int_quant_config
 
 
 def get_quantized_cls(op: str, config: dict):

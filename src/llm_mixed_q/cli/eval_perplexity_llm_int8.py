@@ -18,7 +18,7 @@ from ..eval import evaluate_lm_wikitext2_fn
 logger = logging.getLogger(__name__)
 
 
-def eval_perplexity_wikitext_runner():
+def eval_perplexity_llm_int8_runner():
     logger.info("Evaluation started")
 
     parser = ArgumentParser()

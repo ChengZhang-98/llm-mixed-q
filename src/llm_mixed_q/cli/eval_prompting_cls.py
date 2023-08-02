@@ -12,7 +12,7 @@ from lm_eval import evaluator as lm_eval_evaluator
 logger = logging.getLogger(__name__)
 
 
-def evaluate_prompting_cls_runner():
+def eval_prompting_cls_runner():
     parser = ArgumentParser()
 
     parser.add_argument(

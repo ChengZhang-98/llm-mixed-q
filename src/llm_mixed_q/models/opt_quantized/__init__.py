@@ -4,5 +4,8 @@ from .profiler_opt import (
     register_stat_hooks_opt_quantized,
 )
 from .modeling_opt import OPTQuantizedForCausalLM, OPTQuantizedForSequenceClassification
-from .quant_config_opt import parse_opt_quantized_config
+from .quant_config_opt import (
+    parse_opt_quantized_config,
+    format_stat_profiled_int_config,
+)
 from .sampler_opt import sample_opt_quant_config

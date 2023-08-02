@@ -1,0 +1,149 @@
+["root:model_layer_0:self_attn:q_proj:data_in".range_min_max]
+min = -3.4271864891052246
+max = 3.3729820251464844
+range = 6.800168514251709
+count = 38535168
+
+["root:model_layer_0:self_attn:q_proj:weight".range_min_max]
+min = -0.7994894981384277
+max = 0.7684166431427002
+range = 1.567906141281128
+count = 589824
+
+["root:model_layer_0:self_attn:q_proj:bias".range_min_max]
+min = -0.6217033863067627
+max = 0.5779809951782227
+range = 1.1996843814849854
+count = 768
+
+["root:model_layer_0:self_attn:q_proj:data_out".range_min_max]
+min = -5.74760627746582
+max = 4.64284610748291
+range = 10.39045238494873
+count = 301056
+
+["root:model_layer_0:self_attn:k_proj:data_in".range_min_max]
+min = -3.4271864891052246
+max = 3.3729820251464844
+range = 6.800168514251709
+count = 38535168
+
+["root:model_layer_0:self_attn:k_proj:weight".range_min_max]
+min = -0.7018686532974243
+max = 0.7672794461250305
+range = 1.4691481590270996
+count = 589824
+
+["root:model_layer_0:self_attn:k_proj:bias".range_min_max]
+min = -0.26025354862213135
+max = 0.2529280185699463
+range = 0.5131815671920776
+count = 768
+
+["root:model_layer_0:self_attn:k_proj:data_out".range_min_max]
+min = -6.086733341217041
+max = 5.777978897094727
+range = 11.86471176147461
+count = 301056
+
+["root:model_layer_0:self_attn:v_proj:data_in".range_min_max]
+min = -3.4271864891052246
+max = 3.3729820251464844
+range = 6.800168514251709
+count = 38535168
+
+["root:model_layer_0:self_attn:v_proj:weight".range_min_max]
+min = -0.18661940097808838
+max = 0.17423127591609955
+range = 0.3608506917953491
+count = 589824
+
+["root:model_layer_0:self_attn:v_proj:bias".range_min_max]
+min = -0.1684098094701767
+max = 0.15197399258613586
+range = 0.32038378715515137
+count = 768
+
+["root:model_layer_0:self_attn:v_proj:data_out".range_min_max]
+min = -1.0594669580459595
+max = 1.3725459575653076
+range = 2.4320130348205566
+count = 301056
+
+["root:model_layer_0:self_attn:out_proj:data_in".range_min_max]
+min = -0.7295308709144592
+max = 0.6605077981948853
+range = 1.3900387287139893
+count = 38535168
+
+["root:model_layer_0:self_attn:out_proj:weight".range_min_max]
+min = -0.6151798367500305
+max = 0.7780464887619019
+range = 1.3932263851165771
+count = 589824
+
+["root:model_layer_0:self_attn:out_proj:bias".range_min_max]
+min = -0.07186100631952286
+max = 0.050421155989170074
+range = 0.12228216230869293
+count = 768
+
+["root:model_layer_0:fc1:data_in".range_min_max]
+min = -2.3369333744049072
+max = 2.8601019382476807
+range = 5.197035312652588
+count = 38535168
+
+["root:model_layer_0:fc1:weight".range_min_max]
+min = -0.9974342584609985
+max = 0.5635350942611694
+range = 1.560969352722168
+count = 2359296
+
+["root:model_layer_0:fc1:bias".range_min_max]
+min = -0.34094637632369995
+max = 0.022036083042621613
+range = 0.36298245191574097
+count = 3072
+
+["root:model_layer_0:fc2:data_in".range_min_max]
+min = 0.0
+max = 16.553556442260742
+range = 16.553556442260742
+count = 154140672
+
+["root:model_layer_0:fc2:weight".range_min_max]
+min = -1.005021572113037
+max = 1.0001071691513062
+range = 2.005128860473633
+count = 2359296
+
+["root:model_layer_0:fc2:bias".range_min_max]
+min = -0.3611733317375183
+max = 0.2744898200035095
+range = 0.6356631517410278
+count = 768
+
+["root:model_layer_1:self_attn:q_proj:data_in".range_min_max]
+min = -5.952905178070068
+max = 3.485225200653076
+range = 9.438130378723145
+count = 38535168
+
+["root:model_layer_1:self_attn:q_proj:weight".range_min_max]
+min = -0.5786018967628479
+max = 0.5948945879936218
+range = 1.1734964847564697
+count = 589824
+
+["root:model_layer_1:self_attn:q_proj:bias".range_min_max]
+min = -0.5075508952140808
+max = 0.4980311393737793
+range = 1.0055820941925049
+count = 768
+
+["root:model_layer_1:self_attn:q_proj:data_out".range_min_max]
+min = -4.215303421020508
+max = 4.382536888122559
+range = 8.597840309143066
+count = 301056

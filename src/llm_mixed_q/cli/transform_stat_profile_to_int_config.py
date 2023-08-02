@@ -69,6 +69,8 @@ def transform_stat_profile_to_int_quant_config_runner():
             "bias_width": 4,
             "bias_frac_width": 2,
         },
+        is_ptq=not args.is_qat,
+        bypass=args.bypass,
     )
 
     if args.save_name is not None:

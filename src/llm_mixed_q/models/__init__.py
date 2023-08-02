@@ -4,6 +4,8 @@ from .bert_quantized import (
     profile_bitwidth_bert_quantized,
     parse_bert_quantized_config,
     sample_bert_quant_config,
+    register_stat_hooks_bert_quantized,
+    format_stat_profiled_int_config_bert_quantized,
 )
 from .llama_quantized import (
     LlamaQuantizedConfig,
@@ -21,7 +23,7 @@ from .opt_quantized import (
     parse_opt_quantized_config,
     sample_opt_quant_config,
     register_stat_hooks_opt_quantized,
-    format_stat_profiled_int_config,
+    format_stat_profiled_int_config_opt_quantized,
 )
 from transformers.models.bert.tokenization_bert import BertTokenizer
 from transformers.models.llama.tokenization_llama import LlamaTokenizer
@@ -72,15 +74,15 @@ QUANT_CONFIG_SAMPLER_MAP = {
 }
 
 STAT_PROFILER_HOOK_MAP = {
-    # "bert": register_stat_hooks_opt_quantized,
-    # "llama": register_stat_hooks_opt_quantized,
+    "bert": register_stat_hooks_bert_quantized,
+    # "llama": register_stat_hooks_llama_quantized,
     "opt": register_stat_hooks_opt_quantized,
 }
 
 STAT_CONFIG_FORMATTER_MAP = {
-    # "bert": refactor_stat_profiled_int_config,
-    # "llama": refactor_stat_profiled_int_config,
-    "opt": format_stat_profiled_int_config,
+    "bert": format_stat_profiled_int_config_bert_quantized,
+    # "llama": format_stat_profiled_int_config_llama_quantized,
+    "opt": format_stat_profiled_int_config_opt_quantized,
 }
 
 

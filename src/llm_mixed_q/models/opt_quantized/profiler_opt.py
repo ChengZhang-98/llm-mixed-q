@@ -6,9 +6,6 @@ from ..quantize.quantized_layer_profiler import (
     register_a_stat_hook,
 )
 
-# from ...statstic_profiler import (
-#     StatManager,
-# )  # FIXME: will this lead to circular import?
 from .modeling_opt import (
     OPTQuantizedDecoderLayer,
     OPTQuantizedForSequenceClassification,
@@ -159,38 +156,10 @@ def profile_bitwidth_opt_quantized(config, seq_len: int):
 # ================================================================================
 
 
-# def _register_a_stat_hook(
-#     stat_manager: StatManager, name: str, module: torch.nn.Module, entry: str
-# ):
-#     match entry:
-#         case "data_in":
-#             module.register_module_forward_pre_hook(
-#                 stat_manager.get_pre_forward_act_hook(name)
-#             )
-#         case "weight":
-#             module.register_module_forward_pre_hook(
-#                 stat_manager.get_pre_forward_weight_hook(name)
-#             )
-#         case "bias":
-#             module.register_module_forward_pre_hook(
-#                 stat_manager.get_pre_forward_weight_hook(name)
-#             )
-#         case "data_out":
-#             module.register_module_forward_hook(
-#                 stat_manager.get_post_forward_act_hook(name)
-#             )
-#         case _:
-#             raise ValueError(f"Unknown entry: {entry}")
-
-
 def _register_stat_hook_opt_layer(
     stat_manager, decoder_layer: OPTQuantizedDecoderLayer, name: str
 ):
     hooks_to_register = {
-        # "self_attn:q_proj": ["data_in", "weight", "bias", "data_out"],
-        # "self_attn:k_proj": ["data_in", "weight", "bias", "data_out"],
-        # "self_attn:v_proj": ["data_in", "weight", "bias", "data_out"],
-        # "self_attn:out_proj": ["data_in", "weight", "bias"],
         "self_attn": {
             "q_proj": ["data_in", "weight", "bias", "data_out"],
             "k_proj": ["data_in", "weight", "bias", "data_out"],

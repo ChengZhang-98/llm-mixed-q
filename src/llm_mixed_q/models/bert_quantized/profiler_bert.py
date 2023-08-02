@@ -2,7 +2,9 @@ from ..quantize.quantized_layer_profiler import (
     profile_linear_layer,
     profile_matmul_layer,
     update_profile,
+    register_a_stat_hook,
 )
+from .modeling_bert import BertQuantizedLayer, BertQuantizedForSequenceClassification
 import logging
 
 logger = logging.getLogger(__name__)
@@ -169,3 +171,79 @@ def profile_bitwidth_bert_quantized(config, seq_len: int):
         )
 
     return profile
+
+
+# ================================================================
+# Register statistic profiler hooks
+# ================================================================
+
+
+def _register_stat_hook_bert_layer(
+    stat_manager, decoder_layer: BertQuantizedLayer, name: str
+):
+    hooks_to_register = {
+        "attention": {
+            "query": ["data_in", "weight", "bias", "data_out"],
+            "key": ["data_in", "weight", "bias", "data_out"],
+            "value": ["data_in", "weight", "bias", "data_out"],
+            "output": {"dense": ["data_in", "weight", "bias"]},
+        },
+        "intermediate": {"dense": ["data_in", "weight", "bias"]},
+        "output": {"dense": ["data_in", "weight", "bias"]},
+    }
+
+    attn_name = f"{name}:attention"
+    for layer, entries in hooks_to_register["attention"].items():
+        if layer != "output":
+            for entry in entries:
+                entry_name = f"{attn_name}:{layer}:{entry}"
+                register_a_stat_hook(
+                    stat_manager,
+                    name=entry_name,
+                    module=getattr(decoder_layer.attention.self, layer),
+                    entry=entry,
+                )
+        else:
+            for entry in hooks_to_register["attention"]["output"]["dense"]:
+                entry_name = f"{attn_name}:output:dense:{entry}"
+                register_a_stat_hook(
+                    stat_manager,
+                    name=entry_name,
+                    module=decoder_layer.attention.output.dense,
+                    entry=entry,
+                )
+
+    # ffn.fc1
+    for entry in hooks_to_register["intermediate"]["dense"]:
+        entry_name = f"{name}:intermediate:dense:{entry}"
+        register_a_stat_hook(
+            stat_manager,
+            name=entry_name,
+            module=decoder_layer.intermediate.dense,
+            entry=entry,
+        )
+    # ffn.fc2
+    for entry in hooks_to_register["output"]["dense"]:
+        entry_name = f"{name}:output:dense:{entry}"
+        register_a_stat_hook(
+            stat_manager,
+            name=entry_name,
+            module=decoder_layer.output.dense,
+            entry=entry,
+        )
+
+
+def register_stat_hooks_bert_quantized(
+    stat_manager,
+    name: str,
+    model: BertQuantizedForSequenceClassification,
+    num_hidden_layers: int,
+):
+    for i in range(num_hidden_layers):
+        model_layer = model.bert.encoder.layer[i]
+        layer_name = f"{name}:model_layer_{i}"
+        _register_stat_hook_bert_layer(
+            stat_manager=stat_manager,
+            decoder_layer=model_layer,
+            name=layer_name,
+        )

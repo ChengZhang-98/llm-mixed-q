@@ -91,14 +91,24 @@ def parse_opt_quantized_config(
     return parsed_config
 
 
-def format_stat_profiled_int_config(
-    config: dict, num_hidden_layers: int, default_config: dict = None
+def format_stat_profiled_int_config_opt_quantized(
+    config: dict,
+    num_hidden_layers: int,
+    default_config: dict = None,
+    is_ptq: bool = True,
+    bypass: bool = False,
 ):
+    """
+    nn.Module forward hook cannot be used to collect the statistics of torch functions (bmm, matmul)
+    Thus a hack is to collect the previous nn.Module's output
+
+    This formatter converts the previous nn.Module's output to the current torch function's input quant config
+    """
     if default_config is None:
         default_config = {
             "name": "integer",
-            "bypass": False,
-            "is_ptq": False,
+            "bypass": is_ptq,
+            "is_ptq": bypass,
             "data_in_width": 8,
             "data_in_frac_width": 4,
             "weight_width": 8,
@@ -118,8 +128,8 @@ def format_stat_profiled_int_config(
         # fmt: off
         layer_config["self_attn"]["bmm_0"] = {
             "name": "integer",
-            "bypass": False,
-            "is_ptq": True,
+            "bypass": bypass,
+            "is_ptq": is_ptq,
             "data_in_width": layer_config["self_attn"]["q_proj"]["data_out_width"],
             "data_in_frac_width": layer_config["self_attn"]["q_proj"]["data_out_frac_width"],
             "weight_width": layer_config["self_attn"]["k_proj"]["data_out_width"],
@@ -127,13 +137,19 @@ def format_stat_profiled_int_config(
         }
         layer_config["self_attn"]["bmm_1"] = {
             "name": "integer",
-            "bypass": False,
-            "is_ptq": True,
+            "bypass": bypass,
+            "is_ptq": is_ptq,
             "data_in_width": default_config["data_in_width"], # output of softmax
             "data_in_frac_width": default_config["data_in_width"]-1,
             "weight_width": layer_config["self_attn"]["v_proj"]["data_out_width"],
             "weight_frac_width": layer_config["self_attn"]["v_proj"]["data_out_frac_width"],
         }
+        layer_config["self_attn"]["k_proj"].pop("data_out_width")
+        layer_config["self_attn"]["k_proj"].pop("data_out_frac_width")
+        layer_config["self_attn"]["q_proj"].pop("data_out_width")
+        layer_config["self_attn"]["q_proj"].pop("data_out_frac_width")
+        layer_config["self_attn"]["v_proj"].pop("data_out_width")
+        layer_config["self_attn"]["v_proj"].pop("data_out_frac_width")
 
         # fmt: on
     config["default"] = default_config

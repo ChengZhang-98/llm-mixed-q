@@ -12,7 +12,7 @@ fi
 
 work_dir=$HOME/Projects/llm-mixed-q
 env_name=llm-mixed-q
-run_dir=$work_dir/experiments/asplos/search
+run_dir=$work_dir/experiments/asplos/mixed_int
 cd $run_dir
 echo ========== Running Vicuna-7B SST2 ==========
 search_tag=$1

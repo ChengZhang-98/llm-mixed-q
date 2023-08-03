@@ -19,7 +19,7 @@ fi
 
 work_dir=$HOME/Projects/llm-mixed-q
 env_name=llm-mixed-q
-run_dir=$work_dir/experiments/asplos/search
+run_dir=$work_dir/experiments/asplos/mixed_bfp
 cd $run_dir
 echo ========== Running OPT-125M SST2 ==========
 search_tag=$1

@@ -23,10 +23,13 @@ from ..models import (
     get_stat_profiler_hook,
 )
 
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 logger = logging.getLogger(__name__)
 
 
-def profile_statistics_cls_glue_runner():
+def cli_profile_statistics_cls_glue():
     parser = ArgumentParser()
     parser.add_argument("--model_arch", type=str, required=True)
     parser.add_argument("--model_name", type=str, required=True)

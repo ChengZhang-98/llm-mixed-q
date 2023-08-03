@@ -1,13 +1,17 @@
 import sys
 from pathlib import Path
+import transformers
+import datasets as hf_datasets
 
 
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent.parent / "src"))
 
 from llm_mixed_q.utils import set_logging_verbosity
-from llm_mixed_q.cli import extract_quant_config_and_eval_cls_glue_runner
+from llm_mixed_q.cli import cls_extract_quant_config_and_eval_cls_glue
 
 
 if __name__ == "__main__":
+    hf_datasets.logging.set_verbosity_error()
+    transformers.logging.set_verbosity_error()
     set_logging_verbosity("info")
-    extract_quant_config_and_eval_cls_glue_runner()
+    cls_extract_quant_config_and_eval_cls_glue()

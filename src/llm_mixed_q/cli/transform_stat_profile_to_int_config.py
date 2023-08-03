@@ -1,16 +1,19 @@
-from argparse import ArgumentParser
 import os
+from argparse import ArgumentParser
 import toml
 import logging
 from pathlib import Path
 from ..models import get_stat_config_formatter
 from ..models.quantize import transform_stat_profile_to_int_quant_config
-from ..models import get_model_cls, get_config_cls
+from ..models import get_config_cls
+
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 logger = logging.getLogger(__name__)
 
 
-def transform_stat_profile_to_int_quant_config_runner():
+def cli_transform_stat_profile_to_int_quant_config():
     parser = ArgumentParser()
     parser.add_argument("--model_arch", type=str, required=True)
     parser.add_argument("--model_name", type=str, required=True)
@@ -82,4 +85,4 @@ def transform_stat_profile_to_int_quant_config_runner():
 
 
 if __name__ == "__main__":
-    transform_stat_profile_to_int_quant_config_runner()
+    cli_transform_stat_profile_to_int_quant_config()

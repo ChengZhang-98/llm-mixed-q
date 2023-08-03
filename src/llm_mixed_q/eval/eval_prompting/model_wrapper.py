@@ -1,6 +1,5 @@
-from typing import List, Optional, Union
+from typing import Optional
 import logging
-from pprint import pformat
 
 import torch
 import transformers
@@ -12,10 +11,8 @@ from lm_eval.models.huggingface import (
     _DeviceMapping,
     _get_accelerate_args,
 )
-from lm_eval.models import MODEL_REGISTRY
 from ...models import (
     get_config_cls,
-    get_quant_config_parser,
     get_model_cls,
     get_tokenizer_cls,
 )
@@ -23,8 +20,12 @@ from ...models import (
 logger = logging.getLogger(__name__)
 
 
-class QuantizedCausalLM(AutoCausalLM):
-    """LLM-Mixed-Q's Quantized causal language modeling."""
+class QuantizedCausalLMWrapper(AutoCausalLM):
+    """
+    LLM-Mixed-Q's Quantized causal language modeling, compatible with lm-eval-harness's evaluation.
+
+    This class receives model_arch, model_name, and quant_config to build a model and tokenizer.
+    """
 
     AUTO_CONFIG_CLASS = None
     AUTO_TOKENIZER_CLASS = None
@@ -36,8 +37,6 @@ class QuantizedCausalLM(AutoCausalLM):
         model_arch: str,
         model_name: str,
         quant_config: str | dict | None = None,
-        # pretrained: str,
-        # quantized: bool | str | None = False,
         tokenizer: str | None = None,
         subfolder: str | None = None,
         revision: str | None = "main",
@@ -51,15 +50,9 @@ class QuantizedCausalLM(AutoCausalLM):
         max_memory_per_gpu: int | str | None = None,
         max_cpu_memory: int | str | None = None,
         offload_folder: str | None = "./offload",
-        # dtype: str | dtype | None = None,
         device: int | str | None = "cuda",
         peft: str = None,
-        # load_in_8bit: bool | None = False,
-        # load_in_4bit: bool | None = False,
         trust_remote_code: bool | None = False,
-        # gptq_use_triton: bool | None = False,
-        # bnb_4bit_quant_type: str | None = None,
-        # bnb_4bit_compute_dtype: str | dtype | None = None,
     ):
         BaseLM.__init__(self)
 
@@ -130,19 +123,12 @@ class QuantizedCausalLM(AutoCausalLM):
     def _create_auto_model(
         self,
         *,
-        # quantized: bool | str | None = False,
         revision: str,
         subfolder: str,
         device_map: str | _DeviceMapping | None = None,
         max_memory: dict | None = None,
         offload_folder: str | None = None,
-        # load_in_8bit: bool | None = False,
-        # load_in_4bit: bool | None = False,
         trust_remote_code: bool | None = False,
-        # torch_dtype: str | dtype | None = None,
-        # gptq_use_triton: bool | None = False,
-        # bnb_4bit_quant_type: str | None = None,
-        # bnb_4bit_compute_dtype: str | dtype | None = None
     ) -> AutoModel:
         model = self.AUTO_MODEL_CLASS.from_pretrained(
             self.model_name,
@@ -153,18 +139,7 @@ class QuantizedCausalLM(AutoCausalLM):
             offload_folder=offload_folder,
             trust_remote_code=trust_remote_code,
         )
-        # logger.debug(
-        #     f"============= Model.config.quant_config (layer 0.k_proj) ============="
-        # )
-        # logger.debug(
-        #     "\n"
-        #     + pformat(
-        #         model.config.quant_config["model_layer_0"]["self_attn"].get(
-        #             "k_proj", "failed to get k_proj"
-        #         )
-        #     )
-        # )
-        # logger.debug(str(model.model.decoder.layers[0]))
+
         return model
 
     def _create_auto_tokenizer(

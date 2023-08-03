@@ -10,8 +10,8 @@ import transformers
 import datasets as hf_datasets
 
 if __name__ == "__main__":
-    # hf_datasets.logging.set_verbosity_info()
-    # transformers.logging.set_verbosity_info()
     # hf_datasets.disable_caching()
+    transformers.utils.logging.set_verbosity_error()
+    hf_datasets.utils.logging.set_verbosity_error()
     set_logging_verbosity("info")
     profile_statistics_lm_runner()

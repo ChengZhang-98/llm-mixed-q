@@ -18,12 +18,15 @@ from ..datasets import (
     preprocess_dataset_dict,
     is_regression_task,
 )
-from ..eval import evaluate_cls_glue_fn
+from ..eval import evaluate_cls_glue
+
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 logger = logging.getLogger(__name__)
 
 
-def eval_cls_runner():
+def cli_eval_cls_glue():
     parser = ArgumentParser()
 
     parser.add_argument(
@@ -79,7 +82,7 @@ def eval_cls_runner():
         shuffle=False,
     )
 
-    results = evaluate_cls_glue_fn(
+    results = evaluate_cls_glue(
         model=model,
         task=args.task,
         eval_dataloader=search_dataloader,

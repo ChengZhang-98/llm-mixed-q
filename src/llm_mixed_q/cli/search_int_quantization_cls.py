@@ -16,10 +16,13 @@ from ..datasets import (
     is_regression_task,
 )
 
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 logger = logging.getLogger(__name__)
 
 
-def search_quantisation_conditional_for_cls_runner():
+def cli_conditional_search_quant_on_cls_glue():
     parser = ArgumentParser()
     parser.add_argument("--model_arch", type=str, required=True)
     parser.add_argument("--model_name", type=str, required=True)

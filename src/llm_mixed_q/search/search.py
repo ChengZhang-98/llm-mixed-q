@@ -1,11 +1,8 @@
 import ast
-import os
 from pprint import pformat
 from pathlib import Path
 import ast
-from copy import deepcopy
 from functools import partial
-from argparse import ArgumentParser
 import json
 
 from accelerate import (
@@ -19,10 +16,9 @@ import optuna
 import pandas as pd
 from tabulate import tabulate
 import logging
-import transformers
 
-from ..eval import evaluate_cls_glue_fn as evaluate_cls_task
-from ..eval import evaluate_prompting_fn
+from ..eval import evaluate_cls_glue as evaluate_cls_task
+from ..eval import eval_prompting_tasks
 from ..models import (
     get_model_cls,
     get_config_cls,
@@ -37,13 +33,8 @@ from ..utils import (
     save_config,
 )
 
-os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-transformers.utils.logging.set_verbosity_error()
-datasets.utils.logging.set_verbosity_error()
 optuna.logging.set_verbosity(optuna.logging.ERROR)
-
 logger = logging.getLogger(__name__)
 
 
@@ -566,7 +557,7 @@ class SearchQuantisationForPromptingCLS(SearchBase):
             device,
             limit,
         ):
-            results = evaluate_prompting_fn(
+            results = eval_prompting_tasks(
                 model_wrapper="llm-mixed-q",
                 model_arch=model_arch,
                 model_name=model_name,
@@ -911,7 +902,7 @@ class SearchQuantisationForPromptingCLS(SearchBase):
         save_config(best_quant_config, self.save_dir / "best_quant_config.toml")
 
         logger.info("========== Evaluating the Best ==========")
-        results = evaluate_prompting_fn(
+        results = eval_prompting_tasks(
             model_wrapper="llm-mixed-q",
             model_arch=self.model_arch,
             model_name=self.model_name,

@@ -13,12 +13,15 @@ import logging
 
 
 from ..datasets import get_raw_dataset_dict, preprocess_dataset_dict
-from ..eval import evaluate_lm_wikitext2_fn
+from ..eval import eval_lm_wikitext2
+
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 logger = logging.getLogger(__name__)
 
 
-def eval_perplexity_llm_int8_runner():
+def cli_eval_lm_wikitext2_llm_int8():
     logger.info("Evaluation started")
 
     parser = ArgumentParser()
@@ -80,7 +83,7 @@ def eval_perplexity_llm_int8_runner():
         num_workers=os.cpu_count(),
     )
 
-    results = evaluate_lm_wikitext2_fn(
+    results = eval_lm_wikitext2(
         model,
         eval_dataloader=eval_dataloader,
         num_samples=None,

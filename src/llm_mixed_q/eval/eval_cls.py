@@ -3,7 +3,7 @@ import evaluate as hf_evaluate
 from tqdm import tqdm
 
 
-def evaluate_cls_glue_fn(
+def evaluate_cls_glue(
     model,
     task,
     eval_dataloader,

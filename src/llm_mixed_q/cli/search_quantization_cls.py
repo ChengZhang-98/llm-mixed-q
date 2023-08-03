@@ -8,6 +8,7 @@ from ..search import (
 from pprint import pformat
 from transformers import default_data_collator, set_seed
 
+import os
 from torch.utils.data import DataLoader
 from ..datasets import (
     get_num_labels,
@@ -18,8 +19,11 @@ from ..datasets import (
 
 logger = logging.getLogger(__name__)
 
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-def search_quantisation_for_cls_runner():
+
+def cli_search_quant_on_cls_glue():
     parser = ArgumentParser()
     parser.add_argument("--model_arch", type=str, required=True)
     parser.add_argument("--model_name", type=str, required=True)

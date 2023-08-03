@@ -1,5 +1,5 @@
 import logging
-from ..eval import evaluate_cls_glue_fn, evaluate_lm_wikitext2_fn
+from ..eval import evaluate_cls_glue, eval_lm_wikitext2
 from .stat_manager import StatManager
 
 import logging
@@ -40,7 +40,7 @@ def profile_statistics_cls_glue_fn(
         name=root_name,
         num_hidden_layers=model.config.num_hidden_layers,
     )
-    evaluate_cls_glue_fn(
+    evaluate_cls_glue(
         model=model,
         task=task,
         eval_dataloader=eval_dataloader,
@@ -71,7 +71,7 @@ def profile_statistics_lm_fn(
         num_hidden_layers=model.config.num_hidden_layers,
     )
 
-    evaluate_lm_wikitext2_fn(
+    eval_lm_wikitext2(
         model=model,
         eval_dataloader=eval_dataloader,
         num_samples=num_samples,

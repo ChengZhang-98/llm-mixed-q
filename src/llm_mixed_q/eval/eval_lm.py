@@ -1,8 +1,8 @@
-import math
 import logging
+import math
+
 import torch
 from tqdm import tqdm
-
 
 logger = logging.getLogger(__name__)
 

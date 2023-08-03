@@ -1,11 +1,12 @@
+import logging
 import os
 from argparse import ArgumentParser
-import toml
-import logging
 from pathlib import Path
-from ..models import get_stat_config_formatter
+
+import toml
+
+from ..models import get_config_cls, get_stat_config_formatter
 from ..models.quantize import transform_stat_profile_to_int_quant_config
-from ..models import get_config_cls
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"

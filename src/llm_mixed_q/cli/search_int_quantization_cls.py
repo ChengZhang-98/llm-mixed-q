@@ -1,20 +1,15 @@
 import logging
-from argparse import ArgumentParser
 import os
-from ..search import (
-    SearchIntQuantisationForClassification,
-)
+from argparse import ArgumentParser
 from pprint import pformat
+
+import toml
+from torch.utils.data import DataLoader
 from transformers import default_data_collator, set_seed
 
-from torch.utils.data import DataLoader
-import toml
-from ..datasets import (
-    get_num_labels,
-    get_raw_dataset_dict,
-    preprocess_dataset_dict,
-    is_regression_task,
-)
+from ..datasets import (get_num_labels, get_raw_dataset_dict,
+                        is_regression_task, preprocess_dataset_dict)
+from ..search import SearchIntQuantisationForClassification
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"

@@ -1,8 +1,9 @@
+import logging
 import re
 from copy import deepcopy
-import logging
 
 import toml
+
 from ...utils.config_load import convert_str_na_to_none
 from ..quantize.quant_config_parser import parse_node_config
 

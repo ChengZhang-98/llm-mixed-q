@@ -3,11 +3,7 @@
 #     search_quantisation_for_prompting_cls_runner,
 # )
 
-from .search import (
-    SearchQuantisationForClassification,
-    SearchQuantisationForPromptingCLS,
-)
-from .search_conditional import (
-    SearchIntQuantisationForClassification,
-    SearchIntQuantisationForPromptingCLS,
-)
+from .search import (SearchQuantisationForClassification,
+                     SearchQuantisationForPromptingCLS)
+from .search_conditional import (SearchIntQuantisationForClassification,
+                                 SearchIntQuantisationForPromptingCLS)

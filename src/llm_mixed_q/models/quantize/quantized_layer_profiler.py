@@ -1,7 +1,8 @@
-import torch
-import numpy as np
-import math
 import logging
+import math
+
+import numpy as np
+import torch
 
 logger = logging.getLogger(__name__)
 

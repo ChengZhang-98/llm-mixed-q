@@ -1,17 +1,13 @@
+import logging
 from functools import partial
 
 import torch
 from torch import Tensor
-from ..quantizers import (
-    block_fp_quantizer,
-    block_log_quantizer,
-    block_minifloat_quantizer,
-    integer_quantizer,
-    log_quantizer,
-    minifloat_denorm_quantizer,
-    minifloat_ieee_quantizer,
-)
-import logging
+
+from ..quantizers import (block_fp_quantizer, block_log_quantizer,
+                          block_minifloat_quantizer, integer_quantizer,
+                          log_quantizer, minifloat_denorm_quantizer,
+                          minifloat_ieee_quantizer)
 
 logger = logging.getLogger(__name__)
 

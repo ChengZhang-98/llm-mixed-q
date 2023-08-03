@@ -1,5 +1,5 @@
-import torch
 import evaluate as hf_evaluate
+import torch
 from tqdm import tqdm
 
 

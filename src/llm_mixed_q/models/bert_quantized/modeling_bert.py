@@ -30,30 +30,20 @@ from transformers.activations import ACT2FN
 from transformers.modeling_outputs import (
     BaseModelOutputWithPastAndCrossAttentions,
     BaseModelOutputWithPoolingAndCrossAttentions,
-    CausalLMOutputWithCrossAttentions,
-    MaskedLMOutput,
-    MultipleChoiceModelOutput,
-    NextSentencePredictorOutput,
-    QuestionAnsweringModelOutput,
-    SequenceClassifierOutput,
-    TokenClassifierOutput,
-)
+    CausalLMOutputWithCrossAttentions, MaskedLMOutput,
+    MultipleChoiceModelOutput, NextSentencePredictorOutput,
+    QuestionAnsweringModelOutput, SequenceClassifierOutput,
+    TokenClassifierOutput)
 from transformers.modeling_utils import PreTrainedModel
-from transformers.pytorch_utils import (
-    apply_chunking_to_forward,
-    find_pruneable_heads_and_indices,
-    prune_linear_layer,
-)
-from transformers.utils import (
-    ModelOutput,
-    add_code_sample_docstrings,
-    add_start_docstrings,
-    add_start_docstrings_to_model_forward,
-    logging,
-    replace_return_docstrings,
-)
+from transformers.pytorch_utils import (apply_chunking_to_forward,
+                                        find_pruneable_heads_and_indices,
+                                        prune_linear_layer)
+from transformers.utils import (ModelOutput, add_code_sample_docstrings,
+                                add_start_docstrings,
+                                add_start_docstrings_to_model_forward, logging,
+                                replace_return_docstrings)
 
-from ..quantize import get_quantized_func, get_quantized_cls
+from ..quantize import get_quantized_cls, get_quantized_func
 from .configuration_bert import BertQuantizedConfig
 
 logger = logging.get_logger(__name__)

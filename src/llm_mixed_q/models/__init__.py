@@ -1,35 +1,28 @@
-from .bert_quantized import (
-    BertQuantizedConfig,
-    BertQuantizedForSequenceClassification,
-    profile_bitwidth_bert_quantized,
-    parse_bert_quantized_config,
-    sample_bert_quant_config,
-    register_stat_hooks_bert_quantized,
-    format_stat_profiled_int_config_bert_quantized,
-)
-from .llama_quantized import (
-    LlamaQuantizedConfig,
-    LlamaQuantizedForCausalLM,
-    LlamaQuantizedForSequenceClassification,
-    profile_bitwidth_llama_quantized,
-    parse_llama_quantized_config,
-    sample_llama_quant_config,
-    format_stat_profiled_int_config_llama_quantized,
-    register_stat_hooks_llama_quantized,
-)
-from .opt_quantized import (
-    OPTQuantizedConfig,
-    OPTQuantizedForCausalLM,
-    OPTQuantizedForSequenceClassification,
-    profile_bitwidth_opt_quantized,
-    parse_opt_quantized_config,
-    sample_opt_quant_config,
-    register_stat_hooks_opt_quantized,
-    format_stat_profiled_int_config_opt_quantized,
-)
+from transformers import AutoTokenizer
 from transformers.models.bert.tokenization_bert import BertTokenizer
 from transformers.models.llama.tokenization_llama import LlamaTokenizer
-from transformers import AutoTokenizer
+
+from .bert_quantized import (BertQuantizedConfig,
+                             BertQuantizedForSequenceClassification,
+                             format_stat_profiled_int_config_bert_quantized,
+                             parse_bert_quantized_config,
+                             profile_bitwidth_bert_quantized,
+                             register_stat_hooks_bert_quantized,
+                             sample_bert_quant_config)
+from .llama_quantized import (LlamaQuantizedConfig, LlamaQuantizedForCausalLM,
+                              LlamaQuantizedForSequenceClassification,
+                              format_stat_profiled_int_config_llama_quantized,
+                              parse_llama_quantized_config,
+                              profile_bitwidth_llama_quantized,
+                              register_stat_hooks_llama_quantized,
+                              sample_llama_quant_config)
+from .opt_quantized import (OPTQuantizedConfig, OPTQuantizedForCausalLM,
+                            OPTQuantizedForSequenceClassification,
+                            format_stat_profiled_int_config_opt_quantized,
+                            parse_opt_quantized_config,
+                            profile_bitwidth_opt_quantized,
+                            register_stat_hooks_opt_quantized,
+                            sample_opt_quant_config)
 
 MODEL_MAP = {
     "bert": {

@@ -1,41 +1,26 @@
 import ast
-from pprint import pformat
-from pathlib import Path
-import ast
-from functools import partial
 import json
+import logging
+from functools import partial
+from pathlib import Path
+from pprint import pformat
 
-from accelerate import (
-    load_checkpoint_and_dispatch,
-    infer_auto_device_map,
-    init_empty_weights,
-)
 import datasets
 import joblib
 import optuna
 import pandas as pd
-from tabulate import tabulate
-import logging
 import transformers
+from accelerate import (infer_auto_device_map, init_empty_weights,
+                        load_checkpoint_and_dispatch)
+from tabulate import tabulate
 
-from ..eval import evaluate_cls_glue as evaluate_cls_task
 from ..eval import eval_prompting_tasks
-from ..models import (
-    get_model_cls,
-    get_config_cls,
-    get_tokenizer_cls,
-    get_bitwidth_profiler,
-    get_quant_config_parser,
-    get_quant_config_sampler,
-    get_stat_config_formatter,
-)
+from ..eval import evaluate_cls_glue as evaluate_cls_task
+from ..models import (get_bitwidth_profiler, get_config_cls, get_model_cls,
+                      get_quant_config_parser, get_quant_config_sampler,
+                      get_stat_config_formatter, get_tokenizer_cls)
 from ..models.quantize import transform_stat_profile_to_int_quant_config
-
-from ..utils import (
-    load_config,
-    save_config,
-    flatten_dict,
-)
+from ..utils import flatten_dict, load_config, save_config
 
 transformers.utils.logging.set_verbosity_error()
 datasets.utils.logging.set_verbosity_error()

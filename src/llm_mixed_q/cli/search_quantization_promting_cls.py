@@ -1,10 +1,9 @@
-import os
 import logging
+import os
 from argparse import ArgumentParser
-from ..search import (
-    SearchQuantisationForPromptingCLS,
-)
 from pprint import pformat
+
+from ..search import SearchQuantisationForPromptingCLS
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"

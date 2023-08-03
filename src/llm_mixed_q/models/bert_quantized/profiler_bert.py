@@ -1,11 +1,11 @@
-from ..quantize.quantized_layer_profiler import (
-    profile_linear_layer,
-    profile_matmul_layer,
-    update_profile,
-    register_a_stat_hook,
-)
-from .modeling_bert import BertQuantizedLayer, BertQuantizedForSequenceClassification
 import logging
+
+from ..quantize.quantized_layer_profiler import (profile_linear_layer,
+                                                 profile_matmul_layer,
+                                                 register_a_stat_hook,
+                                                 update_profile)
+from .modeling_bert import (BertQuantizedForSequenceClassification,
+                            BertQuantizedLayer)
 
 logger = logging.getLogger(__name__)
 

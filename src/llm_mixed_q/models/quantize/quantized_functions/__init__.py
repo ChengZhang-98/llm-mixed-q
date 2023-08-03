@@ -1,26 +1,15 @@
-from .matmul import (
-    matmul_block_fp,
-    matmul_block_log,
-    matmul_block_minifloat,
-    matmul_integer,
-    matmul_minifloat_denorm,
-    matmul_minifloat_ieee,
-    bmm_block_fp,
-    bmm_block_log,
-    bmm_block_minifloat,
-    bmm_integer,
-    bmm_minifloat_denorm,
-    bmm_minifloat_ieee,
-)
-from .rotary_positional_encoding import (
-    apply_rotary_pos_emb_block_fp,
-    apply_rotary_pos_emb_block_log,
-    apply_rotary_pos_emb_block_minifloat,
-    apply_rotary_pos_emb_integer,
-    apply_rotary_pos_emb_log,
-    apply_rotary_pos_emb_minifloat_denorm,
-    apply_rotary_pos_emb_minifloat_ieee,
-)
+from .matmul import (bmm_block_fp, bmm_block_log, bmm_block_minifloat,
+                     bmm_integer, bmm_minifloat_denorm, bmm_minifloat_ieee,
+                     matmul_block_fp, matmul_block_log, matmul_block_minifloat,
+                     matmul_integer, matmul_minifloat_denorm,
+                     matmul_minifloat_ieee)
+from .rotary_positional_encoding import (apply_rotary_pos_emb_block_fp,
+                                         apply_rotary_pos_emb_block_log,
+                                         apply_rotary_pos_emb_block_minifloat,
+                                         apply_rotary_pos_emb_integer,
+                                         apply_rotary_pos_emb_log,
+                                         apply_rotary_pos_emb_minifloat_denorm,
+                                         apply_rotary_pos_emb_minifloat_ieee)
 
 QUANTIZED_FUNC_MAP = {
     "matmul": {

@@ -1,16 +1,12 @@
-from pathlib import Path
-from argparse import ArgumentParser
-import os
 import json
-from pathlib import Path
-from torch.utils.data import DataLoader
-from transformers import (
-    DataCollatorForLanguageModeling,
-    AutoModelForCausalLM,
-    AutoTokenizer,
-)
 import logging
+import os
+from argparse import ArgumentParser
+from pathlib import Path
 
+from torch.utils.data import DataLoader
+from transformers import (AutoModelForCausalLM, AutoTokenizer,
+                          DataCollatorForLanguageModeling)
 
 from ..datasets import get_raw_dataset_dict, preprocess_dataset_dict
 from ..eval import eval_lm_wikitext2

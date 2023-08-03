@@ -1,21 +1,14 @@
-from typing import Optional
 import logging
+from typing import Optional
 
 import torch
 import transformers
 from transformers import AutoModel
 
-from lm_eval.models.huggingface import (
-    AutoCausalLM,
-    BaseLM,
-    _DeviceMapping,
-    _get_accelerate_args,
-)
-from ...models import (
-    get_config_cls,
-    get_model_cls,
-    get_tokenizer_cls,
-)
+from lm_eval.models.huggingface import (AutoCausalLM, BaseLM, _DeviceMapping,
+                                        _get_accelerate_args)
+
+from ...models import get_config_cls, get_model_cls, get_tokenizer_cls
 
 logger = logging.getLogger(__name__)
 

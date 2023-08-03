@@ -1,7 +1,6 @@
-from functools import partial
-from copy import deepcopy
 import logging
-
+from copy import deepcopy
+from functools import partial
 
 logger = logging.getLogger(__name__)
 

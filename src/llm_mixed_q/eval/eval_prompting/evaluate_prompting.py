@@ -1,11 +1,12 @@
 import logging
-from lm_eval.models import MODEL_REGISTRY
-from lm_eval import utils as lm_eval_utils
-from lm_eval import tasks as lm_eval_tasks
 
+from lm_eval import tasks as lm_eval_tasks
+from lm_eval import utils as lm_eval_utils
+from lm_eval.models import MODEL_REGISTRY
+
+from ...utils import load_config
 from .evaluator import simple_evaluate_llm_mixed_q
 from .model_wrapper import QuantizedCausalLMWrapper
-from ...utils import load_config
 
 logger = logging.getLogger(__name__)
 

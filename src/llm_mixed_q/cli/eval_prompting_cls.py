@@ -1,14 +1,14 @@
-import os
-from pathlib import Path
-from pprint import pformat
-from argparse import ArgumentParser
 import json
 import logging
+import os
+from argparse import ArgumentParser
+from pathlib import Path
+from pprint import pformat
 
+from lm_eval import evaluator as lm_eval_evaluator
+from lm_eval.models import MODEL_REGISTRY
 
 from ..eval import eval_prompting_tasks
-from lm_eval.models import MODEL_REGISTRY
-from lm_eval import evaluator as lm_eval_evaluator
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"

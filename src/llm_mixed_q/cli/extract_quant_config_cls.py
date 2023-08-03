@@ -1,22 +1,18 @@
-import os
-from pathlib import Path
-from argparse import ArgumentParser
-from pprint import pformat
 import json
+import os
+from argparse import ArgumentParser
+from pathlib import Path
+from pprint import pformat
 
 from torch.utils.data import DataLoader
 from transformers import default_data_collator
 
-
+from ..datasets import (get_raw_dataset_dict, is_regression_task,
+                        preprocess_dataset_dict)
+from ..eval import evaluate_cls_glue
+from ..models import get_config_cls, get_model_cls, get_tokenizer_cls
 from ..utils import extract_quant_config
 from ..utils.logger import get_logger
-from ..datasets import (
-    get_raw_dataset_dict,
-    preprocess_dataset_dict,
-    is_regression_task,
-)
-from ..models import get_model_cls, get_config_cls, get_tokenizer_cls
-from ..eval import evaluate_cls_glue
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"

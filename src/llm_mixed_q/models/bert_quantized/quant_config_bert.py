@@ -54,32 +54,6 @@ An example of quant_config for bert
 """
 
 
-def cp_multi_values(src: dict, dst: dict, src_keys: tuple, dst_keys: tuple = None):
-    """Copy multiple values from src dict to dst dict."""
-    if dst_keys is None:
-        for key in src_keys:
-            dst[key] = deepcopy(src[key])
-    else:
-        for src_key, dst_key in zip(src_keys, dst_keys):
-            dst[dst_key] = deepcopy(src[src_key])
-
-
-def has_multi_keys(src: dict, keys: tuple):
-    """Check if src dict has multiple keys."""
-    for key in keys:
-        if key not in src:
-            return False
-    return True
-
-
-def match_a_pattern(name: str, patterns: list[str]) -> str | None:
-    for pattern in patterns:
-        match = re.fullmatch(pattern, name)
-        if match:
-            return pattern
-    return None
-
-
 def create_a_layer_config(
     linear_qc: dict = None, matmul_qc: dict = None, layer_qc=None, strict: bool = True
 ) -> dict:
@@ -110,25 +84,6 @@ def create_a_layer_config(
     }
     # fmt: on
     return qc
-
-
-# def by_type_parser(config: dict, num_hidden_layers: int) -> dict:
-#     assert "default" in config, "Must provide a default config"
-#     default_qc: dict = config["default"]
-#     linear_qc: dict = parse_node_config(
-#         config.get("linear", default_qc), mase_op="linear"
-#     )
-#     matmul_qc: dict = parse_node_config(
-#         config.get("matmul", default_qc), mase_op="matmul"
-#     )
-#     layer_qc: dict = config.get("model_layer", None)
-
-#     p_config = {}
-#     for i in range(num_hidden_layers):
-#         layer_entry = f"model_layer_{i}"
-#         p_config[layer_entry] = create_a_layer_config(linear_qc, matmul_qc, layer_qc)
-#     p_config["default"] = default_qc
-#     return p_config
 
 
 def _parse_and_complete_config(
@@ -218,18 +173,18 @@ def format_stat_profiled_int_config_bert_quantized(
         }
 
         try:
-            matmul_1_w_width = default_config[layer_entry]["attention"]["matmul_1"]["data_in_width"]
+            matmul_1_x_width = default_config[layer_entry]["attention"]["matmul_1"]["data_in_width"]
             logger.debug("matmul_1 weight_width uses default_config[\"model_layer_x\"][\"attention\"][\"matmul_1\"][\"data_in_width\"]")
         except KeyError:
-            matmul_1_w_width = default_config["data_in_width"]
+            matmul_1_x_width = default_config["data_in_width"]
             logger.debug("matmul_1 weight_width default_config[\"data_in_width\"]")
 
         layer_config["attention"]["matmul_1"] = {
             "name": "integer",
             "bypass": bypass,
             "is_ptq": is_ptq,
-            "data_in_width": matmul_1_w_width,
-            "data_in_frac_width": matmul_1_w_width-1,
+            "data_in_width": matmul_1_x_width,
+            "data_in_frac_width": matmul_1_x_width-1,
             "weight_width": layer_config["attention"]["value"]["data_out_width"],
             "weight_frac_width": layer_config["attention"]["value"]["data_out_frac_width"],
         }
@@ -243,15 +198,18 @@ def format_stat_profiled_int_config_bert_quantized(
         layer_config["attention"]["value"].pop("data_out_frac_width")
 
     if "default" not in config:
-        config["default"] = {
-            "name": "integer",
-            "bypass": bypass,
-            "is_ptq": is_ptq,
-            "data_in_width": 8,
-            "data_in_frac_width": 4,
-            "weight_width": 8,
-            "weight_frac_width": 8,
-            "bias_width": 8,
-            "bias_frac_width": 8,
-        }
+        config["default"] = default_config.get(
+            "default",
+            {
+                "name": "integer",
+                "bypass": bypass,
+                "is_ptq": is_ptq,
+                "data_in_width": 8,
+                "data_in_frac_width": 4,
+                "weight_width": 8,
+                "weight_frac_width": 8,
+                "bias_width": 8,
+                "bias_frac_width": 8,
+            },
+        )
     return config

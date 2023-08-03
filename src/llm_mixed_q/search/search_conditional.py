@@ -150,6 +150,8 @@ class SearchIntQuantisationForClassification(SearchBase):
         self.q_config_formatter = get_stat_config_formatter(model_arch)
         self.num_labels = num_labels
 
+        self.trial_id_to_quant_config = {}
+
     def rebuild_model(self, quant_config):
         if quant_config is None:
             config = self.config_cls.from_pretrained(
@@ -277,6 +279,7 @@ class SearchIntQuantisationForClassification(SearchBase):
             )
             # logger.debug("4️⃣ Config after formatting:")
             # logger.debug("\n" + pformat(sampled_config))
+            self.trial_id_to_quant_config[trial.number] = deepcopy(sampled_config)
             model = self.rebuild_model(sampled_config)
             # logger.debug(f"============== model layer 0 =============")
             # logger.debug(f"Model layer 0:{model.bert.encoder.layer[0]}")
@@ -377,12 +380,18 @@ class SearchIntQuantisationForClassification(SearchBase):
             callbacks=[logger_callback],
         )
 
-        self.save_study_and_results(study)
+        self.save_study_and_results(study, stat_profiler, range_entry)
         return study
 
     @staticmethod
     def save_trial_to_quant_config(
-        trial: optuna.trial.FrozenTrial, save_path: str = None
+        trial: optuna.trial.FrozenTrial,
+        q_config_parser: callable,
+        q_config_formatter: callable,
+        num_hidden_layers: int,
+        stat_profile: dict,
+        range_entry: str,
+        save_path: str = None,
     ):
         def parse_and_create_item(quant_config: dict, keys: list[str], value):
             for i, key in enumerate(keys):
@@ -395,23 +404,54 @@ class SearchIntQuantisationForClassification(SearchBase):
 
         params = trial.params
 
-        quant_config = {}
+        sampled_config = {}
         for name, value in params.items():
             keys = name.removeprefix("root:").split(":")
             if isinstance(value, str) and value.startswith("!ast!"):
                 value = ast.literal_eval(value.removeprefix("!ast!"))
-            parse_and_create_item(quant_config, keys, value)
+            parse_and_create_item(sampled_config, keys, value)
+        # here we got sampled_config = self.q_config_sampler in self.search
+
+        sampled_config = q_config_parser(
+            sampled_config, num_hidden_layers, strict=False
+        )
+        flattened_sampled_config = {}
+        flatten_dict(sampled_config, new_d=flattened_sampled_config)
+
+        sampled_config_complete = sampled_config
+        sampled_config = transform_stat_profile_to_int_quant_config(
+            stat_profile,
+            range_entry=range_entry,
+            width=flattened_sampled_config,
+            frac_choices=None,
+            root_name="root",
+            is_ptq=True,
+            bypass=False,
+        )
+        q_config_formatter(
+            sampled_config,
+            num_hidden_layers,
+            default_config=sampled_config_complete,
+            is_ptq=True,
+            bypass=False,
+        )
+
         if save_path is not None:
-            save_config(quant_config, save_path)
-        return quant_config
+            save_config(sampled_config, save_path)
+        return sampled_config
 
     @staticmethod
     def get_result_df(
         study: optuna.Study,
+        q_config_parser: callable,
+        q_config_formatter: callable,
+        num_hidden_layers: int,
+        stat_profile: dict,
+        range_entry: str,
         save_dir,
-        alpha_s,
-        alpha_h,
-        compare_to,
+        alpha_s: float,
+        alpha_h: float,
+        compare_to: int,
         sort_by=["accuracy", "memory_density"],
     ) -> pd.DataFrame:
         result_df = pd.DataFrame(
@@ -433,7 +473,13 @@ class SearchIntQuantisationForClassification(SearchBase):
             quant_config_path = quant_config_dir / f"quant_config_{i}.toml"
             quant_config = (
                 SearchIntQuantisationForClassification.save_trial_to_quant_config(
-                    trial, quant_config_path
+                    trial,
+                    q_config_parser=q_config_parser,
+                    q_config_formatter=q_config_formatter,
+                    num_hidden_layers=num_hidden_layers,
+                    stat_profile=stat_profile,
+                    range_entry=range_entry,
+                    save_path=quant_config_path,
                 )
             )
             alpha_acc = alpha_s
@@ -455,7 +501,7 @@ class SearchIntQuantisationForClassification(SearchBase):
         result_df = result_df.sort_values(by=sort_by, ascending=False)
         return result_df
 
-    def save_study_and_results(self, study: optuna.Study):
+    def save_study_and_results(self, study: optuna.Study, stat_profile, range_entry):
         save_dir = Path(self.save_dir)
         save_dir.mkdir(parents=True, exist_ok=True)
         study_path = save_dir / "study.pkl"
@@ -465,6 +511,11 @@ class SearchIntQuantisationForClassification(SearchBase):
 
         result_df = SearchIntQuantisationForClassification.get_result_df(
             study,
+            q_config_parser=self.q_config_parser,
+            q_config_formatter=self.q_config_formatter,
+            num_hidden_layers=self.model_config.num_hidden_layers,
+            stat_profile=stat_profile,
+            range_entry=range_entry,
             save_dir=save_dir,
             alpha_s=self.search_config["search_estimator"]["alpha_acc"],
             alpha_h=self.search_config["search_estimator"]["alpha_mem_density"],
@@ -498,6 +549,8 @@ class SearchIntQuantisationForClassification(SearchBase):
     def evaluate_best_trials(
         self,
         study: optuna.Study,
+        stat_profile: dict,
+        range_entry: str,
         eval_dataloader,
         task,
         is_regression,
@@ -518,6 +571,11 @@ class SearchIntQuantisationForClassification(SearchBase):
                 sort_by[i] = "accuracy"
         result_df = SearchIntQuantisationForClassification.get_result_df(
             study,
+            q_config_parser=self.q_config_parser,
+            q_config_formatter=self.q_config_formatter,
+            num_hidden_layers=self.model_config.num_hidden_layers,
+            stat_profile=stat_profile,
+            range_entry=range_entry,
             save_dir=self.save_dir,
             alpha_s=self.search_config["search_estimator"]["alpha_acc"],
             alpha_h=self.search_config["search_estimator"]["alpha_mem_density"],

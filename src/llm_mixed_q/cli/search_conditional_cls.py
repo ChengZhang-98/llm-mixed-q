@@ -46,6 +46,7 @@ def search_conditional_quantisation_for_cls_runner():
     parser.add_argument("--accelerator", type=str, default="cuda:0")
     parser.add_argument("--model_parallel", action="store_true")
     parser.add_argument("--seed", type=int, default=None)
+    parser.add_argument("--range_entry", type=str, default="range_min_max")
 
     args = parser.parse_args()
 
@@ -98,11 +99,13 @@ def search_conditional_quantisation_for_cls_runner():
         is_regression=is_regression,
         seq_len=args.max_length,
         stat_profiler=stat_profile,
-        range_entry="range_min_max",
+        range_entry=args.range_entry,
     )
 
     search_obj.evaluate_best_trials(
         study,
+        stat_profile=stat_profile,
+        range_entry=args.range_entry,
         eval_dataloader=eval_dataloader,
         task=args.task,
         is_regression=is_regression,

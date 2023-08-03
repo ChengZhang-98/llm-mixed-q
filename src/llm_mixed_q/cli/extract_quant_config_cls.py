@@ -7,8 +7,7 @@ from pprint import pformat
 from torch.utils.data import DataLoader
 from transformers import default_data_collator
 
-from ..datasets import (get_raw_dataset_dict, is_regression_task,
-                        preprocess_dataset_dict)
+from ..datasets import get_raw_dataset_dict, is_regression_task, preprocess_dataset_dict
 from ..eval import evaluate_cls_glue
 from ..models import get_config_cls, get_model_cls, get_tokenizer_cls
 from ..utils import extract_quant_config
@@ -18,7 +17,7 @@ os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 
-def cls_extract_quant_config_and_eval_cls_glue():
+def cli_extract_quant_config_and_eval_cls_glue():
     logger = get_logger(__name__)
 
     parser = ArgumentParser()
@@ -96,4 +95,4 @@ def cls_extract_quant_config_and_eval_cls_glue():
 
 
 if __name__ == "__main__":
-    cls_extract_quant_config_and_eval_cls_glue()
+    cli_extract_quant_config_and_eval_cls_glue()

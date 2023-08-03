@@ -9,6 +9,9 @@ from llm_mixed_q.cli import profile_statistics_lm_runner
 import transformers
 import datasets as hf_datasets
 
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 if __name__ == "__main__":
     # hf_datasets.disable_caching()
     transformers.utils.logging.set_verbosity_error()

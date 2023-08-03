@@ -1,5 +1,4 @@
 import ast
-import os
 from pprint import pformat
 from pathlib import Path
 import ast
@@ -37,9 +36,6 @@ from ..utils import (
     save_config,
     flatten_dict,
 )
-
-os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 transformers.utils.logging.set_verbosity_error()
 datasets.utils.logging.set_verbosity_error()

@@ -1,3 +1,4 @@
+import os
 import sys
 from pathlib import Path
 import transformers
@@ -7,6 +8,9 @@ sys.path.append(str(Path(__file__).resolve().parent.parent.parent.parent / "src"
 
 from llm_mixed_q.utils import set_logging_verbosity
 from llm_mixed_q.cli import cli_extract_quant_config_and_prompting_eval
+
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 if __name__ == "__main__":
     hf_datasets.logging.set_verbosity_error()

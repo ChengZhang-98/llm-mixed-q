@@ -1,8 +1,9 @@
-import optuna
-import joblib
-from pprint import pformat
 import ast
 import logging
+from pprint import pformat
+
+import joblib
+import optuna
 
 from .config_load import save_config
 
@@ -32,7 +33,7 @@ def save_trial_to_quant_config(trial: optuna.trial.FrozenTrial, save_path: str =
     return quant_config
 
 
-def extract_quant_config_fn(
+def extract_quant_config(
     study_pkl,
     target_idx,
     save_path: str = None,

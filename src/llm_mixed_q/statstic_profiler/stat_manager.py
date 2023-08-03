@@ -1,6 +1,7 @@
 import torch
 from tqdm import tqdm
-from .stats import create_new_stat, _StatBase
+
+from .stats import _StatBase, create_new_stat
 
 
 class ActStatCollection:

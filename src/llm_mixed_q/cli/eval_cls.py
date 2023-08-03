@@ -1,29 +1,25 @@
-from pathlib import Path
-import os
-from pprint import pformat
-from argparse import ArgumentParser
 import json
 import logging
+import os
+from argparse import ArgumentParser
+from pathlib import Path
+from pprint import pformat
+
 from torch.utils.data import DataLoader
 from transformers import default_data_collator
 
+from ..datasets import (get_raw_dataset_dict, is_regression_task,
+                        preprocess_dataset_dict)
+from ..eval import evaluate_cls_glue
+from ..models import get_config_cls, get_model_cls, get_tokenizer_cls
 
-from ..models import (
-    get_model_cls,
-    get_config_cls,
-    get_tokenizer_cls,
-)
-from ..datasets import (
-    get_raw_dataset_dict,
-    preprocess_dataset_dict,
-    is_regression_task,
-)
-from ..eval import evaluate_cls_glue_fn
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 logger = logging.getLogger(__name__)
 
 
-def eval_cls_runner():
+def cli_eval_cls_glue():
     parser = ArgumentParser()
 
     parser.add_argument(
@@ -79,7 +75,7 @@ def eval_cls_runner():
         shuffle=False,
     )
 
-    results = evaluate_cls_glue_fn(
+    results = evaluate_cls_glue(
         model=model,
         task=args.task,
         eval_dataloader=search_dataloader,

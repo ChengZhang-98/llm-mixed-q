@@ -13,7 +13,7 @@ from llm_mixed_q.models import (
     get_bitwidth_profiler,
 )
 from llm_mixed_q.eval import evaluate_prompting_runner
-from llm_mixed_q.eval import evaluate_prompting_fn
+from llm_mixed_q.eval import eval_prompting_tasks
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 
@@ -26,7 +26,7 @@ def test_eval_prompting_fn():
     model_arch = "opt"
     model_name = "facebook/opt-350m"
     quant_config = "/home/zz7522/Projects/llm-mixed-q/experiments/asplos/configs/quantize/bypass.toml"
-    evaluate_prompting_fn(
+    eval_prompting_tasks(
         model_wrapper="llm-mixed-q",
         model_arch=model_arch,
         model_name=model_name,

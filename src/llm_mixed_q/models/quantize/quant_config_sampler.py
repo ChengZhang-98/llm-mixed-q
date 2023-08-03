@@ -1,9 +1,8 @@
 import ast
-from copy import deepcopy
 import logging
+from copy import deepcopy
 
 import optuna
-
 
 logger = logging.getLogger(__name__)
 

@@ -1,14 +1,11 @@
 from functools import partial
+
 import torch
-from ..quantizers import (
-    integer_quantizer,
-    block_fp_quantizer,
-    block_log_quantizer,
-    block_minifloat_quantizer,
-    log_quantizer,
-    minifloat_denorm_quantizer,
-    minifloat_ieee_quantizer,
-)
+
+from ..quantizers import (block_fp_quantizer, block_log_quantizer,
+                          block_minifloat_quantizer, integer_quantizer,
+                          log_quantizer, minifloat_denorm_quantizer,
+                          minifloat_ieee_quantizer)
 
 # PyTorch has torch.matmul and torch.bmm for matrix multiplication
 matmul_mapping = {"matmul": torch.matmul, "bmm": torch.bmm}

@@ -1,15 +1,17 @@
 import logging
+import os
 from argparse import ArgumentParser
-from ..search import (
-    SearchQuantisationForPromptingCLS,
-)
 from pprint import pformat
 
+from ..search import SearchQuantisationForPromptingCLS
+
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 logger = logging.getLogger(__name__)
 
 
-def search_quantisation_for_prompting_cls_runner():
+def cli_search_quantisation_on_prompting_cls_tasks():
     parser = ArgumentParser()
     parser.add_argument("--model_arch", type=str, required=True)
     parser.add_argument("--model_name", type=str, required=True)

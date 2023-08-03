@@ -1,24 +1,23 @@
-from pathlib import Path
-from argparse import ArgumentParser
-from pprint import pformat
 import json
+import os
+from argparse import ArgumentParser
+from pathlib import Path
+from pprint import pformat
 
 from torch.utils.data import DataLoader
 from transformers import default_data_collator
 
-
-from ..utils import extract_quant_config_fn
+from ..datasets import get_raw_dataset_dict, is_regression_task, preprocess_dataset_dict
+from ..eval import evaluate_cls_glue
+from ..models import get_config_cls, get_model_cls, get_tokenizer_cls
+from ..utils import extract_quant_config
 from ..utils.logger import get_logger
-from ..datasets import (
-    get_raw_dataset_dict,
-    preprocess_dataset_dict,
-    is_regression_task,
-)
-from ..models import get_model_cls, get_config_cls, get_tokenizer_cls
-from ..eval import evaluate_cls_glue_fn
+
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 
-def extract_quant_config_and_eval_cls_glue_runner():
+def cli_extract_quant_config_and_eval_cls_glue():
     logger = get_logger(__name__)
 
     parser = ArgumentParser()
@@ -45,7 +44,7 @@ def extract_quant_config_and_eval_cls_glue_runner():
     logger.info("============== Extracting quant config ==============")
     logger.info(pformat(vars(args)))
 
-    quant_config = extract_quant_config_fn(args.study, args.trial, quant_config_path)
+    quant_config = extract_quant_config(args.study, args.trial, quant_config_path)
     if quant_config_path is not None:
         logger.info(f"Saved quant config to {quant_config_path}")
 
@@ -77,7 +76,7 @@ def extract_quant_config_and_eval_cls_glue_runner():
         collate_fn=default_data_collator,
         shuffle=False,
     )
-    results = evaluate_cls_glue_fn(
+    results = evaluate_cls_glue(
         model,
         task=args.task,
         eval_dataloader=eval_dataloader,
@@ -96,4 +95,4 @@ def extract_quant_config_and_eval_cls_glue_runner():
 
 
 if __name__ == "__main__":
-    extract_quant_config_and_eval_cls_glue_runner()
+    cli_extract_quant_config_and_eval_cls_glue()

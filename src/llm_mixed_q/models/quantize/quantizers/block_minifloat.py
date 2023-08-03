@@ -1,8 +1,8 @@
 import torch
 from torch import Tensor
 
-from .utils import block, my_clamp, unblock
 from .minifloat import _minifloat_ieee_quantize
+from .utils import block, my_clamp, unblock
 
 
 def _block_minifloat_quantize(

@@ -1,5 +1,6 @@
-import toml
 from pathlib import Path
+
+import toml
 
 
 def convert_str_na_to_none(d):

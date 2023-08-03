@@ -18,7 +18,6 @@ from transformers.utils import logging
 
 from .quant_config_opt import parse_opt_quantized_config
 
-
 logger = logging.get_logger(__name__)
 
 OPT_PRETRAINED_CONFIG_ARCHIVE_MAP = {

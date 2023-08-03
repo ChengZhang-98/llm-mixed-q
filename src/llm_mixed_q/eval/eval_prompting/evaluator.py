@@ -2,15 +2,15 @@ import collections
 import itertools
 import random
 
+import numpy as np
+import transformers
+
+import lm_eval.base
 import lm_eval.metrics
 import lm_eval.models
 import lm_eval.tasks
-import lm_eval.base
-from lm_eval.utils import positional_deprecated, run_task_tests
 from lm_eval.models.gpt2 import HFLM
-
-import numpy as np
-import transformers
+from lm_eval.utils import positional_deprecated, run_task_tests
 
 
 @positional_deprecated
@@ -403,7 +403,7 @@ def evaluate(
 
 def make_table(result_dict):
     """Generate table of results."""
-    from pytablewriter import MarkdownTableWriter, LatexTableWriter
+    from pytablewriter import LatexTableWriter, MarkdownTableWriter
 
     md_writer = MarkdownTableWriter()
     latex_writer = LatexTableWriter()

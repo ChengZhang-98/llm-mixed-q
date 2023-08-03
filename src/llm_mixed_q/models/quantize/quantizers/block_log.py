@@ -1,8 +1,8 @@
 import torch
 from numpy import ndarray
 from torch import Tensor
-from .log import _log_quantize
 
+from .log import _log_quantize
 from .utils import block, my_clamp, unblock
 
 

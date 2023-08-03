@@ -1,13 +1,13 @@
-import math
 import logging
+import math
+
 import torch
 from tqdm import tqdm
-
 
 logger = logging.getLogger(__name__)
 
 
-def evaluate_lm_wikitext2_fn(
+def eval_lm_wikitext2(
     model,
     eval_dataloader,
     num_samples: int = None,

@@ -1,19 +1,15 @@
-from typing import Any, Mapping
-import torch
-from functools import partial
-import torch.nn.functional as F
-import torch.nn as nn
 import logging
+from functools import partial
+from typing import Any, Mapping
 
-from ..quantizers import (
-    integer_quantizer,
-    block_fp_quantizer,
-    block_minifloat_quantizer,
-    block_log_quantizer,
-    minifloat_ieee_quantizer,
-    minifloat_denorm_quantizer,
-    log_quantizer,
-)
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+from ..quantizers import (block_fp_quantizer, block_log_quantizer,
+                          block_minifloat_quantizer, integer_quantizer,
+                          log_quantizer, minifloat_denorm_quantizer,
+                          minifloat_ieee_quantizer)
 
 logger = logging.getLogger(__name__)
 

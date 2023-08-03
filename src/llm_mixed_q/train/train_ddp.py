@@ -1,34 +1,27 @@
 import argparse
-from typing import Any
-import toml
-from ..models import get_config_cls, get_model_cls, get_tokenizer_cls
-from ..utils import set_logging_verbosity, load_config, save_config
 import logging
-
 import math
 import os
 from functools import partial
 from pathlib import Path
-import transformers
-import datasets
-from tqdm import tqdm
+from typing import Any
 
-import numpy as np
-import torch
+import datasets
 import evaluate as hf_evaluate
+import numpy as np
+import toml
+import torch
+import transformers
 from accelerate import Accelerator
 from accelerate.logging import get_logger
 from torch.utils.data import DataLoader
+from tqdm import tqdm
+from transformers import (AutoTokenizer, DataCollatorWithPadding,
+                          PretrainedConfig, SchedulerType,
+                          default_data_collator, get_scheduler, set_seed)
 
-from transformers import (
-    AutoTokenizer,
-    SchedulerType,
-    default_data_collator,
-    set_seed,
-    PretrainedConfig,
-    DataCollatorWithPadding,
-    get_scheduler,
-)
+from ..models import get_config_cls, get_model_cls, get_tokenizer_cls
+from ..utils import load_config, save_config, set_logging_verbosity
 
 logger = get_logger("TrainerDDP")
 

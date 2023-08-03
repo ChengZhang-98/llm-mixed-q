@@ -1,23 +1,24 @@
-from argparse import ArgumentParser
+import json
 import logging
 import os
-import json
+from argparse import ArgumentParser
 from pathlib import Path
+
+from accelerate import dispatch_model, infer_auto_device_map
 from torch.utils.data import DataLoader
-from accelerate import infer_auto_device_map, dispatch_model
-from ..models import (
-    get_model_cls,
-    get_config_cls,
-    get_tokenizer_cls,
-)
 from transformers import DataCollatorForLanguageModeling
+
 from ..datasets import get_raw_dataset_dict, preprocess_dataset_dict
-from ..eval import evaluate_lm_wikitext2_fn
+from ..eval import eval_lm_wikitext2
+from ..models import get_config_cls, get_model_cls, get_tokenizer_cls
+
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 logger = logging.getLogger(__name__)
 
 
-def eval_perplexity_runner():
+def cli_eval_lm_wikitext2():
     logger.info("Evaluation started")
 
     parser = ArgumentParser()
@@ -81,7 +82,7 @@ def eval_perplexity_runner():
         num_workers=os.cpu_count(),
     )
 
-    results = evaluate_lm_wikitext2_fn(
+    results = eval_lm_wikitext2(
         model,
         eval_dataloader=eval_dataloader,
         num_samples=None,

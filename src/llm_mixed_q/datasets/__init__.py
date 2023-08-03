@@ -1,15 +1,14 @@
 import logging
+
 import datasets
-from .glue import (
-    get_num_labels as get_num_labels_glue,
-    get_raw_dataset_dict as get_raw_dataset_dict_glue,
-    preprocess_dataset_dict as preprocess_dataset_dict_glue,
-    GLUE_TASKS,
-)
-from .wikitext2 import (
-    get_raw_dataset_dict as get_raw_dataset_dict_wikitext2,
-    preprocess_dataset_dict as preprocess_dataset_dict_wikitext2,
-)
+
+from .glue import GLUE_TASKS
+from .glue import get_num_labels as get_num_labels_glue
+from .glue import get_raw_dataset_dict as get_raw_dataset_dict_glue
+from .glue import preprocess_dataset_dict as preprocess_dataset_dict_glue
+from .wikitext2 import get_raw_dataset_dict as get_raw_dataset_dict_wikitext2
+from .wikitext2 import \
+    preprocess_dataset_dict as preprocess_dataset_dict_wikitext2
 
 logger = logging.getLogger(__name__)
 

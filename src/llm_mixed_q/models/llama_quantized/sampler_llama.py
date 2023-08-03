@@ -1,8 +1,9 @@
-import logging
 import ast
+import logging
 from copy import deepcopy
 
 import optuna
+
 from ..quantize import parse_node_config, sample_a_dict_of_list
 
 logger = logging.getLogger(__name__)

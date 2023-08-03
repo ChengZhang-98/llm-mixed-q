@@ -1,0 +1,112 @@
+import logging
+import os
+from argparse import ArgumentParser
+from pprint import pformat
+
+import toml
+from torch.utils.data import DataLoader
+from transformers import default_data_collator, set_seed
+
+from ..datasets import (get_num_labels, get_raw_dataset_dict,
+                        is_regression_task, preprocess_dataset_dict)
+from ..search import SearchIntQuantisationForClassification
+
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+logger = logging.getLogger(__name__)
+
+
+def cli_conditional_search_quant_on_cls_glue():
+    parser = ArgumentParser()
+    parser.add_argument("--model_arch", type=str, required=True)
+    parser.add_argument("--model_name", type=str, required=True)
+    parser.add_argument("--task", type=str, choices=["sst2"], required=True)
+    parser.add_argument("--search_config", type=str, required=True)
+    parser.add_argument("--stat_profile", type=str, required=True)
+    parser.add_argument("--save_dir", type=str, required=True)
+
+    parser.add_argument("--batch_size", type=int, default=32)
+    parser.add_argument("--padding", type=str, default="max_length")
+    parser.add_argument("--max_length", type=int, default=128)
+    parser.add_argument(
+        "--search_dataset_split",
+        type=str,
+        default="train",
+        choices=["train", "validation", "test"],
+    )
+    parser.add_argument(
+        "--eval_dataset_split",
+        type=str,
+        default="validation",
+        choices=["train", "validation", "test"],
+    )
+    parser.add_argument("--accelerator", type=str, default="cuda:0")
+    parser.add_argument("--model_parallel", action="store_true")
+    parser.add_argument("--seed", type=int, default=None)
+    parser.add_argument("--range_entry", type=str, default="range_min_max")
+
+    args = parser.parse_args()
+
+    logger.info("==================== Search Config ====================")
+    logger.info(pformat(vars(args)))
+    logger.info("==================== Search Starts ====================")
+
+    stat_profile = toml.load(args.stat_profile)
+
+    if args.seed is not None:
+        set_seed(args.seed)
+
+    search_obj = SearchIntQuantisationForClassification(
+        model_arch=args.model_arch,
+        model_name=args.model_name,
+        search_config=args.search_config,
+        save_dir=args.save_dir,
+        num_labels=get_num_labels(args.task),
+        device=args.accelerator,
+        model_parallel=args.model_parallel,
+    )
+
+    raw_dataset_dict = get_raw_dataset_dict(args.task)
+    preprocessed_dataset_dict = preprocess_dataset_dict(
+        raw_dataset_dict,
+        args.task,
+        tokenizer=search_obj.tokenizer,
+        padding=args.padding,
+        max_length=args.max_length,
+    )
+    is_regression = is_regression_task(args.task)
+    search_dataloader = DataLoader(
+        preprocessed_dataset_dict[args.search_dataset_split],
+        batch_size=args.batch_size,
+        collate_fn=default_data_collator,
+        num_workers=os.cpu_count(),
+        shuffle=False,
+    )
+    eval_dataloader = DataLoader(
+        preprocessed_dataset_dict[args.eval_dataset_split],
+        batch_size=args.batch_size,
+        collate_fn=default_data_collator,
+        num_workers=os.cpu_count(),
+        shuffle=False,
+    )
+
+    study = search_obj.search(
+        eval_dataloader=search_dataloader,
+        task=args.task,
+        is_regression=is_regression,
+        seq_len=args.max_length,
+        stat_profiler=stat_profile,
+        range_entry=args.range_entry,
+    )
+
+    search_obj.evaluate_best_trials(
+        study,
+        stat_profile=stat_profile,
+        range_entry=args.range_entry,
+        eval_dataloader=eval_dataloader,
+        task=args.task,
+        is_regression=is_regression,
+    )
+
+    logger.info("==================== Search Ends ====================")

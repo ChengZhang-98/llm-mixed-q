@@ -1,18 +1,22 @@
-from pathlib import Path
-from pprint import pformat
-from argparse import ArgumentParser
 import json
 import logging
+import os
+from argparse import ArgumentParser
+from pathlib import Path
+from pprint import pformat
 
-
-from ..eval import evaluate_prompting_fn
-from lm_eval.models import MODEL_REGISTRY
 from lm_eval import evaluator as lm_eval_evaluator
+from lm_eval.models import MODEL_REGISTRY
+
+from ..eval import eval_prompting_tasks
+
+os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 logger = logging.getLogger(__name__)
 
 
-def eval_prompting_cls_runner():
+def cli_prompting_eval_cls():
     parser = ArgumentParser()
 
     parser.add_argument(
@@ -64,7 +68,7 @@ def eval_prompting_cls_runner():
 
     logger.info(f"========== Running eval_prompting ==========")
     logger.info(pformat(vars(args)))
-    results = evaluate_prompting_fn(
+    results = eval_prompting_tasks(
         model_wrapper=args.model_wrapper,
         model_arch=args.model_arch,
         model_name=args.model_name,

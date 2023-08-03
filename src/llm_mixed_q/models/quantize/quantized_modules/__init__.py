@@ -1,12 +1,6 @@
-from .linear import (
-    LinearBlockFP,
-    LinearInteger,
-    LinearMinifloatIEEE,
-    LinearMinifloatDenorm,
-    LinearBlockLog,
-    LinearLog,
-    LinearBlockMinifloat,
-)
+from .linear import (LinearBlockFP, LinearBlockLog, LinearBlockMinifloat,
+                     LinearInteger, LinearLog, LinearMinifloatDenorm,
+                     LinearMinifloatIEEE)
 
 QUANTIZED_MODULE_MAP = {
     "linear": {

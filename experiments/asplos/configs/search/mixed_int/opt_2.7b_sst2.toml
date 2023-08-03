@@ -1,10 +1,10 @@
 [search_strategy]
 n_jobs = 1
-n_trials = 128
+n_trials = 64
 timeout = 28800.0
 sampler = "TPE"
 acc_threshold = 0.5
-avg_bitwidth_threshold = 8.5
+avg_bitwidth_threshold = 9
 sort_by = ["accuracy", "avg_bitwidth"]
 
 [search_estimator]

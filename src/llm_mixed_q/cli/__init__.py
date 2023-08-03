@@ -18,3 +18,4 @@ from .transform_stat_profile_to_int_config import (
     transform_stat_profile_to_int_quant_config_runner,
 )
 from .eval_cls import eval_cls_runner
+from .search_conditional_cls import search_conditional_quantisation_for_cls_runner

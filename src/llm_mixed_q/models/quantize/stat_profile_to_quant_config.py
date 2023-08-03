@@ -41,7 +41,7 @@ def transform_stat_profile_to_int_quant_config(
         tgt_stat = stat[range_entry]
         max_half_range = max(abs(tgt_stat["min"]), abs(tgt_stat["max"]))
         if isinstance(width, dict):
-            entry_width = width[name]
+            entry_width = width[f"{name}_width"]
         elif isinstance(width, int):
             entry_width = width
         else:

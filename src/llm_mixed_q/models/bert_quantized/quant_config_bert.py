@@ -1,11 +1,13 @@
 import os
 import re
+import logging
 from copy import deepcopy
 
 import toml
 from ..quantize import parse_node_config
 from ...utils.config_load import convert_str_na_to_none
 
+logger = logging.getLogger(__name__)
 """
 An example of quant_config for bert
 
@@ -79,7 +81,7 @@ def match_a_pattern(name: str, patterns: list[str]) -> str | None:
 
 
 def create_a_layer_config(
-    linear_qc: dict = None, matmul_qc: dict = None, layer_qc=None
+    linear_qc: dict = None, matmul_qc: dict = None, layer_qc=None, strict: bool = True
 ) -> dict:
     if (layer_qc is None and matmul_qc is None) and layer_qc is None:
         raise ValueError("Must provide either (linear_qc & matmul_qc) or layer_qc")
@@ -90,20 +92,20 @@ def create_a_layer_config(
     # fmt: off
     qc = {
         "attention": {
-            "query": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("query", linear_qc), "linear")),
-            "key": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("key", linear_qc), "linear")),
-            "value": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("value", linear_qc), "linear")),
-            "matmul_0": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("matmul_0", matmul_qc), "matmul")),
-            "matmul_1": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("matmul_1", matmul_qc), "matmul")),
+            "query": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("query", linear_qc), "linear", strict=strict)),
+            "key": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("key", linear_qc), "linear", strict=strict)),
+            "value": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("value", linear_qc), "linear", strict=strict)),
+            "matmul_0": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("matmul_0", matmul_qc), "matmul", strict=strict)),
+            "matmul_1": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("matmul_1", matmul_qc), "matmul", strict=strict)),
             "output": {
-                "dense": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("output", {}).get("dense", linear_qc), "linear")),
+                "dense": deepcopy(parse_node_config(layer_qc.get("attention", {}).get("output", {}).get("dense", linear_qc), "linear", strict=strict)),
             },
         },
         "intermediate": {
-            "dense": deepcopy(parse_node_config(layer_qc.get("intermediate", {}).get("dense", linear_qc), "linear")),
+            "dense": deepcopy(parse_node_config(layer_qc.get("intermediate", {}).get("dense", linear_qc), "linear", strict=strict)),
         },
         "output": {
-            "dense": deepcopy(parse_node_config(layer_qc.get("output", {}).get("dense", linear_qc), "linear")),
+            "dense": deepcopy(parse_node_config(layer_qc.get("output", {}).get("dense", linear_qc), "linear", strict=strict)),
         },
     }
     # fmt: on
@@ -129,7 +131,11 @@ def create_a_layer_config(
 #     return p_config
 
 
-def _parse_and_complete_config(config: dict, num_hidden_layers: int) -> dict:
+def _parse_and_complete_config(
+    config: dict,
+    num_hidden_layers: int,
+    strict: bool = True,
+) -> dict:
     assert "default" in config, "Must provide a default config"
     default_qc: dict = config["default"]
     linear_qc: dict = parse_node_config(
@@ -144,13 +150,15 @@ def _parse_and_complete_config(config: dict, num_hidden_layers: int) -> dict:
     for i in range(num_hidden_layers):
         layer_entry = f"model_layer_{i}"
         layer_qc = config.get(layer_entry, general_layer_qc)
-        p_config[layer_entry] = create_a_layer_config(linear_qc, matmul_qc, layer_qc)
+        p_config[layer_entry] = create_a_layer_config(
+            linear_qc, matmul_qc, layer_qc, strict=strict
+        )
     p_config["default"] = default_qc
     return p_config
 
 
 def parse_bert_quantized_config(
-    config: str | dict | None, num_hidden_layers: int
+    config: str | dict | None, num_hidden_layers: int, strict: bool = True
 ) -> dict:
     assert isinstance(
         config, (str, dict, type(None))
@@ -160,7 +168,7 @@ def parse_bert_quantized_config(
     if isinstance(config, str):
         config = toml.load(config)
     config = convert_str_na_to_none(config)
-    parsed_config = _parse_and_complete_config(config, num_hidden_layers)
+    parsed_config = _parse_and_complete_config(config, num_hidden_layers, strict=strict)
     return parsed_config
 
 
@@ -194,7 +202,7 @@ def format_stat_profiled_int_config_bert_quantized(
     for i in range(num_hidden_layers):
         layer_entry = f"model_layer_{i}"
         if layer_entry not in config:
-            raise ValueError(f"layer_entry {layer_entry} not found in config {config}")
+            raise ValueError(f"layer_entry {layer_entry} not found in config")
 
         layer_config = config[layer_entry]
 
@@ -208,12 +216,20 @@ def format_stat_profiled_int_config_bert_quantized(
             "weight_width": layer_config["attention"]["key"]["data_out_width"],
             "weight_frac_width": layer_config["attention"]["key"]["data_out_frac_width"],
         }
+
+        try:
+            matmul_1_w_width = default_config[layer_entry]["attention"]["matmul_1"]["data_in_width"]
+            logger.debug("matmul_1 weight_width uses default_config[\"model_layer_x\"][\"attention\"][\"matmul_1\"][\"data_in_width\"]")
+        except KeyError:
+            matmul_1_w_width = default_config["data_in_width"]
+            logger.debug("matmul_1 weight_width default_config[\"data_in_width\"]")
+
         layer_config["attention"]["matmul_1"] = {
             "name": "integer",
             "bypass": bypass,
             "is_ptq": is_ptq,
-            "data_in_width": default_config["data_in_width"],
-            "data_in_frac_width": default_config["data_in_width"]-1,
+            "data_in_width": matmul_1_w_width,
+            "data_in_frac_width": matmul_1_w_width-1,
             "weight_width": layer_config["attention"]["value"]["data_out_width"],
             "weight_frac_width": layer_config["attention"]["value"]["data_out_frac_width"],
         }
@@ -226,5 +242,16 @@ def format_stat_profiled_int_config_bert_quantized(
         layer_config["attention"]["value"].pop("data_out_width")
         layer_config["attention"]["value"].pop("data_out_frac_width")
 
-    config["default"] = default_config
+    if "default" not in config:
+        config["default"] = {
+            "name": "integer",
+            "bypass": bypass,
+            "is_ptq": is_ptq,
+            "data_in_width": 8,
+            "data_in_frac_width": 4,
+            "weight_width": 8,
+            "weight_frac_width": 8,
+            "bias_width": 8,
+            "bias_frac_width": 8,
+        }
     return config

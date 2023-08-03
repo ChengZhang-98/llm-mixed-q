@@ -7,3 +7,4 @@ from .search import (
     SearchQuantisationForClassification,
     SearchQuantisationForPromptingCLS,
 )
+from .search_conditional import SearchIntQuantisationForClassification

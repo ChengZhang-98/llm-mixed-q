@@ -189,6 +189,8 @@ class SearchIntQuantisationForClassification(SearchBase):
         task: str,
         is_regression: bool,
         seq_len: int,
+        stat_profiler: dict,
+        range_entry: str = "range_min_max",
     ):
         def compute_software_metric(
             model, task, eval_dataloader, is_regression, num_samples
@@ -229,11 +231,15 @@ class SearchIntQuantisationForClassification(SearchBase):
             stat_profile: dict,
             range_entry: str = "range_min_max",
         ):
+            """
+            seed -> sampled_config -> extend sampled to full config -> determine frac_width -> evaluate
+                                        !: the q_config_parser requires both width and frac_width
+            """
             if self.search_config["search_space"]["extend_quant_config_seed_first"]:
                 quant_config_seed = self.q_config_parser(
-                    quant_config_seed, self.model_config.num_hidden_layers
+                    quant_config_seed, self.model_config.num_hidden_layers, strict=False
                 )
-            # logger.debug(f"============= Quant Config Seed =============")
+            # logger.debug(f"0️⃣ Quant Config Seed:")
             # logger.debug("\n" + pformat(quant_config_seed))
             # TODO: create a general recursive quant config parser
             sampled_config = self.q_config_sampler(
@@ -241,36 +247,42 @@ class SearchIntQuantisationForClassification(SearchBase):
                 name="root",
                 config_seed=quant_config_seed,
             )
-            # FIXME: parser will remove q_proj:output_width
+            # logger.debug(f"1️⃣ Sampled Config (before parsing):")
+            # logger.debug("\n" + pformat(sampled_config))
             sampled_config = self.q_config_parser(
-                sampled_config, self.model_config.num_hidden_layers
+                sampled_config, self.model_config.num_hidden_layers, strict=False
             )
+            flattened_sampled_config = {}
+            flatten_dict(sampled_config, new_d=flattened_sampled_config)
+            logger.debug(f"2️⃣ Flattened Sampled Config:")
+            logger.debug("\n" + pformat(flattened_sampled_config))
+            sampled_config_complete = sampled_config
             sampled_config = transform_stat_profile_to_int_quant_config(
                 stat_profile,
                 range_entry=range_entry,
-                width=sampled_config,
+                width=flattened_sampled_config,
                 frac_choices=None,
                 root_name="root",
                 is_ptq=True,
                 bypass=False,
             )
-            flattened_sampled_config = flatten_dict(sampled_config)
-
+            # logger.debug(f"3️⃣ Config from stat_profile:")
+            # logger.debug("\n" + pformat(sampled_config))
             self.q_config_formatter(
-                flattened_sampled_config,
+                sampled_config,
                 self.model_config.num_hidden_layers,
-                default_config=None,
+                default_config=sampled_config_complete,
                 is_ptq=True,
                 bypass=False,
             )
-            # logger.debug(f"============= Sampled Config =============")
-            # logger.debug("\n" + pformat(sampled_config["model_layer_0"]))
+            # logger.debug("4️⃣ Config after formatting:")
+            # logger.debug("\n" + pformat(sampled_config))
             model = self.rebuild_model(sampled_config)
-            logger.debug(f"============== Sampled model layer 0 =============")
-            logger.debug(f"Model layer 0:{model.bert.encoder.layer[0]}")
-            logger.debug(
-                f"Model layer 0:{model.bert.encoder.layer[0].attention.self.query.w_quantizer}"
-            )
+            # logger.debug(f"============== model layer 0 =============")
+            # logger.debug(f"Model layer 0:{model.bert.encoder.layer[0]}")
+            # logger.debug(
+            #     f"Model layer 0:{model.bert.encoder.layer[0].attention.self.query.w_quantizer}"
+            # )
             s_metric = compute_software_metric(
                 model=model,
                 task=task,
@@ -355,6 +367,8 @@ class SearchIntQuantisationForClassification(SearchBase):
                 # quant_config_sampler=self.q_config_sampler,
                 quant_config_seed=q_config_seed,
                 seq_len=seq_len,
+                stat_profile=stat_profiler,
+                range_entry=range_entry,
             ),
             n_trials=self.search_config["search_strategy"]["n_trials"],
             n_jobs=self.search_config["search_strategy"]["n_jobs"],
@@ -393,7 +407,12 @@ class SearchIntQuantisationForClassification(SearchBase):
 
     @staticmethod
     def get_result_df(
-        study: optuna.Study, save_dir, alpha_s, alpha_h, compare_to
+        study: optuna.Study,
+        save_dir,
+        alpha_s,
+        alpha_h,
+        compare_to,
+        sort_by=["accuracy", "memory_density"],
     ) -> pd.DataFrame:
         result_df = pd.DataFrame(
             columns=[
@@ -433,6 +452,7 @@ class SearchIntQuantisationForClassification(SearchBase):
                 scaled_h_metric,
                 quant_config,
             ]
+        result_df = result_df.sort_values(by=sort_by, ascending=False)
         return result_df
 
     def save_study_and_results(self, study: optuna.Study):

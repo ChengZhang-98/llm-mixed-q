@@ -18,7 +18,7 @@ echo ========== Running BERT Large SST2 ==========
 search_tag=$1
 search_config=$2
 
-save_dir=$work_dir/checkpoints/asplos/search/bert_large_sst2/$search_tag && mkdir -p $save_dir
+save_dir=$work_dir/checkpoints/asplos/mixed_bfp/bert_large_sst2/$search_tag && mkdir -p $save_dir
 model_arch=bert
 task=sst2
 ckpt=$work_dir/checkpoints/asplos/fine_tune/bert_large_sst2

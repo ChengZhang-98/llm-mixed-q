@@ -21,14 +21,14 @@ work_dir=$HOME/Projects/llm-mixed-q
 env_name=llm-mixed-q
 run_dir=$work_dir/experiments/asplos/search
 cd $run_dir
-echo ========== Running OPT-350M SST2 ==========
+echo ========== Running OPT-125M SST2 ==========
 search_tag=$1
 search_config=$2
 
-save_dir=$work_dir/checkpoints/asplos/search/opt_350m/$search_tag && mkdir -p $save_dir
+save_dir=$work_dir/checkpoints/asplos/mixed_bfp/opt_125m/$search_tag && mkdir -p $save_dir
 model_arch=opt
 task=sst2
-ckpt=$work_dir/checkpoints/asplos/fine_tune/opt_350m_sst2
+ckpt=$work_dir/checkpoints/asplos/fine_tune/opt_125m_sst2
 batch_size=256
 max_length=196
 

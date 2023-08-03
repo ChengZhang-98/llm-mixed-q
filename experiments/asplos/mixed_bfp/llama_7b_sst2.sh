@@ -18,7 +18,7 @@ echo ========== Running Llama-7B SST2 ==========
 search_tag=$1
 search_config=$2
 
-save_dir=$work_dir/checkpoints/asplos/search/llama_7b/$search_tag && mkdir -p $save_dir
+save_dir=$work_dir/checkpoints/asplos/mixed_bfp/llama_7b/$search_tag && mkdir -p $save_dir
 model_arch=llama
 tasks=sst
 model_name="huggyllama/llama-7b"

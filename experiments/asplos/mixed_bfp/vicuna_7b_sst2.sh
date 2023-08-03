@@ -14,14 +14,14 @@ work_dir=$HOME/Projects/llm-mixed-q
 env_name=llm-mixed-q
 run_dir=$work_dir/experiments/asplos/search
 cd $run_dir
-echo ========== Running OPT-6.7B SST2 ==========
+echo ========== Running Vicuna-7B SST2 ==========
 search_tag=$1
 search_config=$2
 
-save_dir=$work_dir/checkpoints/asplos/search/opt_6.7b/$search_tag && mkdir -p $save_dir
-model_arch=opt
+save_dir=$work_dir/checkpoints/asplos/mixed_bfp/vicuna_7b/$search_tag && mkdir -p $save_dir
+model_arch=llama
 tasks=sst
-model_name="facebook/opt-6.7b"
+model_name="lmsys/vicuna-7b-v1.3"
 limit=128
 
 conda run -n $env_name --no-capture-output python search_prompting_cls.py \

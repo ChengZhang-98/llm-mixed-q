@@ -1,34 +1,27 @@
 #!/bin/bash
 
 if [ -z $1 ]; then
-    echo "❗Requires <search_tag> as \$0"
+    echo "❗Requires <search_tag> as \$1"
     exit
 fi
 
 if [ -z $2 ]; then
-    echo "❗Requires <search_config> as \$1"
+    echo "❗Requires <search_config> as \$2"
     exit
-fi
-
-if [ $USER = "cz98" ]; then
-    # sulis
-    module purge
-    module load CUDA/11.7.0 GCCcore/11.3.0 GCC/11.3.0 OpenMPI/4.1.4 Python/3.10.4
-    source /home/c/cz98/venvs/llm-mixed-q/bin/activate
 fi
 
 work_dir=$HOME/Projects/llm-mixed-q
 env_name=llm-mixed-q
 run_dir=$work_dir/experiments/asplos/search
 cd $run_dir
-echo ========== Running Llama-160M SST2 ==========
+echo ========== Running BERT Base SST2 ==========
 search_tag=$1
 search_config=$2
+save_dir=$work_dir/checkpoints/asplos/mixed_bfp/bert_base_sst2/$search_tag && mkdir -p $save_dir
 
-save_dir=$work_dir/checkpoints/asplos/search/llama_160m_sst2/$search_tag && mkdir -p $save_dir
-model_arch=llama
+model_arch=bert
 task=sst2
-ckpt=$work_dir/checkpoints/asplos/fine_tune/llama_160m_sst2
+ckpt=$work_dir/checkpoints/asplos/fine_tune/bert_base_sst2
 batch_size=256
 max_length=196
 
@@ -41,5 +34,4 @@ conda run -n $env_name --no-capture-output python search_cls.py \
     --max_length $max_length \
     --save_dir $save_dir \
     --search_config $search_config
-
 echo ========== Done. ==========

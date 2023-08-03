@@ -169,12 +169,16 @@ def format_stat_profiled_int_config_llama_quantized(
             "weight_width": layer_config["self_attn"]["v_proj"]["data_out_width"],
             "weight_frac_width": layer_config["self_attn"]["v_proj"]["data_out_frac_width"],
         }
+        try:
+            rope_x_width = default_config[layer_entry]["self_attn"]["rotary_positional_encoding"]["data_in_width"]
+        except KeyError:
+            rope_x_width = default_config["data_in_width"]
         layer_config["self_attn"]["rotary_positional_encoding"] = {
             "name": "integer",
             "bypass": bypass,
             "is_ptq": is_ptq,
-            "data_in_width": default_config["data_in_width"],
-            "data_in_frac_width": default_config["data_in_width"] - 1,
+            "data_in_width": rope_x_width,
+            "data_in_frac_width": rope_x_width - 1,
         }
         layer_config["self_attn"]["k_proj"].pop("data_out_width")
         layer_config["self_attn"]["k_proj"].pop("data_out_frac_width")

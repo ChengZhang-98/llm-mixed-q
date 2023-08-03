@@ -19,7 +19,7 @@ from ..datasets import (
 logger = logging.getLogger(__name__)
 
 
-def search_conditional_quantisation_for_cls_runner():
+def search_quantisation_conditional_for_cls_runner():
     parser = ArgumentParser()
     parser.add_argument("--model_arch", type=str, required=True)
     parser.add_argument("--model_name", type=str, required=True)

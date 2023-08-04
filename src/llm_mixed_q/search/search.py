@@ -130,6 +130,22 @@ class SearchQuantisationForClassification(SearchBase):
         self.q_config_sampler = get_quant_config_sampler(model_arch)
         self.num_labels = num_labels
 
+        self._pre_search_check()
+
+    def _pre_search_check(self):
+        if self.search_config["search_estimator"]["alpha_accuracy"] == 0:
+            assert (
+                self.search_config["search_strategy"]["accuracy_threshold"] == 0
+            ), "alpha_accuracy is 0, please set accuracy_threshold to 0 as well"
+        if self.search_config["search_estimator"]["alpha_memory_density"] == 0:
+            assert (
+                self.search_config["search_strategy"]["avg_bitwidth_threshold"] == 0
+            ), "alpha_memory_density is 0, please set avg_bitwidth_threshold to 0 as well"
+        if self.search_config["search_estimator"]["alpha_ops_per_bit"] == 0:
+            assert (
+                self.search_config["search_strategy"]["ops_per_bit_threshold"] == 0
+            ), "alpha_ops_per_bit is 0, please set ops_per_bit_threshold to 0 as well"
+
     def rebuild_model(self, quant_config):
         if quant_config is None:
             config = self.config_cls.from_pretrained(
@@ -247,7 +263,6 @@ class SearchQuantisationForClassification(SearchBase):
                 task=task,
                 eval_dataloader=eval_dataloader,
                 is_regression=is_regression,
-                # num_samples=self.search_config["search_estimator"]["num_samples"],
                 num_samples=num_samples,
             )
             h_metric = compute_hardware_metric(
@@ -291,8 +306,6 @@ class SearchQuantisationForClassification(SearchBase):
                 + ","
                 + ",".join(map(str, scaled_metric_list))
             )
-            # a_s_metric = self.search_config["search_estimator"]["alpha_acc"]
-            # a_h_metric = self.search_config["search_estimator"]["alpha_mem_density"]
 
             return (*scaled_metric_list,)
 
@@ -301,9 +314,9 @@ class SearchQuantisationForClassification(SearchBase):
         ):
             acc, mem_density, ops_per_bits = frozen_trail.values
             # fmt: off
-            ori_acc = acc / self.search_config["search_estimator"]["alpha_accuracy"]
-            ori_mem_density = mem_density / self.search_config["search_estimator"]["alpha_memory_density"]
-            ori_ops_per_bits = ops_per_bits / self.search_config["search_estimator"]["alpha_ops_per_bit"]
+            ori_acc = acc / (self.search_config["search_estimator"]["alpha_accuracy"] + 1e-8)
+            ori_mem_density = mem_density / (self.search_config["search_estimator"]["alpha_memory_density"] + 1e-8)
+            ori_ops_per_bits = ops_per_bits / (self.search_config["search_estimator"]["alpha_ops_per_bit"] + 1e-8)
 
             avg_bitwidth = self.search_config["search_estimator"]["compare_to"] / ori_mem_density
             # fmt: on
@@ -418,9 +431,9 @@ class SearchQuantisationForClassification(SearchBase):
                 )
             )
             scaled_acc, scaled_mem_density, scaled_ops_per_bit = trial.values
-            acc = scaled_acc / alpha_acc
-            mem_density = scaled_mem_density / alpha_mem_density
-            ops_per_bit = scaled_ops_per_bit / alpha_ops_per_bit
+            acc = scaled_acc / (alpha_acc + 1e-8)
+            mem_density = scaled_mem_density / (alpha_mem_density + 1e-8)
+            ops_per_bit = scaled_ops_per_bit / (alpha_ops_per_bit + 1e-8)
             avg_bitwidth = compare_to / mem_density
             result_df.loc[i] = [
                 trial_id,
@@ -434,6 +447,7 @@ class SearchQuantisationForClassification(SearchBase):
                 avg_bitwidth,
                 quant_config,
             ]
+        result_df = result_df.sort_values("accuracy")
         return result_df
 
     def save_study_and_results(self, study: optuna.Study):
@@ -587,6 +601,21 @@ class SearchQuantisationForPromptingCLS(SearchBase):
         self.q_bitwidth_profiler = get_bitwidth_profiler(model_arch)
         self.q_config_parser = get_quant_config_parser(model_arch)
         self.q_config_sampler = get_quant_config_sampler(model_arch)
+        self._pre_search_check()
+
+    def _pre_search_check(self):
+        if self.search_config["search_estimator"]["alpha_accuracy"] == 0:
+            assert (
+                self.search_config["search_strategy"]["accuracy_threshold"] == 0
+            ), "alpha_accuracy is 0, please set accuracy_threshold to 0 as well"
+        if self.search_config["search_estimator"]["alpha_memory_density"] == 0:
+            assert (
+                self.search_config["search_strategy"]["avg_bitwidth_threshold"] == 0
+            ), "alpha_memory_density is 0, please set avg_bitwidth_threshold to 0 as well"
+        if self.search_config["search_estimator"]["alpha_ops_per_bit"] == 0:
+            assert (
+                self.search_config["search_strategy"]["ops_per_bit_threshold"] == 0
+            ), "alpha_ops_per_bit is 0, please set ops_per_bit_threshold to 0 as well"
 
     def rebuild_model(self, quant_config):
         raise NotImplementedError
@@ -753,9 +782,9 @@ class SearchQuantisationForPromptingCLS(SearchBase):
         ):
             acc, mem_density, ops_per_bits = frozen_trail.values
             # fmt: off
-            ori_acc = acc / self.search_config["search_estimator"]["alpha_accuracy"]
-            ori_mem_density = mem_density / self.search_config["search_estimator"]["alpha_memory_density"]
-            ori_ops_per_bits = ops_per_bits / self.search_config["search_estimator"]["alpha_ops_per_bit"]
+            ori_acc = acc / (self.search_config["search_estimator"]["alpha_accuracy"] + 1e-8)
+            ori_mem_density = mem_density / (self.search_config["search_estimator"]["alpha_memory_density"] + 1e-8)
+            ori_ops_per_bits = ops_per_bits / (self.search_config["search_estimator"]["alpha_ops_per_bit"] + 1e-8)
 
             avg_bitwidth = self.search_config["search_estimator"]["compare_to"] / ori_mem_density
             # fmt: on
@@ -793,9 +822,6 @@ class SearchQuantisationForPromptingCLS(SearchBase):
         # sample configs
         q_config_seed = self.search_config["search_space"]["quant_config_seed"]
 
-        self.logger.info(
-            f"trial,unscaled_acc,unscaled_mem_density,avg_bitwidth,scaled_acc,scaled_mem_density"
-        )
         study.optimize(
             func=partial(
                 objective,
@@ -878,9 +904,9 @@ class SearchQuantisationForPromptingCLS(SearchBase):
                 )
             )
             scaled_acc, scaled_mem_density, scaled_ops_per_bit = trial.values
-            acc = scaled_acc / alpha_acc
-            mem_density = scaled_mem_density / alpha_mem_density
-            ops_per_bit = scaled_ops_per_bit / alpha_ops_per_bit
+            acc = scaled_acc / (alpha_acc + 1e-8)
+            mem_density = scaled_mem_density / (alpha_mem_density + 1e-8)
+            ops_per_bit = scaled_ops_per_bit / (alpha_ops_per_bit + 1e-8)
             avg_bitwidth = compare_to / mem_density
             result_df.loc[i] = [
                 trial_id,
@@ -894,6 +920,7 @@ class SearchQuantisationForPromptingCLS(SearchBase):
                 avg_bitwidth,
                 quant_config,
             ]
+        result_df = result_df.sort_values("accuracy", ascending=False)
         return result_df
 
     def save_study_and_results(self, study: optuna.Study):

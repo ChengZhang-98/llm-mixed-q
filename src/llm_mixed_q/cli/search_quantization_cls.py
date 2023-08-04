@@ -6,10 +6,16 @@ from pprint import pformat
 from torch.utils.data import DataLoader
 from transformers import default_data_collator, set_seed
 
-from ..datasets import (get_num_labels, get_raw_dataset_dict,
-                        is_regression_task, preprocess_dataset_dict)
-from ..search import (SearchQuantisationForClassification,
-                      SearchQuantisationForPromptingCLS)
+from ..datasets import (
+    get_num_labels,
+    get_raw_dataset_dict,
+    is_regression_task,
+    preprocess_dataset_dict,
+)
+from ..search import (
+    SearchQuantisationForClassification,
+    SearchQuantisationForPromptingCLS,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +32,7 @@ def cli_search_quant_on_cls_glue():
     parser.add_argument("--save_dir", type=str, required=True)
 
     parser.add_argument("--batch_size", type=int, default=32)
+    parser.add_argument("--num_samples_per_trial", type=int, default=512)
     parser.add_argument("--padding", type=str, default="max_length")
     parser.add_argument("--max_length", type=int, default=128)
     parser.add_argument(
@@ -92,6 +99,7 @@ def cli_search_quant_on_cls_glue():
         task=args.task,
         is_regression=is_regression,
         seq_len=args.max_length,
+        num_samples_per_trial=args.num_samples_per_trial,
     )
 
     search_obj.evaluate_best_trials(

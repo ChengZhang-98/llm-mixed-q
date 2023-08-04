@@ -24,6 +24,7 @@ model_arch=opt
 task=sst2
 model_name="/home/zz7522/Projects/llm-mixed-q/checkpoints/asplos/fine_tune/opt_125m_sst2"
 batch_size=256
+num_samples=512
 max_length=196
 
 conda run -n $env_name --no-capture-output python search_cls.py \
@@ -31,6 +32,7 @@ conda run -n $env_name --no-capture-output python search_cls.py \
     --model_name $model_name \
     --task $task \
     --batch_size $batch_size \
+    --num_samples_per_trial $num_samples \
     --padding max_length \
     --save_dir $save_dir \
     --stat_profile $stat_profile \

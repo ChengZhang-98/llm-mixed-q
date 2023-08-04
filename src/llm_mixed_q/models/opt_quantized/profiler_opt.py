@@ -1,11 +1,15 @@
 import torch
 
-from ..quantize.quantized_layer_profiler import (profile_linear_layer,
-                                                 profile_matmul_layer,
-                                                 register_a_stat_hook,
-                                                 update_profile)
-from .modeling_opt import (OPTQuantizedDecoderLayer,
-                           OPTQuantizedForSequenceClassification)
+from ..quantize.quantized_layer_profiler import (
+    profile_linear_layer,
+    profile_matmul_layer,
+    register_a_stat_hook,
+    update_profile,
+)
+from .modeling_opt import (
+    OPTQuantizedDecoderLayer,
+    OPTQuantizedForSequenceClassification,
+)
 
 
 def _profile_bitwidth_opt_layer(
@@ -35,6 +39,7 @@ def _profile_bitwidth_opt_layer(
         "num_acts": 0,
         "param_bits": 0,
         "act_bits": 0,
+        "flops": 0,
     }
     delta_list = []
     delta_list.append(
@@ -129,6 +134,7 @@ def profile_bitwidth_opt_quantized(config, seq_len: int):
         "num_acts": 0,
         "param_bits": 0,
         "act_bits": 0,
+        "flops": 0,
     }
 
     for i in range(num_hidden_layers):

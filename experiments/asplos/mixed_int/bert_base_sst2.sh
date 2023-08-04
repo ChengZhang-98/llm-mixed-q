@@ -18,6 +18,7 @@ task=sst2
 ckpt=$work_dir/checkpoints/asplos/fine_tune/bert_base_sst2
 stat_profile=$work_dir/checkpoints/asplos/profile_statistics/bert_base_sst2/fp32/statistic_profile.toml
 batch_size=256
+num_samples=512
 max_length=196
 
 conda run -n $env_name --no-capture-output python search_cls.py \
@@ -25,6 +26,7 @@ conda run -n $env_name --no-capture-output python search_cls.py \
     --model_name $ckpt \
     --task $task \
     --batch_size $batch_size \
+    --num_samples_per_trial $num_samples \
     --padding max_length \
     --max_length $max_length \
     --save_dir $save_dir \

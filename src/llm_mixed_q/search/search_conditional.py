@@ -135,6 +135,22 @@ class SearchIntQuantisationForClassification(SearchBase):
         self.q_config_formatter = get_stat_config_formatter(model_arch)
         self.num_labels = num_labels
 
+        self._pre_search_check()
+
+    def _pre_search_check(self):
+        if self.search_config["search_estimator"]["alpha_accuracy"] == 0:
+            assert (
+                self.search_config["search_strategy"]["accuracy_threshold"] == 0
+            ), "alpha_accuracy is 0, please set accuracy_threshold to 0 as well"
+        if self.search_config["search_estimator"]["alpha_memory_density"] == 0:
+            assert (
+                self.search_config["search_strategy"]["avg_bitwidth_threshold"] == 0
+            ), "alpha_memory_density is 0, please set avg_bitwidth_threshold to 0 as well"
+        if self.search_config["search_estimator"]["alpha_ops_per_bit"] == 0:
+            assert (
+                self.search_config["search_strategy"]["ops_per_bit_threshold"] == 0
+            ), "alpha_ops_per_bit is 0, please set ops_per_bit_threshold to 0 as well"
+
     def rebuild_model(self, quant_config):
         if quant_config is None:
             config = self.config_cls.from_pretrained(
@@ -176,10 +192,11 @@ class SearchIntQuantisationForClassification(SearchBase):
         seq_len: int,
         stat_profiler: dict,
         range_entry: str = "range_min_max",
+        num_samples_per_trial: int = 512,
     ):
         def compute_software_metric(
             model, task, eval_dataloader, is_regression, num_samples
-        ):
+        ) -> dict:
             results = evaluate_cls_task(
                 model,
                 task,
@@ -189,24 +206,32 @@ class SearchIntQuantisationForClassification(SearchBase):
             )
             match task:
                 case "sst2":
-                    metric = results["accuracy"]
+                    accuracy = results["accuracy"]
                 case _:
                     raise NotImplementedError(f"task {task} not implemented")
-            return metric
+            s_metric = {
+                "accuracy": accuracy,
+            }
+            return s_metric
 
-        def compute_hardware_metric(profiler, config, seq_len, compare_to=32):
+        def compute_hardware_metric(profiler, config, seq_len, compare_to=32) -> dict:
             results = profiler(config, seq_len)
             num_params = results["num_params"]
             num_acts = results["num_acts"]
             param_bits = results["param_bits"]
             act_bits = results["act_bits"]
+            flops = results["flops"]
 
             param_bits_fp32 = compare_to * num_params
             act_bits_fp32 = compare_to * num_acts
 
             mem_density = (param_bits_fp32 + act_bits_fp32) / (param_bits + act_bits)
-            logger.debug(f"hardware_metric_results: {results}")
-            return mem_density
+            ops_per_bit = flops / (param_bits + act_bits)
+            h_metric = {
+                "memory_density": mem_density,
+                "ops_per_bit": ops_per_bit,
+            }
+            return h_metric
 
         def objective(
             trial: optuna.Trial,
@@ -214,7 +239,9 @@ class SearchIntQuantisationForClassification(SearchBase):
             quant_config_seed,
             seq_len: int,
             stat_profile: dict,
-            range_entry: str = "range_min_max",
+            range_entry: str,
+            file_logger: logging.Logger,
+            num_samples: int,
         ):
             """
             seed -> sampled_config -> extend sampled to full config -> determine frac_width -> evaluate
@@ -223,23 +250,20 @@ class SearchIntQuantisationForClassification(SearchBase):
                 quant_config_seed = self.q_config_parser(
                     quant_config_seed, self.model_config.num_hidden_layers, strict=False
                 )
-            # logger.debug(f"0️⃣ Quant Config Seed:")
-            # logger.debug("\n" + pformat(quant_config_seed))
+
             # TODO: create a general recursive quant config parser
             sampled_config = self.q_config_sampler(
                 trial=trial,
                 name="root",
                 config_seed=quant_config_seed,
             )
-            # logger.debug(f"1️⃣ Sampled Config (before parsing):")
-            # logger.debug("\n" + pformat(sampled_config))
+
             sampled_config = self.q_config_parser(
                 sampled_config, self.model_config.num_hidden_layers, strict=False
             )
             flattened_sampled_config = {}
             flatten_dict(sampled_config, new_d=flattened_sampled_config)
-            logger.debug(f"2️⃣ Flattened Sampled Config:")
-            logger.debug("\n" + pformat(flattened_sampled_config))
+
             sampled_config_complete = sampled_config
             sampled_config = transform_stat_profile_to_int_quant_config(
                 stat_profile,
@@ -250,8 +274,7 @@ class SearchIntQuantisationForClassification(SearchBase):
                 is_ptq=True,
                 bypass=False,
             )
-            # logger.debug(f"3️⃣ Config from stat_profile:")
-            # logger.debug("\n" + pformat(sampled_config))
+
             self.q_config_formatter(
                 sampled_config,
                 self.model_config.num_hidden_layers,
@@ -259,20 +282,15 @@ class SearchIntQuantisationForClassification(SearchBase):
                 is_ptq=True,
                 bypass=False,
             )
-            # logger.debug("4️⃣ Config after formatting:")
-            # logger.debug("\n" + pformat(sampled_config))
+
             model = self.rebuild_model(sampled_config)
-            # logger.debug(f"============== model layer 0 =============")
-            # logger.debug(f"Model layer 0:{model.bert.encoder.layer[0]}")
-            # logger.debug(
-            #     f"Model layer 0:{model.bert.encoder.layer[0].attention.self.query.w_quantizer}"
-            # )
+
             s_metric = compute_software_metric(
                 model=model,
                 task=task,
                 eval_dataloader=eval_dataloader,
                 is_regression=is_regression,
-                num_samples=self.search_config["search_estimator"]["num_samples"],
+                num_samples=num_samples,
             )
             h_metric = compute_hardware_metric(
                 self.q_bitwidth_profiler,
@@ -280,42 +298,59 @@ class SearchIntQuantisationForClassification(SearchBase):
                 seq_len=seq_len,
                 compare_to=self.search_config["search_estimator"]["compare_to"],
             )
-            logger.debug("Memory Density: " + str(h_metric))
-            logger.debug(
-                "Avg bitwidth: "
-                + str(self.search_config["search_estimator"]["compare_to"] / h_metric)
-            )
-            a_s_metric = self.search_config["search_estimator"]["alpha_acc"]
-            a_h_metric = self.search_config["search_estimator"]["alpha_mem_density"]
+            metric_name_list = list(s_metric.keys()) + list(h_metric.keys())
+            scaled_metric_list = []
+            metric_list = list(s_metric.values()) + list(h_metric.values())
 
-            s_metric = a_s_metric * s_metric
-            h_metric = a_h_metric * h_metric
-            return s_metric, h_metric
+            # accuracy
+            for metric_name, metric in s_metric.items():
+                scaled_metric_list.append(
+                    metric
+                    * self.search_config["search_estimator"][f"alpha_{metric_name}"]
+                )
+            # memory density, ops_per_bit
+            for metric_name, metric in h_metric.items():
+                scaled_metric_list.append(
+                    metric
+                    * self.search_config["search_estimator"][f"alpha_{metric_name}"]
+                )
+
+            if trial.number == 0:
+                file_logger.info(
+                    f"trial_id,"
+                    + ",".join(metric_name_list)
+                    + ","
+                    + ",".join(map(lambda x: f"scaled_{x}", metric_name_list))
+                )
+
+            file_logger.info(
+                f"{trial.number},"
+                + ",".join(map(str, metric_list))
+                + ","
+                + ",".join(map(str, scaled_metric_list))
+            )
+
+            return (*scaled_metric_list,)
 
         def logger_callback(
             study: optuna.Study, frozen_trail: optuna.trial.FrozenTrial
         ):
-            s_metric, h_metric = frozen_trail.values
+            acc, mem_density, ops_per_bits = frozen_trail.values
             # fmt: off
-            ori_s_metric = s_metric / self.search_config["search_estimator"]["alpha_acc"]
-            ori_h_metric = h_metric / self.search_config["search_estimator"]["alpha_mem_density"]
+            ori_acc = acc / (self.search_config["search_estimator"]["alpha_accuracy"] + 1e-8)
+            ori_mem_density = mem_density / (self.search_config["search_estimator"]["alpha_memory_density"] + 1e-8)
+            ori_ops_per_bits = ops_per_bits / (self.search_config["search_estimator"]["alpha_ops_per_bit"] + 1e-8)
 
-            avg_bitwidth = self.search_config["search_estimator"]["compare_to"] / ori_h_metric
+            avg_bitwidth = self.search_config["search_estimator"]["compare_to"] / ori_mem_density
             # fmt: on
-            self.logger.info(
-                f"{frozen_trail.number},"
-                f"{ori_s_metric:.4f},{ori_h_metric:.4f},{avg_bitwidth:.2f},"
-                f"{s_metric:.4f}, {h_metric:.4f}"
-            )
             logger.info(
                 f"Trial {frozen_trail.number} is done: "
-                f"unscaled (acc, mem_density, avg_bitwidth) = "
-                f"({ori_s_metric:.4f}, {ori_h_metric:.4f}, {avg_bitwidth:.2f}),"
-                f"scaled (acc, mem_density) = "
-                f"({s_metric:.4f}, {h_metric:.4f}), "
+                f"unscaled (accuracy, mem_density, ops_per_bit) = "
+                f"({ori_acc:.4f}, {ori_mem_density:.2f}, {ori_ops_per_bits:.2f}), "
+                f"scaled (...) = "
+                f"({acc:.4f}, {mem_density:.2f}, {ops_per_bits:.2f}), "
+                f"avg_bitwidth = {avg_bitwidth:.1f}"
             )
-            # logger.debug(f"============= Trial {frozen_trail.number} =============")
-            # logger.debug(f"Trial {frozen_trail.number} config: {frozen_trail.params}")
 
         # create sampler and study
         match self.search_config["search_strategy"]["sampler"].lower():
@@ -335,24 +370,22 @@ class SearchIntQuantisationForClassification(SearchBase):
                 )
         logger.info(f"Using sampler: {sampler.__class__.__name__}")
         study = optuna.create_study(
-            directions=["maximize", "maximize"],
+            directions=["maximize", "maximize", "maximize"],
             sampler=sampler,
         )
 
         # sample configs
         q_config_seed = self.search_config["search_space"]["quant_config_seed"]
 
-        self.logger.info(
-            f"trial,unscaled_acc,unscaled_mem_density,avg_bitwidth,scaled_acc,scaled_mem_density"
-        )
         study.optimize(
             func=partial(
                 objective,
-                # quant_config_sampler=self.q_config_sampler,
                 quant_config_seed=q_config_seed,
                 seq_len=seq_len,
                 stat_profile=stat_profiler,
                 range_entry=range_entry,
+                file_logger=self.logger,
+                num_samples=num_samples_per_trial,
             ),
             n_trials=self.search_config["search_strategy"]["n_trials"],
             n_jobs=self.search_config["search_strategy"]["n_jobs"],
@@ -430,20 +463,22 @@ class SearchIntQuantisationForClassification(SearchBase):
         stat_profile: dict,
         range_entry: str,
         save_dir,
-        alpha_s: float,
-        alpha_h: float,
+        alpha_acc: float,
+        alpha_mem_density: float,
+        alpha_ops_per_bit: float,
         compare_to: int,
-        sort_by=["accuracy", "memory_density"],
     ) -> pd.DataFrame:
         result_df = pd.DataFrame(
             columns=[
                 "trial_id",
                 "accuracy",
                 "memory_density",
-                "avg_bitwidth",
+                "ops_per_bit",
+                "scaled_accuracy",
+                "scaled_memory_density",
+                "scaled_ops_per_bit",
                 "quant_config_path",
-                "scaled_acc",
-                "scaled_mem_density",
+                "avg_bitwidth",
                 "quant_config",
             ]
         )
@@ -463,23 +498,24 @@ class SearchIntQuantisationForClassification(SearchBase):
                     save_path=quant_config_path,
                 )
             )
-            alpha_acc = alpha_s
-            alpha_mem_density = alpha_h
-            scaled_s_metric, scaled_h_metric = trial.values[0], trial.values[1]
-            s_metric = scaled_s_metric / alpha_acc
-            h_metric = scaled_h_metric / alpha_mem_density
-            avg_bitwidth = compare_to / h_metric
+            scaled_acc, scaled_mem_density, scaled_ops_per_bit = trial.values
+            acc = scaled_acc / (alpha_acc + 1e-8)
+            mem_density = scaled_mem_density / (alpha_mem_density + 1e-8)
+            ops_per_bit = scaled_ops_per_bit / (alpha_ops_per_bit + 1e-8)
+            avg_bitwidth = compare_to / mem_density
             result_df.loc[i] = [
                 trial_id,
-                s_metric,
-                h_metric,
-                avg_bitwidth,
+                acc,
+                mem_density,
+                ops_per_bit,
+                scaled_acc,
+                scaled_mem_density,
+                scaled_ops_per_bit,
                 quant_config_path,
-                scaled_s_metric,
-                scaled_h_metric,
+                avg_bitwidth,
                 quant_config,
             ]
-        result_df = result_df.sort_values(by=sort_by, ascending=False)
+        result_df = result_df.sort_values(by="accuracy", ascending=False)
         return result_df
 
     def save_study_and_results(self, study: optuna.Study, stat_profile, range_entry):
@@ -490,6 +526,7 @@ class SearchIntQuantisationForClassification(SearchBase):
         search_config_path = save_dir / "search_config.toml"
         save_config(self.search_config, search_config_path)
 
+        # fmt: off
         result_df = SearchIntQuantisationForClassification.get_result_df(
             study,
             q_config_parser=self.q_config_parser,
@@ -498,21 +535,29 @@ class SearchIntQuantisationForClassification(SearchBase):
             stat_profile=stat_profile,
             range_entry=range_entry,
             save_dir=save_dir,
-            alpha_s=self.search_config["search_estimator"]["alpha_acc"],
-            alpha_h=self.search_config["search_estimator"]["alpha_mem_density"],
+            alpha_acc=self.search_config["search_estimator"]["alpha_accuracy"],
+            alpha_mem_density=self.search_config["search_estimator"]["alpha_memory_density"],
+            alpha_ops_per_bit=self.search_config["search_estimator"]["alpha_ops_per_bit"],
             compare_to=self.search_config["search_estimator"]["compare_to"],
         )
-        # result_df.to_json(result_json_path, orient="index")
+        # fmt: on
+
         result_df.drop("quant_config", axis=1).to_csv(result_table_path, index=False)
         joblib.dump(study, study_path)
         logger.info("========== Best Trials ==========")
         logger.info(
-            f"(alpha_acc, alpha_mem_density) = {self.search_config['search_estimator']['alpha_acc']}, {self.search_config['search_estimator']['alpha_mem_density']}"
+            f"(alpha_accuracy, alpha_memory_density, alpha_ops_per_bit) = "
+            f"{self.search_config['search_estimator']['alpha_accuracy']}, "
+            f"{self.search_config['search_estimator']['alpha_memory_density']}, "
+            f"{self.search_config['search_estimator']['alpha_ops_per_bit']}"
         )
 
         result_df = result_df.drop("quant_config", axis=1)
         result_df["quant_config_name"] = result_df["quant_config_path"].apply(
             lambda x: "$save_dir/quant_configs/" + str(Path(x).name)
+        )
+        result_df = result_df.applymap(
+            lambda x: f"{x:.4f}" if isinstance(x, float) else x
         )
         result_df = result_df.drop("quant_config_path", axis=1)
         logger.info(
@@ -521,7 +566,6 @@ class SearchIntQuantisationForClassification(SearchBase):
                 result_df,
                 headers="keys",
                 tablefmt="pretty",
-                floatfmt=(None, ".4f", ".2f", ".2f", None, ".4f", ".2f"),
             )
         )
         logger.info(f"Results saved to {save_dir}")
@@ -536,20 +580,21 @@ class SearchIntQuantisationForClassification(SearchBase):
         task,
         is_regression,
     ):
-        acc_threshold = self.search_config["search_strategy"]["acc_threshold"]
-        avg_bitwidth_threshold = self.search_config["search_strategy"][
-            "avg_bitwidth_threshold"
-        ]
+        # fmt: off
+        acc_threshold = self.search_config["search_strategy"]["accuracy_threshold"]
+        avg_bitwidth_threshold = self.search_config["search_strategy"]["avg_bitwidth_threshold"]
+        ops_per_bit_threshold = self.search_config["search_strategy"]["ops_per_bit_threshold"]
+        # fmt: on
         sort_by = self.search_config["search_strategy"]["sort_by"]
 
         for i, s in enumerate(sort_by):
             assert s in [
-                "acc",
                 "accuracy",
                 "avg_bitwidth",
-            ], f"Unknown sort_by: {s}, must be one of ['acc', 'accuracy', 'avg_bitwidth']"
-            if s == "acc":
-                sort_by[i] = "accuracy"
+                "ops_per_bit",
+            ], f"Unknown sort_by: {s}, must be one of ['accuracy', 'avg_bitwidth', 'ops_per_bit']"
+
+        # fmt: off
         result_df = SearchIntQuantisationForClassification.get_result_df(
             study,
             q_config_parser=self.q_config_parser,
@@ -558,23 +603,35 @@ class SearchIntQuantisationForClassification(SearchBase):
             stat_profile=stat_profile,
             range_entry=range_entry,
             save_dir=self.save_dir,
-            alpha_s=self.search_config["search_estimator"]["alpha_acc"],
-            alpha_h=self.search_config["search_estimator"]["alpha_mem_density"],
+            alpha_acc=self.search_config["search_estimator"]["alpha_accuracy"],
+            alpha_mem_density=self.search_config["search_estimator"]["alpha_memory_density"],
+            alpha_ops_per_bit=self.search_config["search_estimator"]["alpha_ops_per_bit"],
             compare_to=self.search_config["search_estimator"]["compare_to"],
         )
+        # fmt: on
 
         filtered_df = result_df.loc[result_df["accuracy"] >= acc_threshold]
         filtered_df = filtered_df.loc[
             filtered_df["avg_bitwidth"] <= avg_bitwidth_threshold
         ]
+        filtered_df = filtered_df.loc[
+            filtered_df["ops_per_bit"] >= ops_per_bit_threshold
+        ]
         if len(filtered_df) == 0:
             logger.warning(
-                f"No trials found with acc >= {acc_threshold} and avg_bitwidth <= {avg_bitwidth_threshold}"
+                f"No trials found with acc >= {acc_threshold}, avg_bitwidth <= {avg_bitwidth_threshold}, ops_per_bit >= {ops_per_bit_threshold}"
             )
             return
 
-        sort_by = [s if s != "avg_bitwidth" else "memory_density" for s in sort_by]
-        filtered_df = filtered_df.sort_values(sort_by, ascending=False)
+        ascending_mapping = {
+            "accuracy": False,
+            "avg_bitwidth": True,
+            "ops_per_bit": False,
+        }
+
+        filtered_df = filtered_df.sort_values(
+            sort_by, ascending=[ascending_mapping[s] for s in sort_by]
+        )
 
         best_quant_config = filtered_df.iloc[0]["quant_config"]
         save_config(best_quant_config, self.save_dir / "best_quant_config.toml")
@@ -628,6 +685,22 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
         self.q_config_sampler = get_quant_config_sampler(model_arch)
         self.q_config_formatter = get_stat_config_formatter(model_arch)
 
+        self._pre_search_check()
+
+    def _pre_search_check(self):
+        if self.search_config["search_estimator"]["alpha_accuracy"] == 0:
+            assert (
+                self.search_config["search_strategy"]["accuracy_threshold"] == 0
+            ), "alpha_accuracy is 0, please set accuracy_threshold to 0 as well"
+        if self.search_config["search_estimator"]["alpha_memory_density"] == 0:
+            assert (
+                self.search_config["search_strategy"]["avg_bitwidth_threshold"] == 0
+            ), "alpha_memory_density is 0, please set avg_bitwidth_threshold to 0 as well"
+        if self.search_config["search_estimator"]["alpha_ops_per_bit"] == 0:
+            assert (
+                self.search_config["search_strategy"]["ops_per_bit_threshold"] == 0
+            ), "alpha_ops_per_bit is 0, please set ops_per_bit_threshold to 0 as well"
+
     def rebuild_model(self, quant_config):
         raise NotImplementedError
 
@@ -644,7 +717,7 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
         batch_size: int,
         max_batch_size: int,
         device: str,
-        limit: int,
+        num_samples_per_trial: int,
         stat_profile: dict,
         range_entry: str = "range_min_max",
         profiler_seq_len: int = 256,
@@ -659,7 +732,7 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
             max_batch_size,
             device,
             limit,
-        ):
+        ) -> dict:
             results = eval_prompting_tasks(
                 model_wrapper="llm-mixed-q",
                 model_arch=model_arch,
@@ -688,8 +761,12 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
                     acc_list.append(task_metric["acc"])
                 else:
                     logger.warning(f"Task {task_name} does not have accuracy, skipping")
-            metric = sum(acc_list) / len(acc_list)
-            return metric
+            avg_acc = sum(acc_list) / len(acc_list)
+            s_metric = {
+                "accuracy": avg_acc,
+            }
+
+            return s_metric
 
         def compute_hardware_metric(profiler, config, seq_len, compare_to=32):
             results = profiler(config, seq_len)
@@ -697,13 +774,18 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
             num_acts = results["num_acts"]
             param_bits = results["param_bits"]
             act_bits = results["act_bits"]
+            flops = results["flops"]
 
             param_bits_fp32 = compare_to * num_params
             act_bits_fp32 = compare_to * num_acts
 
             mem_density = (param_bits_fp32 + act_bits_fp32) / (param_bits + act_bits)
-            logger.debug(f"hardware_metric_results: {results}")
-            return mem_density
+            ops_per_bit = flops / (param_bits + act_bits)
+            h_metric = {
+                "memory_density": mem_density,
+                "ops_per_bit": ops_per_bit,
+            }
+            return h_metric
 
         def objective(
             trial: optuna.Trial,
@@ -716,30 +798,27 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
             device: str,
             limit: int,
             stat_profile: dict,
-            range_entry: str = "range_min_max",
+            range_entry: str,
+            file_logger: logging.Logger,
         ):
             if self.search_config["search_space"]["extend_quant_config_seed_first"]:
                 quant_config_seed = self.q_config_parser(
                     quant_config_seed, self.model_config.num_hidden_layers, strict=False
                 )
-            logger.debug(f"0️⃣ Quant Config Seed")
-            logger.debug("\n" + pformat(quant_config_seed))
+
             sampled_config = self.q_config_sampler(
                 trial=trial,
                 name="root",
                 config_seed=quant_config_seed,
             )
-            # logger.debug(f"1️⃣ Sampled Config (before parsing):")
-            # logger.debug("\n" + pformat(sampled_config))
+
             sampled_config = self.q_config_parser(
                 sampled_config, self.model_config.num_hidden_layers, strict=False
             )
-            # logger.debug(f"2️⃣ Sampled Config (after 2nd parsing):")
-            # logger.debug("\n" + pformat(sampled_config))
+
             flattened_sampled_config = {}
             flatten_dict(sampled_config, new_d=flattened_sampled_config)
-            # logger.debug(f"3️⃣ Flattened Sampled Config:")
-            # logger.debug("\n" + pformat(flattened_sampled_config))
+
             sampled_config_complete = sampled_config
             sampled_config = transform_stat_profile_to_int_quant_config(
                 stat_profile,
@@ -750,8 +829,7 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
                 is_ptq=True,
                 bypass=False,
             )
-            # logger.debug(f"4️⃣ Config from stat_profile:")
-            # logger.debug("\n" + pformat(sampled_config))
+
             self.q_config_formatter(
                 sampled_config,
                 self.model_config.num_hidden_layers,
@@ -777,42 +855,59 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
                 seq_len=seq_len,
                 compare_to=self.search_config["search_estimator"]["compare_to"],
             )
-            logger.debug("Memory Density: " + str(h_metric))
-            logger.debug(
-                "Avg bitwidth: "
-                + str(self.search_config["search_estimator"]["compare_to"] / h_metric)
-            )
-            a_s_metric = self.search_config["search_estimator"]["alpha_acc"]
-            a_h_metric = self.search_config["search_estimator"]["alpha_mem_density"]
 
-            s_metric = a_s_metric * s_metric
-            h_metric = a_h_metric * h_metric
-            return s_metric, h_metric
+            metric_name_list = list(s_metric.keys()) + list(h_metric.keys())
+            scaled_metric_list = []
+            metric_list = list(s_metric.values()) + list(h_metric.values())
+
+            # accuracy
+            for metric_name, metric in s_metric.items():
+                scaled_metric_list.append(
+                    metric
+                    * self.search_config["search_estimator"][f"alpha_{metric_name}"]
+                )
+            # memory density, ops_per_bit
+            for metric_name, metric in h_metric.items():
+                scaled_metric_list.append(
+                    metric
+                    * self.search_config["search_estimator"][f"alpha_{metric_name}"]
+                )
+
+            if trial.number == 0:
+                file_logger.info(
+                    f"trial_id,"
+                    + ",".join(metric_name_list)
+                    + ","
+                    + ",".join(map(lambda x: f"scaled_{x}", metric_name_list))
+                )
+
+            file_logger.info(
+                f"{trial.number},"
+                + ",".join(map(str, metric_list))
+                + ","
+                + ",".join(map(str, scaled_metric_list))
+            )
+            return (*scaled_metric_list,)
 
         def logger_callback(
             study: optuna.Study, frozen_trail: optuna.trial.FrozenTrial
         ):
-            s_metric, h_metric = frozen_trail.values
+            acc, mem_density, ops_per_bits = frozen_trail.values
             # fmt: off
-            ori_s_metric = s_metric / self.search_config["search_estimator"]["alpha_acc"]
-            ori_h_metric = h_metric / self.search_config["search_estimator"]["alpha_mem_density"]
+            ori_acc = acc / (self.search_config["search_estimator"]["alpha_accuracy"] + 1e-8)
+            ori_mem_density = mem_density / (self.search_config["search_estimator"]["alpha_memory_density"] + 1e-8)
+            ori_ops_per_bits = ops_per_bits / (self.search_config["search_estimator"]["alpha_ops_per_bit"] + 1e-8)
 
-            avg_bitwidth = self.search_config["search_estimator"]["compare_to"] / ori_h_metric
+            avg_bitwidth = self.search_config["search_estimator"]["compare_to"] / ori_mem_density
             # fmt: on
-            self.logger.info(
-                f"{frozen_trail.number},"
-                f"{ori_s_metric:.4f},{ori_h_metric:.4f},{avg_bitwidth:.2f},"
-                f"{s_metric:.4f}, {h_metric:.4f}"
-            )
             logger.info(
                 f"Trial {frozen_trail.number} is done: "
-                f"unscaled (acc, mem_density, avg_bitwidth) = "
-                f"({ori_s_metric:.4f}, {ori_h_metric:.4f}, {avg_bitwidth:.2f}),"
-                f"scaled (acc, mem_density) = "
-                f"({s_metric:.4f}, {h_metric:.4f}), "
+                f"unscaled (accuracy, mem_density, ops_per_bit) = "
+                f"({ori_acc:.4f}, {ori_mem_density:.2f}, {ori_ops_per_bits:.2f}), "
+                f"scaled (...) = "
+                f"({acc:.4f}, {mem_density:.2f}, {ops_per_bits:.2f}), "
+                f"avg_bitwidth = {avg_bitwidth:.1f}"
             )
-            # logger.debug(f"============= Trial {frozen_trail.number} =============")
-            # logger.debug(f"Trial {frozen_trail.number} config: {frozen_trail.params}")
 
         # create sampler and study
         match self.search_config["search_strategy"]["sampler"].lower():
@@ -832,16 +927,13 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
                 )
         logger.info(f"Using sampler: {sampler.__class__.__name__}")
         study = optuna.create_study(
-            directions=["maximize", "maximize"],
+            directions=["maximize", "maximize", "maximize"],
             sampler=sampler,
         )
 
         # sample configs
         q_config_seed = self.search_config["search_space"]["quant_config_seed"]
 
-        self.logger.info(
-            f"trial,unscaled_acc,unscaled_mem_density,avg_bitwidth,scaled_acc,scaled_mem_density"
-        )
         study.optimize(
             func=partial(
                 objective,
@@ -852,9 +944,10 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
                 batch_size=batch_size,
                 max_batch_size=max_batch_size,
                 device=device,
-                limit=limit,
+                limit=num_samples_per_trial,
                 stat_profile=stat_profile,
                 range_entry=range_entry,
+                file_logger=self.logger,
             ),
             n_trials=self.search_config["search_strategy"]["n_trials"],
             n_jobs=self.search_config["search_strategy"]["n_jobs"],
@@ -932,20 +1025,22 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
         stat_profile: dict,
         range_entry: str,
         save_dir,
-        alpha_s: float,
-        alpha_h: float,
+        alpha_acc: float,
+        alpha_mem_density: float,
+        alpha_ops_per_bit: float,
         compare_to: int,
-        sort_by=["accuracy", "memory_density"],
     ) -> pd.DataFrame:
         result_df = pd.DataFrame(
             columns=[
                 "trial_id",
                 "accuracy",
                 "memory_density",
-                "avg_bitwidth",
+                "ops_per_bit",
+                "scaled_accuracy",
+                "scaled_memory_density",
+                "scaled_ops_per_bit",
                 "quant_config_path",
-                "scaled_acc",
-                "scaled_mem_density",
+                "avg_bitwidth",
                 "quant_config",
             ]
         )
@@ -965,23 +1060,24 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
                     save_path=quant_config_path,
                 )
             )
-            alpha_acc = alpha_s
-            alpha_mem_density = alpha_h
-            scaled_s_metric, scaled_h_metric = trial.values[0], trial.values[1]
-            s_metric = scaled_s_metric / alpha_acc
-            h_metric = scaled_h_metric / alpha_mem_density
-            avg_bitwidth = compare_to / h_metric
+            scaled_acc, scaled_mem_density, scaled_ops_per_bit = trial.values
+            acc = scaled_acc / (alpha_acc + 1e-8)
+            mem_density = scaled_mem_density / (alpha_mem_density + 1e-8)
+            ops_per_bit = scaled_ops_per_bit / (alpha_ops_per_bit + 1e-8)
+            avg_bitwidth = compare_to / mem_density
             result_df.loc[i] = [
                 trial_id,
-                s_metric,
-                h_metric,
-                avg_bitwidth,
+                acc,
+                mem_density,
+                ops_per_bit,
+                scaled_acc,
+                scaled_mem_density,
+                scaled_ops_per_bit,
                 quant_config_path,
-                scaled_s_metric,
-                scaled_h_metric,
+                avg_bitwidth,
                 quant_config,
             ]
-        result_df = result_df.sort_values(by=sort_by, ascending=False)
+        result_df = result_df.sort_values(by="accuracy", ascending=False)
         return result_df
 
     def save_study_and_results(self, study: optuna.Study, stat_profile, range_entry):
@@ -992,6 +1088,7 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
         search_config_path = save_dir / "search_config.toml"
         save_config(self.search_config, search_config_path)
 
+        # fmt: off
         result_df = SearchIntQuantisationForPromptingCLS.get_result_df(
             study,
             q_config_parser=self.q_config_parser,
@@ -1000,21 +1097,28 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
             stat_profile=stat_profile,
             range_entry=range_entry,
             save_dir=save_dir,
-            alpha_s=self.search_config["search_estimator"]["alpha_acc"],
-            alpha_h=self.search_config["search_estimator"]["alpha_mem_density"],
+            alpha_acc=self.search_config["search_estimator"]["alpha_accuracy"],
+            alpha_mem_density=self.search_config["search_estimator"]["alpha_memory_density"],
+            alpha_ops_per_bit=self.search_config["search_estimator"]["alpha_ops_per_bit"],
             compare_to=self.search_config["search_estimator"]["compare_to"],
         )
-        # result_df.to_json(result_json_path, orient="index")
+        # fmt: on
         result_df.drop("quant_config", axis=1).to_csv(result_table_path, index=False)
         joblib.dump(study, study_path)
         logger.info("========== Best Trials ==========")
         logger.info(
-            f"(alpha_acc, alpha_mem_density) = {self.search_config['search_estimator']['alpha_acc']}, {self.search_config['search_estimator']['alpha_mem_density']}"
+            f"(alpha_accuracy, alpha_memory_density, alpha_ops_per_bit) = "
+            f"{self.search_config['search_estimator']['alpha_accuracy']}, "
+            f"{self.search_config['search_estimator']['alpha_memory_density']}, "
+            f"{self.search_config['search_estimator']['alpha_ops_per_bit']}"
         )
 
         result_df = result_df.drop("quant_config", axis=1)
         result_df["quant_config_name"] = result_df["quant_config_path"].apply(
             lambda x: "$save_dir/quant_configs/" + str(Path(x).name)
+        )
+        result_df = result_df.applymap(
+            lambda x: f"{x:.4f}" if isinstance(x, float) else x
         )
         result_df = result_df.drop("quant_config_path", axis=1)
         logger.info(
@@ -1023,7 +1127,6 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
                 result_df,
                 headers="keys",
                 tablefmt="pretty",
-                floatfmt=(None, ".4f", ".2f", ".2f", None, ".4f", ".2f"),
             )
         )
         logger.info(f"Results saved to {save_dir}")
@@ -1037,24 +1140,23 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
         batch_size: int,
         max_batch_size: int,
         device: str,
-        limit: int,
         stat_profile: dict,
         range_entry: str,
     ):
-        acc_threshold = self.search_config["search_strategy"]["acc_threshold"]
-        avg_bitwidth_threshold = self.search_config["search_strategy"][
-            "avg_bitwidth_threshold"
-        ]
+        # fmt: off
+        acc_threshold = self.search_config["search_strategy"]["accuracy_threshold"]
+        avg_bitwidth_threshold = self.search_config["search_strategy"]["avg_bitwidth_threshold"]
+        ops_per_bit_threshold = self.search_config["search_strategy"]["ops_per_bit_threshold"]
+        # fmt: on
         sort_by = self.search_config["search_strategy"]["sort_by"]
 
         for i, s in enumerate(sort_by):
             assert s in [
-                "acc",
                 "accuracy",
                 "avg_bitwidth",
-            ], f"Unknown sort_by: {s}, must be one of ['acc', 'accuracy', 'avg_bitwidth']"
-            if s == "acc":
-                sort_by[i] = "accuracy"
+                "ops_per_bit",
+            ], f"Unknown sort_by: {s}, must be one of ['accuracy', 'avg_bitwidth', 'ops_per_bit']"
+        # fmt: off
         result_df = SearchIntQuantisationForPromptingCLS.get_result_df(
             study,
             q_config_parser=self.q_config_parser,
@@ -1063,23 +1165,35 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
             stat_profile=stat_profile,
             range_entry=range_entry,
             save_dir=self.save_dir,
-            alpha_s=self.search_config["search_estimator"]["alpha_acc"],
-            alpha_h=self.search_config["search_estimator"]["alpha_mem_density"],
+            alpha_acc=self.search_config["search_estimator"]["alpha_accuracy"],
+            alpha_mem_density=self.search_config["search_estimator"]["alpha_memory_density"],
+            alpha_ops_per_bit=self.search_config["search_estimator"]["alpha_ops_per_bit"],
             compare_to=self.search_config["search_estimator"]["compare_to"],
         )
+        # fmt: on
 
         filtered_df = result_df.loc[result_df["accuracy"] >= acc_threshold]
         filtered_df = filtered_df.loc[
             filtered_df["avg_bitwidth"] <= avg_bitwidth_threshold
         ]
+        filtered_df = filtered_df.loc[
+            filtered_df["ops_per_bit"] >= ops_per_bit_threshold
+        ]
         if len(filtered_df) == 0:
             logger.warning(
-                f"No trials found with acc >= {acc_threshold} and avg_bitwidth <= {avg_bitwidth_threshold}"
+                f"No trials found with acc >= {acc_threshold}, avg_bitwidth <= {avg_bitwidth_threshold}, ops_per_bit >= {ops_per_bit_threshold}"
             )
             return
 
-        sort_by = [s if s != "avg_bitwidth" else "memory_density" for s in sort_by]
-        filtered_df = filtered_df.sort_values(sort_by, ascending=False)
+        ascending_mapping = {
+            "accuracy": False,
+            "avg_bitwidth": True,
+            "ops_per_bit": False,
+        }
+
+        filtered_df = filtered_df.sort_values(
+            sort_by, ascending=[ascending_mapping[s] for s in sort_by]
+        )
 
         best_quant_config = filtered_df.iloc[0]["quant_config"]
         save_config(best_quant_config, self.save_dir / "best_quant_config.toml")
@@ -1095,7 +1209,6 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
             batch_size=batch_size,
             max_batch_size=max_batch_size,
             device=device,
-            limit=limit,
             no_cache=True,
         )
         results["trial_id"] = str(filtered_df.iloc[0]["trial_id"])

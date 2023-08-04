@@ -28,7 +28,7 @@ def compute_tensor_bits_block_fp(
 
 
 def profile_linear_layer(
-    quant_config: dict, in_features, out_features, bias, batch_size
+    quant_config: dict, in_features: int, out_features: int, bias: bool, batch_size: int
 ):
     """
     {
@@ -36,6 +36,7 @@ def profile_linear_layer(
         "num_acts": 0,
         "param_bits": 0,
         "act_bits": 0,
+        "flops": 0,
     }
     """
     # logger.debug(
@@ -104,11 +105,17 @@ def profile_linear_layer(
     # logger.debug(
     #     f"num_params = {num_params}, num_xs = {num_xs}, p_bits = {p_bits}, x_bits = {x_bits}"
     # )
+    # x [batch_size, in_features], w [in_features, out_features], b [out_features]
+    # flops = batch_size * out_features * (2 * in_features - 1) + in_features * out_features
+    flops = batch_size * out_features * (2 * in_features - 1)
+    if bias:
+        flops += batch_size * out_features
     return {
         "num_params": np.rint(num_params).astype(np.int64),
         "num_acts": np.rint(num_xs).astype(np.int64),
         "param_bits": np.rint(p_bits).astype(np.int64),
         "act_bits": np.rint(x_bits).astype(np.int64),
+        "flops": np.rint(flops).astype(np.int64),
     }
 
 
@@ -119,6 +126,7 @@ def profile_matmul_layer(quant_config: dict, data_in_0_size, data_in_1_size):
         "num_acts": 0,
         "param_bits": 0,
         "act_bits": 0,
+        "flops": 0,
     """
 
     x0_shape = np.array((data_in_0_size,))
@@ -159,11 +167,13 @@ def profile_matmul_layer(quant_config: dict, data_in_0_size, data_in_1_size):
             case _:
                 raise ValueError(f"Unknown quant_arith: {quant_arith}")
 
+    flops = data_in_0_size[0] * data_in_1_size[1] * (2 * data_in_0_size[1] - 1)
     return {
         "num_params": np.rint(num_params).astype(np.int64),
         "num_acts": np.rint(num_xs).astype(np.int64),
         "param_bits": np.rint(param_bits).astype(np.int64),
         "act_bits": np.rint(x_bits).astype(np.int64),
+        "flops": np.rint(flops).astype(np.int64),
     }
 
 
@@ -172,6 +182,7 @@ def update_profile(profile, delta):
     profile["num_acts"] += delta["num_acts"]
     profile["param_bits"] += delta["param_bits"]
     profile["act_bits"] += delta["act_bits"]
+    profile["flops"] += delta["flops"]
     return profile
 
 

@@ -1,11 +1,12 @@
 import logging
 
-from ..quantize.quantized_layer_profiler import (profile_linear_layer,
-                                                 profile_matmul_layer,
-                                                 register_a_stat_hook,
-                                                 update_profile)
-from .modeling_bert import (BertQuantizedForSequenceClassification,
-                            BertQuantizedLayer)
+from ..quantize.quantized_layer_profiler import (
+    profile_linear_layer,
+    profile_matmul_layer,
+    register_a_stat_hook,
+    update_profile,
+)
+from .modeling_bert import BertQuantizedForSequenceClassification, BertQuantizedLayer
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,7 @@ def _profile_bitwidth_bert_attention_layer(
         "num_acts": 0,
         "param_bits": 0,
         "act_bits": 0,
+        "flops": 0,
     }
 
     delta_list = []
@@ -101,6 +103,7 @@ def _profile_bitwidth_bert_layer(
         "num_acts": 0,
         "param_bits": 0,
         "act_bits": 0,
+        "flops": 0,
     }
 
     delta_list = []
@@ -155,6 +158,7 @@ def profile_bitwidth_bert_quantized(config, seq_len: int):
         "num_acts": 0,
         "param_bits": 0,
         "act_bits": 0,
+        "flops": 0,
     }
 
     for i in range(num_hidden_layers):

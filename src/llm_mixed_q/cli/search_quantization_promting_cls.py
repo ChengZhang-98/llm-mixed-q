@@ -23,7 +23,13 @@ def cli_search_quantisation_on_prompting_cls_tasks():
     parser.add_argument("--batch_size", type=int, default=None)
     parser.add_argument("--max_batch_size", type=int, default=None)
     parser.add_argument("--device", type=str, default=None)
-    parser.add_argument("--limit", type=float, default=None)
+    parser.add_argument(
+        "--limit",
+        "--num_samples_per_trial",
+        dest="num_samples_per_trial",
+        type=float,
+        default=None,
+    )
     parser.add_argument("--profiler_seq_len", type=int, default=256)
 
     args = parser.parse_args()
@@ -45,7 +51,7 @@ def cli_search_quantisation_on_prompting_cls_tasks():
         batch_size=args.batch_size,
         max_batch_size=args.max_batch_size,
         device=args.device,
-        limit=args.limit,
+        num_samples_per_trial=args.num_samples_per_trial,
         profiler_seq_len=args.profiler_seq_len,
     )
 
@@ -56,7 +62,6 @@ def cli_search_quantisation_on_prompting_cls_tasks():
         batch_size=args.batch_size,
         max_batch_size=args.max_batch_size,
         device=args.device,
-        limit=args.limit,
     )
 
     logger.info("==================== Search Ends ====================")

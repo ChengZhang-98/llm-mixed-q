@@ -4,13 +4,10 @@ work_dir=$HOME/Projects/llm-mixed-q
 run_dir=$work_dir/experiments/asplos/monitor_gpu && cd $run_dir
 log_dir=$work_dir/checkpoints/asplos/monitor_gpu
 
-# bert-base, bert-large, opt-125m, opt-350m, llama-160m
-
-# declare -a ModelName=("bert-base-uncased" "bert-large-uncased" "facebook/opt-125m", "facebook/opt-350m", "llama-160m")
-declare -a ModelName=("facebook/opt-125m" "facebook/opt-350m" "Cheng98/llama-160m")
-batch_size=128
+declare -a ModelName=("facebook/opt-1.3b" "facebook/opt-2.7b")
+batch_size=16
 seq_len=196
-warm_up=512
+warm_up=256
 
 for model_name in ${ModelName[@]}; do
     echo "🚀 Running $model_name "

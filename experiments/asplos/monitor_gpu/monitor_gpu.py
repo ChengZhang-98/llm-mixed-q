@@ -1,3 +1,5 @@
+from io import StringIO
+import sys
 import torch
 from argparse import ArgumentParser
 from tqdm import tqdm
@@ -5,6 +7,19 @@ import torch
 import wandb
 from transformers import AutoModel
 from deepspeed.profiling.flops_profiler import get_model_profile
+from torch.profiler import profile, record_function, ProfilerActivity
+
+
+class StdoutCapturer(list):
+    def __enter__(self):
+        self._stdout = sys.stdout
+        sys.stdout = self._stringio = StringIO()
+        return self
+
+    def __exit__(self, *args):
+        self.extend(self._stringio.getvalue().splitlines())
+        del self._stringio  # free up some memory
+        sys.stdout = self._stdout
 
 
 def main():
@@ -58,9 +73,19 @@ def main():
 
     with torch.no_grad():
         for i in tqdm(range(args.warm_up)):
-            if i != args.warm_up - 1:
+            if i < args.warm_up - 3:
                 _ = model(**inputs)
-            else:
+                continue
+            if i == args.warm_up - 3:
+                with StdoutCapturer() as output:
+                    with profile(
+                        activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+                    ) as prof:
+                        _ = model(**inputs)
+                    print(prof.key_averages().table(sort_by="cuda_time_total"))
+                    _ = model(**inputs)
+                print("\n".join(output[-2:]))
+            if i == args.warm_up - 2:
                 flops, macs, params = get_model_profile(
                     model=model,
                     kwargs=inputs,

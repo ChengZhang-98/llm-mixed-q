@@ -37,7 +37,7 @@ def main():
     args = parser.parse_args()
 
     if args.project is None:
-        args.project = "{}_monitor_gpu".format(args.model_name)
+        args.project = "{}_monitor_gpu".format(args.model_name.replace("/", "_"))
 
     if args.model_parallelism:
         model = AutoModel.from_pretrained(args.model_name, device_map="auto")

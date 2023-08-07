@@ -4,11 +4,9 @@ work_dir=$HOME/Projects/llm-mixed-q
 run_dir=$work_dir/experiments/asplos/monitor_gpu && cd $run_dir
 log_dir=$work_dir/checkpoints/asplos/monitor_gpu
 
-# bert-base, bert-large, opt-125m, opt-350m, llama-160m
-
-declare -a ModelName=("bert-base-uncased" "bert-large-uncased" "facebook/opt-125m" "facebook/opt-350m" "llama-160m")
-# declare -a ModelName=("facebook/opt-125m" "facebook/opt-350m" "Cheng98/llama-160m")
-batch_size=128
+# declare -a ModelName=("facebook/opt-6.7b" "huggyllama/llama-7b" "lmsys/vicuna-7b-v1.3" "Cheng98/Acapla-7b")
+declare -a ModelName=("facebook/opt-6.7b")
+batch_size=1
 seq_len=196
 warm_up=512
 
@@ -19,7 +17,8 @@ for model_name in ${ModelName[@]}; do
         --batch_size $batch_size \
         --seq_len $seq_len \
         --warm_up $warm_up \
-        --log_dir $log_dir
+        --log_dir $log_dir \
+        --model_parallelism
     RESULT=$?
     if [ $RESULT -eq 0 ]; then
         echo "✅ $model_name is done "

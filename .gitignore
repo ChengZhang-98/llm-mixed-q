@@ -4,3 +4,4 @@
 /checkpoints/
 /**/lm_cache/
 /experiments/asplos/fine_tune/wandb/
+/**/wandb/

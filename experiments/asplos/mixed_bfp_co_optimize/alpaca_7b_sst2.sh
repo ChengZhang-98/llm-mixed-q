@@ -1,24 +1,30 @@
 #!/bin/bash
 
+work_dir=$HOME/Projects/llm-mixed-q
+env_name=llm-mixed-q
+run_dir=$work_dir/experiments/asplos/mixed_bfp_co_optimize
+
+cd $run_dir
 if [ -z $1 ]; then
-    echo "❗Requires <search_tag> as \$0"
+    echo "❗Requires <search_tag> as \$1"
     exit
 fi
 
 if [ -z $2 ]; then
-    echo "❗Requires <search_config> as \$1"
-    exit
+    search_config=$work_dir/experiments/asplos/configs/search/bfp_co_optimize/alpaca_7b_sst2.toml
+    echo "❗<serach_config> (\$2) is not provided. Use the one at $search_config"
+else
+    search_config=$2
 fi
 
 work_dir=$HOME/Projects/llm-mixed-q
 env_name=llm-mixed-q
-run_dir=$work_dir/experiments/asplos/mixed_bfp_acc_mem_fps
+run_dir=$work_dir/experiments/asplos/mixed_bfp_co_optimize
 cd $run_dir
 echo ========== Running Alpaca-7B SST2 ==========
 search_tag=$1
-search_config=$2
 
-save_dir=$work_dir/checkpoints/asplos/mixed_bfp_acc_mem_fps/alpaca_7b/$search_tag && mkdir -p $save_dir
+save_dir=$work_dir/checkpoints/asplos/mixed_bfp_co_optimize/alpaca_7b/$search_tag && mkdir -p $save_dir
 model_arch=llama
 tasks=sst
 model_name="Cheng98/Acapla-7b"

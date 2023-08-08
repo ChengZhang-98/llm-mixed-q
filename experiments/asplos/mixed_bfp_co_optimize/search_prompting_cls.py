@@ -3,6 +3,8 @@ import sys
 from pathlib import Path
 import transformers
 import datasets as hf_datasets
+from sklearn.exceptions import InconsistentVersionWarning
+import warnings
 
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent.parent / "src"))
 
@@ -15,5 +17,6 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 if __name__ == "__main__":
     transformers.utils.logging.set_verbosity_error()
     hf_datasets.utils.logging.set_verbosity_error()
+    warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
     set_logging_verbosity("info")
     cli_search_quantisation_on_prompting_cls_tasks()

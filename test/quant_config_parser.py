@@ -12,7 +12,7 @@ from transformers.utils.logging import set_verbosity_error
 
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
-from llm_mixed_q.eval import evaluate_cls_glue
+from llm_mixed_q.eval import eval_cls_glue
 from llm_mixed_q.utils import set_logging_verbosity
 
 from llm_mixed_q.models import (

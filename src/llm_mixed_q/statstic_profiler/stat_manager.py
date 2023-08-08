@@ -70,7 +70,11 @@ class WeightStatCollection:
 
 
 class StatManager:
-    def __init__(self, act_stats: tuple[str], weight_stats: tuple[str]) -> None:
+    def __init__(
+        self,
+        act_stats: tuple[str] | dict[str, dict],
+        weight_stats: tuple[str] | dict[str, dict],
+    ) -> None:
         self.act_stats = act_stats
         self.weight_stats = weight_stats
 

@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from transformers import default_data_collator
 
 from ..datasets import get_raw_dataset_dict, is_regression_task, preprocess_dataset_dict
-from ..eval import evaluate_cls_glue
+from ..eval import eval_cls_glue
 from ..models import get_config_cls, get_model_cls, get_tokenizer_cls
 from ..utils import extract_quant_config
 from ..utils.logger import get_logger
@@ -76,7 +76,7 @@ def cli_extract_quant_config_and_eval_cls_glue():
         collate_fn=default_data_collator,
         shuffle=False,
     )
-    results = evaluate_cls_glue(
+    results = eval_cls_glue(
         model,
         task=args.task,
         eval_dataloader=eval_dataloader,

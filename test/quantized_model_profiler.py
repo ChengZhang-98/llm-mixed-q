@@ -5,8 +5,8 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent.parent / "src"))
 from llm_mixed_q.models import get_model_cls, get_config_cls
-from llm_mixed_q.models.llama_quantized import profile_bitwidth_llama_quantized
-from llm_mixed_q.models.bert_quantized import profile_bitwidth_bert_quantized
+from llm_mixed_q.models.llama_quantized import profile_llama_quantized
+from llm_mixed_q.models.bert_quantized import profile_bert_quantized
 from llm_mixed_q.utils import set_logging_verbosity
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
@@ -38,7 +38,7 @@ def test_llama_profiler():
         quant_config=llama_quant_config,
     )
 
-    profile = profile_bitwidth_llama_quantized(config, seq_len=128)
+    profile = profile_llama_quantized(config, seq_len=128)
     print(f"profile: {profile}")
     print(f"avg param bitwidth: {profile['param_bits'] / profile['num_params']}")
     print(f"avg act bitwidth: {profile['act_bits'] / profile['num_acts']}")
@@ -70,7 +70,7 @@ def test_bert_profiler():
         quant_config=bert_quant_config,
     )
 
-    profile = profile_bitwidth_bert_quantized(config, seq_len=128)
+    profile = profile_bert_quantized(config, seq_len=128)
     print(f"profile: {profile}")
     print(f"avg param bitwidth: {profile['param_bits'] / profile['num_params']}")
     print(f"avg act bitwidth: {profile['act_bits'] / profile['num_acts']}")

@@ -23,7 +23,7 @@ os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 
-def cli_search_quant_on_cls_glue():
+def cli_search_quantization_on_cls_glue():
     parser = ArgumentParser()
     parser.add_argument("--model_arch", type=str, required=True)
     parser.add_argument("--model_name", type=str, required=True)

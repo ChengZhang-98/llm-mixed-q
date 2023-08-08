@@ -12,7 +12,7 @@ from llm_mixed_q.models import (
     get_model_cls,
     get_config_cls,
     get_tokenizer_cls,
-    get_bitwidth_profiler,
+    get_model_profiler,
     get_stat_profiler_hook,
 )
 from llm_mixed_q.statstic_profiler.stat_manager import StatManager
@@ -21,7 +21,7 @@ from llm_mixed_q.datasets import (
     preprocess_dataset_dict,
     is_regression_task,
 )
-from llm_mixed_q.statstic_profiler.stat_profiler import profile_statistics_cls_glue_fn
+from llm_mixed_q.statstic_profiler.stat_profiler import profile_statistics_cls_glue
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 
@@ -73,7 +73,7 @@ def test_stat_profiler_cls():
         shuffle=False,
     )
 
-    results = profile_statistics_cls_glue_fn(
+    results = profile_statistics_cls_glue(
         act_stats=args.act_stats,
         weight_stats=args.weight_stats,
         hook_registration_fn=get_stat_profiler_hook(args.model_arch),

@@ -10,7 +10,7 @@ from llm_mixed_q.models import (
     get_model_cls,
     get_config_cls,
     get_tokenizer_cls,
-    get_bitwidth_profiler,
+    get_model_profiler,
 )
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
@@ -68,7 +68,7 @@ def test_opt():
     x = torch.randint(0, 1000, (16, 128)).to("cuda:0")
     y = model(x)
 
-    profiler = get_bitwidth_profiler(arch)
+    profiler = get_model_profiler(arch)
     profile = profiler(config=config, seq_len=128)
     print(profile)
     print("avg act bitwidth:", profile["act_bits"] / profile["num_acts"])

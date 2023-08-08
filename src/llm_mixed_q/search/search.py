@@ -17,9 +17,9 @@ from accelerate import (
 from tabulate import tabulate
 
 from ..eval import eval_prompting_tasks
-from ..eval import evaluate_cls_glue as evaluate_cls_task
+from ..eval import eval_cls_glue as evaluate_cls_task
 from ..models import (
-    get_bitwidth_profiler,
+    get_model_profiler,
     get_config_cls,
     get_model_cls,
     get_quant_config_parser,
@@ -124,7 +124,7 @@ class SearchQuantisationForClassification(SearchBase):
             device,
             model_parallel,
         )
-        self.q_bitwidth_profiler = get_bitwidth_profiler(model_arch)
+        self.q_bitwidth_profiler = get_model_profiler(model_arch)
         self.q_config_parser = get_quant_config_parser(model_arch)
         # TODO: use a general recursive quant config parser, which traverses dict to sample leaf values (each leaf value is a list of choices)
         self.q_config_sampler = get_quant_config_sampler(model_arch)
@@ -598,7 +598,7 @@ class SearchQuantisationForPromptingCLS(SearchBase):
             device=None,
             model_parallel=False,
         )
-        self.q_bitwidth_profiler = get_bitwidth_profiler(model_arch)
+        self.q_bitwidth_profiler = get_model_profiler(model_arch)
         self.q_config_parser = get_quant_config_parser(model_arch)
         self.q_config_sampler = get_quant_config_sampler(model_arch)
         self._pre_search_check()

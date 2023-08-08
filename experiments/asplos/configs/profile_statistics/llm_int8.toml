@@ -1,0 +1,5 @@
+[weight_stats.threshold_count]
+threshold = 6.0
+
+[act_stats.threshold_count]
+threshold = 6.0

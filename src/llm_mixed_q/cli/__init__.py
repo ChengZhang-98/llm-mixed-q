@@ -11,11 +11,11 @@ from .profile_statistics import (
     cli_profile_statistics_cls_glue,
     profile_statistics_lm_runner,
 )
-from .search_int_quantization_cls import cli_conditional_search_quant_on_cls_glue
+from .search_int_quantization_cls import cli_conditional_search_quantization_on_cls_glue
 from .search_int_quantization_promting_cls import (
-    cli_conditional_search_quantisation_on_prompting_cls_tasks,
+    cli_conditional_search_quantization_on_prompting_cls_tasks,
 )
-from .search_quantization_cls import cli_search_quant_on_cls_glue
+from .search_quantization_cls import cli_search_quantization_on_cls_glue
 from .search_quantization_promting_cls import (
     cli_search_quantisation_on_prompting_cls_tasks,
 )

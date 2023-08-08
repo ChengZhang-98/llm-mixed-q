@@ -10,7 +10,7 @@ from llm_mixed_q.models import (
     get_model_cls,
     get_config_cls,
     get_tokenizer_cls,
-    get_bitwidth_profiler,
+    get_model_profiler,
 )
 from llm_mixed_q.statstic_profiler.stat_manager import StatManager
 

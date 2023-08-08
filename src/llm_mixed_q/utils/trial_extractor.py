@@ -34,12 +34,13 @@ def save_trial_to_quant_config(trial: optuna.trial.FrozenTrial, save_path: str =
 
 
 def extract_quant_config(
-    study_pkl,
+    study: optuna.Study | str,
     target_idx,
     save_path: str = None,
 ):
-    with open(study_pkl, "rb") as f:
-        study: optuna.Study = joblib.load(f)
+    if not isinstance(study, optuna.Study):
+        with open(study, "rb") as f:
+            study: optuna.Study = joblib.load(f)
 
     target_trial = study.trials[target_idx]
     quant_config = save_trial_to_quant_config(target_trial, save_path)

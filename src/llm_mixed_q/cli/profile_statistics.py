@@ -9,12 +9,14 @@ from accelerate import dispatch_model, infer_auto_device_map
 from torch.utils.data import DataLoader
 from transformers import DataCollatorForLanguageModeling, default_data_collator
 
-from ..datasets import (get_raw_dataset_dict, is_regression_task,
-                        preprocess_dataset_dict)
-from ..models import (get_config_cls, get_model_cls, get_stat_profiler_hook,
-                      get_tokenizer_cls)
-from ..statstic_profiler import (profile_statistics_cls_glue_fn,
-                                 profile_statistics_lm_fn)
+from ..datasets import get_raw_dataset_dict, is_regression_task, preprocess_dataset_dict
+from ..models import (
+    get_config_cls,
+    get_model_cls,
+    get_stat_profiler_hook,
+    get_tokenizer_cls,
+)
+from ..statstic_profiler import profile_statistics_cls_glue, profile_statistics_lm_fn
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -75,7 +77,7 @@ def cli_profile_statistics_cls_glue():
         shuffle=False,
     )
 
-    results = profile_statistics_cls_glue_fn(
+    results = profile_statistics_cls_glue(
         act_stats=args.act_stats,
         weight_stats=args.weight_stats,
         hook_registration_fn=get_stat_profiler_hook(args.model_arch),
@@ -114,13 +116,33 @@ def profile_statistics_lm_runner():
     parser.add_argument("--batch_size", type=int, required=True)
     parser.add_argument("--max_length", type=int, default=2048)
 
-    parser.add_argument("--act_stats", type=str, nargs="+", required=True)
-    parser.add_argument("--weight_stats", type=str, nargs="+", required=True)
+    parser.add_argument("--act_stats", type=str, nargs="+", default=None)
+    parser.add_argument("--weight_stats", type=str, nargs="+", default=None)
+    parser.add_argument("--profile_config", type=str, default=None)
 
     parser.add_argument("--save_dir", type=str, default=None)
     parser.add_argument("--model_parallelism", action="store_true")
 
     args = parser.parse_args()
+
+    if (args.act_stats is None and args.weight_stats is None) and (
+        args.profile_config is None
+    ):
+        raise ValueError(
+            "Either (act_stats, weight_stats) or profile_config should be provided."
+        )
+    elif args.profile_config is not None:
+        if args.act_stats is not None:
+            logger.warning(
+                "act_stats is provided, but will be overwritten by profile_config."
+            )
+        if args.weight_stats is not None:
+            logger.warning(
+                "weight_stats is provided, but will be overwritten by profile_config."
+            )
+        profile_config = toml.load(args.profile_config)
+        args.act_stats = profile_config["act_stats"]
+        args.weight_stats = profile_config["weight_stats"]
 
     logging.info("==================== Profile Statistics ====================")
 

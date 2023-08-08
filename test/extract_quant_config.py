@@ -16,7 +16,7 @@ from llm_mixed_q.models.llama_quantized.quant_config_llama import (
 )
 from llm_mixed_q.models.quantize.quant_config_parser import parse_node_config
 from llm_mixed_q.search.search import SearchQuantisationForClassification
-from llm_mixed_q.eval import evaluate_cls_glue
+from llm_mixed_q.eval import eval_cls_glue
 from llm_mixed_q.datasets import (
     get_num_labels,
     get_raw_dataset_dict,
@@ -72,7 +72,7 @@ def extract_quant_config_llama_160m():
         collate_fn=default_data_collator,
         shuffle=False,
     )
-    results = evaluate_cls_glue(
+    results = eval_cls_glue(
         model,
         task="sst2",
         eval_dataloader=eval_dataloader,
@@ -123,7 +123,7 @@ def extract_quant_config_bert_base():
         collate_fn=default_data_collator,
         shuffle=False,
     )
-    results = evaluate_cls_glue(
+    results = eval_cls_glue(
         model,
         task="sst2",
         eval_dataloader=eval_dataloader,

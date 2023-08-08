@@ -263,6 +263,35 @@ class RangeMinMax(_StatBase):
         return {"min": minimum, "max": maximum, "range": d_range, "count": self.count}
 
 
+@_add_to_stat_mapping
+class ThresholdCount(_StatBase):
+    name = "threshold_count"
+
+    def __init__(self, threshold: float = 6.0) -> None:
+        super().__init__()
+        self.threshold = threshold
+        self.n_outliers = 0
+        self.total = 0
+        self.n_samples = 0
+
+    @torch.no_grad()
+    def update_a_sample(self, new_s: Tensor) -> None:
+        if isinstance(new_s, (list, tuple, int, float)):
+            new_s = torch.tensor(new_s).float()
+        new_s = new_s.clone().detach().float()
+        self.n_outliers += torch.sum(new_s > self.threshold)
+        self.total += new_s.nelement()
+        self.n_samples += 1
+
+    def compute(self) -> dict:
+        return {
+            "num_outliers": self.n_outliers.item(),
+            "total": self.total,
+            "threshold": self.threshold,
+            "num_samples": self.n_samples,
+        }
+
+
 def create_new_stat(stat_name: str, **stat_kwargs):
     global STAT_NAME_TO_CLS
     assert (

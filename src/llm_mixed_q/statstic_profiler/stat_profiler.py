@@ -1,14 +1,14 @@
 import logging
 
-from ..eval import eval_lm_wikitext2, evaluate_cls_glue
+from ..eval import eval_lm_wikitext2, eval_cls_glue
 from .stat_manager import StatManager
 
 logger = logging.getLogger(__name__)
 
 
-def profile_statistics_cls_glue_fn(
-    act_stats: tuple[str],
-    weight_stats: tuple[str],
+def profile_statistics_cls_glue(
+    act_stats: tuple[str] | dict[str, dict],
+    weight_stats: tuple[str] | dict[str, dict],
     hook_registration_fn: callable,
     model,
     task: str,
@@ -39,7 +39,7 @@ def profile_statistics_cls_glue_fn(
         name=root_name,
         num_hidden_layers=model.config.num_hidden_layers,
     )
-    evaluate_cls_glue(
+    eval_cls_glue(
         model=model,
         task=task,
         eval_dataloader=eval_dataloader,

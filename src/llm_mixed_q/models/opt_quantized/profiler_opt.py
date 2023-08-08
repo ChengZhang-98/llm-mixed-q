@@ -12,7 +12,7 @@ from .modeling_opt import (
 )
 
 
-def _profile_bitwidth_opt_layer(
+def _profile_opt_layer(
     layer_quant_config: dict,
     hidden_size: int,
     intermediate_size: int,
@@ -117,7 +117,7 @@ def _profile_bitwidth_opt_layer(
     return profile
 
 
-def profile_bitwidth_opt_quantized(config, seq_len: int):
+def profile_opt_quantized(config, seq_len: int):
     """
     Profile opt quantized model
 
@@ -141,7 +141,7 @@ def profile_bitwidth_opt_quantized(config, seq_len: int):
         layer_quant_config = config.quant_config[f"model_layer_{i}"]
         update_profile(
             profile=profile,
-            delta=_profile_bitwidth_opt_layer(
+            delta=_profile_opt_layer(
                 layer_quant_config,
                 hidden_size=hidden_size,
                 intermediate_size=intermediate_size,

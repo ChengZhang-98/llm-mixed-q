@@ -12,7 +12,7 @@ from llm_mixed_q.models import (
     get_model_cls,
     get_config_cls,
     get_tokenizer_cls,
-    get_bitwidth_profiler,
+    get_model_profiler,
 )
 from llm_mixed_q.models.quantize.stat_profile_to_quant_config import (
     transform_stat_profile_to_int_quant_config,

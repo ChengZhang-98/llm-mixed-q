@@ -3,7 +3,7 @@ import torch
 from tqdm import tqdm
 
 
-def evaluate_cls_glue(
+def eval_cls_glue(
     model,
     task,
     eval_dataloader,

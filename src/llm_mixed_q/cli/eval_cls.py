@@ -8,9 +8,8 @@ from pprint import pformat
 from torch.utils.data import DataLoader
 from transformers import default_data_collator
 
-from ..datasets import (get_raw_dataset_dict, is_regression_task,
-                        preprocess_dataset_dict)
-from ..eval import evaluate_cls_glue
+from ..datasets import get_raw_dataset_dict, is_regression_task, preprocess_dataset_dict
+from ..eval import eval_cls_glue
 from ..models import get_config_cls, get_model_cls, get_tokenizer_cls
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
@@ -75,7 +74,7 @@ def cli_eval_cls_glue():
         shuffle=False,
     )
 
-    results = evaluate_cls_glue(
+    results = eval_cls_glue(
         model=model,
         task=args.task,
         eval_dataloader=search_dataloader,

@@ -13,7 +13,7 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 logger = logging.getLogger(__name__)
 
 
-def cli_conditional_search_quantisation_on_prompting_cls_tasks():
+def cli_conditional_search_quantization_on_prompting_cls_tasks():
     parser = ArgumentParser()
     parser.add_argument("--model_arch", type=str, required=True)
     parser.add_argument("--model_name", type=str, required=True)

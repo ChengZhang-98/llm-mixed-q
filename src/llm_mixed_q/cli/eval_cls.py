@@ -39,6 +39,12 @@ def cli_eval_cls_glue():
     parser.add_argument(
         "--dataset_split", default="validation", choices=["validation", "test", "train"]
     )
+    parser.add_argument(
+        "--num_workers",
+        type=int,
+        default=os.cpu_count(),
+        help="num workers for dataloader",
+    )
     args = parser.parse_args()
 
     logger.info(f"========== Running eval_cls ==========")
@@ -70,7 +76,7 @@ def cli_eval_cls_glue():
         preprocessed_dataset_dict[args.dataset_split],
         batch_size=args.batch_size,
         collate_fn=default_data_collator,
-        num_workers=os.cpu_count(),
+        num_workers=args.num_workers,
         shuffle=False,
     )
 

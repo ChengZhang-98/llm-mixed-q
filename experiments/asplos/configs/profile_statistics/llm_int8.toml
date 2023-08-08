@@ -1,5 +1,9 @@
 [weight_stats.threshold_count]
 threshold = 6.0
+device = "cuda:1"
+dims = [0]
 
 [act_stats.threshold_count]
 threshold = 6.0
+device = "cuda:1"
+dims = [0, 1]

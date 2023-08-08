@@ -267,25 +267,39 @@ class RangeMinMax(_StatBase):
 class ThresholdCount(_StatBase):
     name = "threshold_count"
 
-    def __init__(self, threshold: float = 6.0) -> None:
+    def __init__(
+        self, device=None, threshold: float = 6.0, dims: list[int] | tuple[int] = None
+    ) -> None:
         super().__init__()
+        self.device = device
         self.threshold = threshold
+        self.dims = dims
         self.n_outliers = 0
         self.total = 0
         self.n_samples = 0
 
     @torch.no_grad()
     def update_a_sample(self, new_s: Tensor) -> None:
-        if isinstance(new_s, (list, tuple, int, float)):
-            new_s = torch.tensor(new_s).float()
-        new_s = new_s.clone().detach().float()
-        self.n_outliers += torch.sum(new_s > self.threshold)
-        self.total += new_s.nelement()
-        self.n_samples += 1
+        assert isinstance(new_s, Tensor)
+        if self.device is None:
+            self.device = new_s.device
+        new_s = new_s.clone().detach().float().to(self.device)
+
+        comp = torch.abs(new_s) > self.threshold
+        if self.dims is not None:
+            self.n_outliers += torch.sum(comp, dim=self.dims)
+            self.total += np.prod([new_s.size(dim) for dim in self.dims])
+            self.n_samples += 1
+        else:
+            self.n_outliers += torch.sum(comp)
+            self.total += new_s.nelement()
+            self.n_samples += 1
 
     def compute(self) -> dict:
         return {
-            "num_outliers": self.n_outliers.item(),
+            "num_outliers": self.n_outliers.cpu().tolist()
+            if isinstance(self.n_outliers, Tensor)
+            else self.n_outliers,
             "total": self.total,
             "threshold": self.threshold,
             "num_samples": self.n_samples,

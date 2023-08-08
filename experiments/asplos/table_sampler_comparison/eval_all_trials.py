@@ -55,8 +55,8 @@ def build_model(model_arch, model_name, quant_config):
     return model
 
 
-def get_avg_bitwidth(quant_config, profiler, seq_len):
-    profile = profiler(quant_config, seq_len)
+def get_avg_bitwidth(model_config, profiler, seq_len):
+    profile = profiler(model_config, seq_len)
     total_bits = profile["act_bits"] + profile["param_bits"]
     num_values = profile["num_acts"] + profile["num_params"]
 
@@ -103,7 +103,14 @@ def main():
     )
 
     accuracy_df = pd.DataFrame(
-        columns=["trial_id", "accuracy", "avg_bitwidth", "quant_config"]
+        columns=[
+            "trial_id",
+            "accuracy",
+            "avg_bitwidth",
+            "quant_config",
+            "datetime_start",
+            "datetime_end",
+        ]
     )
     qc_dir = save_dir / "quant_configs"
     qc_dir.mkdir(parents=True, exist_ok=True)
@@ -112,6 +119,7 @@ def main():
         qc_path_i = qc_dir / f"quant_config_trial_{trial_id}.toml"
         quant_config_i = extract_quant_config(study, trial_id, qc_path_i)
         model_i = build_model(args.model_arch, args.model_name, quant_config_i)
+        config_i = model_i.config
         results_i = eval_cls_glue(
             model=model_i,
             task=args.task,
@@ -121,8 +129,10 @@ def main():
         accuracy_df.loc[len(accuracy_df)] = [
             trial_id,
             results_i["accuracy"],
-            get_avg_bitwidth(model_i.config, model_profiler, args.max_length),
+            get_avg_bitwidth(config_i, model_profiler, args.max_length),
             qc_path_i.name,
+            study.trials[trial_id].datetime_start.strftime("%Y-%m-%d %H:%M:%S"),
+            study.trials[trial_id].datetime_complete.strftime("%Y-%m-%d %H:%M:%S"),
         ]
         progress_bar.set_postfix(
             {"trial_id": trial_id, "accuracy": results_i["accuracy"]}

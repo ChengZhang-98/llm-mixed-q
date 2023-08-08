@@ -12,16 +12,16 @@ fi
 
 work_dir=$HOME/Projects/llm-mixed-q
 env_name=llm-mixed-q
-run_dir=$work_dir/experiments/asplos/mixed_int
+run_dir=$work_dir/experiments/asplos/mixed_bfp_acc_mem_fps
 cd $run_dir
-echo ========== Running Vicuna-7B SST2 ==========
+echo ========== Running Alpaca-7B SST2 ==========
 search_tag=$1
 search_config=$2
 
-save_dir=$work_dir/checkpoints/asplos/mixed_bfp_acc_mem_ops/vicuna_7b/$search_tag && mkdir -p $save_dir
+save_dir=$work_dir/checkpoints/asplos/mixed_bfp_acc_mem_fps/alpaca_7b/$search_tag && mkdir -p $save_dir
 model_arch=llama
 tasks=sst
-model_name="lmsys/vicuna-7b-v1.3"
+model_name="Cheng98/Acapla-7b"
 limit=128
 
 conda run -n $env_name --no-capture-output python search_prompting_cls.py \

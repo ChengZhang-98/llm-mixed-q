@@ -1,16 +1,20 @@
-[saerch_strategy]
+[search_strategy]
 n_jobs = 1
 n_trials = 64
 timeout = 28800.0
 sampler = "TPE"
+accuracy_threshold = 0.65
+avg_bitwidth_threshold = 8.5
+fps_threshold = 0.0
+fps_per_lut_threshold = 0.0
+sort_by = ["accuracy", "avg_bitwidth", "fps", "fps_per_lut"]
 
 [search_estimator]
-alpha_acc = 1
-alpha_mem_density = 0.08
-num_samples = 128
-compare_to = "fp32"
-early_stop_acc = 0.92
-early_stop_mem_density = 7.12
+alpha_accuracy = 1
+alpha_memory_density = 0.10
+alpha_fps = 0.0
+alpha_fps_per_lut = 0.0
+compare_to = 32
 
 [search_space]
 [search_space.quant_config_seed]

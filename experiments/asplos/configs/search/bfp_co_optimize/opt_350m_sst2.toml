@@ -6,12 +6,14 @@ sampler = "TPE"
 accuracy_threshold = 0.80
 avg_bitwidth_threshold = 5
 fps_threshold = 60.0
-sort_by = ["accuracy", "avg_bitwidth", "fps"]
+fps_per_lut_threshold = 0.0
+sort_by = ["accuracy", "avg_bitwidth", "fps", "fps_per_lut"]
 
 [search_estimator]
 alpha_accuracy = 1
 alpha_memory_density = 0.1
 alpha_fps = 0
+alpha_fps_per_lut = 0
 compare_to = 32
 
 [search_space]

@@ -65,14 +65,9 @@ def main():
             entry_name = layer.name
             layer_id = layer.block_id
             layer_name = f"model_layer_{layer_id}:{entry_name}"
-            if not "matmul" in layer.name:
-                layer.register_forward_hook(
-                    stat_manager.get_post_forward_act_hook(layer_name)
-                )
-            else:
-                layer.register_forward_pre_hook(
-                    stat_manager.get_pre_forward_act_hook(layer_name)
-                )
+            layer.register_forward_hook(
+                stat_manager.get_pre_forward_act_hook(layer_name)
+            )
 
     eval_lm_wikitext2(
         model=model,

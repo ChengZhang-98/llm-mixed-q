@@ -194,17 +194,17 @@ class LlamaMLP(nn.Module):
         self.down_proj = nn.Linear(intermediate_size, hidden_size, bias=False)
         self.up_proj = nn.Linear(hidden_size, intermediate_size, bias=False)
 
-        self.gate_identity = Identity(block_id=layer_id, name="gate_proj")
-        self.down_identity = Identity(block_id=layer_id, name="down_proj")
-        self.up_identity = Identity(block_id=layer_id, name="up_proj")
+        self.gate_out_identity = Identity(block_id=layer_id, name="gate_out")
+        self.down_out_identity = Identity(block_id=layer_id, name="down_out")
+        self.up_out_identity = Identity(block_id=layer_id, name="up_out")
 
         self.act_fn = ACT2FN[hidden_act]
 
     def forward(self, x):
-        return self.down_identity(
+        return self.down_out_identity(
             self.down_proj(
-                self.act_fn(self.gate_identity(self.gate_proj(x)))
-                * self.up_identity(self.up_proj(x))
+                self.act_fn(self.gate_out_identity(self.gate_proj(x)))
+                * self.up_out_identity(self.up_proj(x))
             )
         )
 
@@ -241,13 +241,14 @@ class LlamaAttention(nn.Module):
             self.head_dim, max_position_embeddings=self.max_position_embeddings
         )
 
-        self.q_proj_identity = Identity(block_id=layer_id, name="q_proj")
-        self.k_proj_identity = Identity(block_id=layer_id, name="k_proj")
-        self.v_proj_identity = Identity(block_id=layer_id, name="v_proj")
-        self.o_proj_identity = Identity(block_id=layer_id, name="o_proj")
-        self.matmul_q_identity = Identity(block_id=layer_id, name="matmul_q")
-        self.matmul_k_identity = Identity(block_id=layer_id, name="matmul_k")
-        self.matmul_a_identity = Identity(block_id=layer_id, name="matmul_a")
+        self.q_out_identity = Identity(block_id=layer_id, name="q_out")
+        self.k_out_identity = Identity(block_id=layer_id, name="k_out")
+        self.v_out_identity = Identity(block_id=layer_id, name="v_out")
+        self.o_out_identity = Identity(block_id=layer_id, name="o_out")
+        self.matmul_in_q_identity = Identity(block_id=layer_id, name="matmul_in_q")
+        self.matmul_in_k_identity = Identity(block_id=layer_id, name="matmul_in_k")
+        self.matmul_out_a_identity = Identity(block_id=layer_id, name="matmul_out_a")
+        self.matmul_out_b_identity = Identity(block_id=layer_id, name="matmul_out_b")
 
     def _shape(self, tensor: torch.Tensor, seq_len: int, bsz: int):
         return (
@@ -283,9 +284,9 @@ class LlamaAttention(nn.Module):
             .transpose(1, 2)
         )
 
-        query_states = self.q_proj_identity(query_states)
-        key_states = self.k_proj_identity(key_states)
-        value_states = self.v_proj_identity(value_states)
+        query_states = self.q_out_identity(query_states)
+        key_states = self.k_out_identity(key_states)
+        value_states = self.v_out_identity(value_states)
 
         kv_seq_len = key_states.shape[-2]
         if past_key_value is not None:
@@ -303,11 +304,13 @@ class LlamaAttention(nn.Module):
 
         past_key_value = (key_states, value_states) if use_cache else None
 
-        query_states = self.matmul_q_identity(query_states)
-        key_states = self.matmul_k_identity(key_states)
+        query_states = self.matmul_in_q_identity(query_states)
+        key_states = self.matmul_in_k_identity(key_states)
         attn_weights = torch.matmul(
             query_states, key_states.transpose(2, 3)
         ) / math.sqrt(self.head_dim)
+
+        attn_weights = self.matmul_out_a_identity(attn_weights)
 
         if attn_weights.size() != (bsz, self.num_heads, q_len, kv_seq_len):
             raise ValueError(
@@ -333,8 +336,8 @@ class LlamaAttention(nn.Module):
         attn_weights = nn.functional.softmax(
             attn_weights, dim=-1, dtype=torch.float32
         ).to(query_states.dtype)
-        attn_weights = self.matmul_a_identity(attn_weights)
         attn_output = torch.matmul(attn_weights, value_states)
+        attn_output = self.matmul_out_b_identity(attn_output)
 
         if attn_output.size() != (bsz, self.num_heads, q_len, self.head_dim):
             raise ValueError(
@@ -347,7 +350,7 @@ class LlamaAttention(nn.Module):
 
         attn_output = self.o_proj(attn_output)
 
-        attn_output = self.o_proj_identity(attn_output)
+        attn_output = self.o_out_identity(attn_output)
 
         if not output_attentions:
             attn_weights = None
@@ -370,6 +373,8 @@ class LlamaDecoderLayer(nn.Module):
         self.post_attention_layernorm = LlamaRMSNorm(
             config.hidden_size, eps=config.rms_norm_eps
         )
+
+        self.block_output = Identity(block_id=layer_id, name="block_output")
 
     def forward(
         self,
@@ -410,6 +415,8 @@ class LlamaDecoderLayer(nn.Module):
             use_cache=use_cache,
         )
         hidden_states = residual + hidden_states
+
+        hidden_states = self.block_output(hidden_states)
 
         # Fully Connected
         residual = hidden_states

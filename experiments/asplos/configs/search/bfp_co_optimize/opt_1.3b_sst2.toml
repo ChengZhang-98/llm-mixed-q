@@ -1,17 +1,19 @@
 [search_strategy]
 n_jobs = 1
-n_trials = 2
+n_trials = 128
 timeout = 28800.0
 sampler = "TPE"
-accuracy_threshold = 0.65
+accuracy_threshold = 0.55
 avg_bitwidth_threshold = 6.0
-fps_threshold = 0.0
-sort_by = ["accuracy", "avg_bitwidth", "fps"]
+fps_threshold = 100
+fps_per_lut_threshold = 1e-6
+sort_by = ["accuracy", "avg_bitwidth", "fps", "fps_per_lut"]
 
 [search_estimator]
-alpha_accuracy = 1
+alpha_accuracy = 3.0
 alpha_memory_density = 0.10
 alpha_fps = 4e-3
+alpha_fps_per_lut = 1e5
 compare_to = 32
 
 [search_space]

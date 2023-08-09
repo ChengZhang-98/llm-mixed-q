@@ -25,6 +25,7 @@ model_arch=opt
 tasks=sst
 model_name="facebook/opt-1.3b"
 limit=128
+batch_size=32
 
 conda run -n $env_name --no-capture-output python search_prompting_cls.py \
     --model_arch $model_arch \
@@ -32,6 +33,7 @@ conda run -n $env_name --no-capture-output python search_prompting_cls.py \
     --tasks $tasks \
     --limit $limit \
     --save_dir $save_dir \
-    --search_config $search_config
+    --search_config $search_config \
+    --batch_size $batch_size
 
 echo ========== Done. ==========

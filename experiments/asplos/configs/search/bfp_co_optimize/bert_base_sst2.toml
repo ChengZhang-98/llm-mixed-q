@@ -6,7 +6,7 @@ sampler = "TPE"
 accuracy_threshold = 0.90
 avg_bitwidth_threshold = 5
 fps_threshold = 10
-fps_per_lut_threshold = 40
+fps_per_lut_threshold = 1e-4
 sort_by = ["accuracy", "fps", "avg_bitwidth", "fps_per_lut"]
 
 [search_estimator]

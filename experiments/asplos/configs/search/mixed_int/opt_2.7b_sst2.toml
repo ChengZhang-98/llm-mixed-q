@@ -5,13 +5,13 @@ timeout = 28800.0
 sampler = "TPE"
 accuracy_threshold = 0.85
 avg_bitwidth_threshold = 6.0
-ops_per_bit_threshold = 0.0
-sort_by = ["accuracy", "avg_bitwidth", "ops_per_bit"]
+fps_threshold = 0.0
+sort_by = ["accuracy", "avg_bitwidth", "fps"]
 
 [search_estimator]
 alpha_accuracy = 1
 alpha_memory_density = 0.10
-alpha_ops_per_bit = 0.0
+alpha_fps = 0.0
 compare_to = 32
 
 [search_space]

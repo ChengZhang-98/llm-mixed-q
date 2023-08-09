@@ -1,0 +1,37 @@
+[search_strategy]
+n_jobs = 1
+n_trials = 128
+timeout = 28800.0
+sampler = "TPE"
+accuracy_threshold = 0.55
+avg_bitwidth_threshold = 6.0
+fps_threshold = 100
+fps_per_lut_threshold = 1e-6
+sort_by = ["accuracy", "avg_bitwidth", "fps", "fps_per_lut"]
+
+[search_estimator]
+alpha_accuracy = 3.0
+alpha_memory_density = 0.10
+alpha_fps = 4e-3
+alpha_fps_per_lut = 1e5
+compare_to = 32
+
+[search_space]
+extend_quant_config_seed_first = true
+[search_space.quant_config_seed]
+[search_space.quant_config_seed.default]
+name = ["block_fp"]
+bypass = ["!ast!False"]
+is_ptq = ["!ast!True"]
+data_in_width = [7, 6, 5, 4]
+data_in_exponent_width = [8]
+data_in_exponent_bias = ["!ast!None"]
+data_in_block_size = ["!ast![1, 16]"]
+weight_width = [6, 5, 4, 3]
+weight_exponent_width = [8]
+weight_exponent_bias = ["!ast!None"]
+weight_block_size = ["!ast![1, 16]"]
+bias_width = [6, 5, 4, 3]
+bias_exponent_width = [8]
+bias_exponent_bias = ["!ast!None"]
+bias_block_size = ["!ast![1, 16]"]

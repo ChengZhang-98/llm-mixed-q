@@ -59,6 +59,8 @@ def main():
 
     args = parser.parse_args()
 
+    logger.info(vars(args))
+
     tokenizer = get_tokenizer_cls(args.model_arch).from_pretrained(args.model_name)
 
     raw_dataset = get_raw_dataset_dict("wikitext2")
@@ -83,16 +85,17 @@ def main():
 
     # fmt: off
     block_sizes = [
-        [3, 3], [5,5], [7,7], [9,9],
         [1, 2], [1, 4], [1, 8], [1, 16], [1, 32],
         [2, 1], [2, 2], [2, 4], [2, 8], [2,16], [2,32],
         [4, 1], [4, 2], [4, 4], [4, 8], [4,16], [4,32],
         [8, 1], [8, 2], [8, 4], [8, 8], [8,16], [8,32],
         [16, 1], [16, 2], [16, 4], [16, 8], [16,16], [16,32],
         [32, 1], [32, 2], [32, 4], [32, 8], [32,16], [32,32],
+        [3, 3], [5,5], [7,7], [9,9],
     ]
-    # block_sizes = [[1,16], [1,32]]
-    block_sizes = list(reversed(block_sizes))
+    # block_sizes = [[1,16], [1,32]] # llama-7b, block_size=[1, 32], perplexity=6.05
+    # block_sizes = [[1, 16], [1,32]]
+    # block_sizes = list(reversed(block_sizes))
     # fmt: on
 
     csv_df = pd.DataFrame(columns=["block_size", "perplexity"])
@@ -113,6 +116,7 @@ def main():
             {"block_size": block_size, "perplexity": results["perplexity"]}
         )
         progress_bar.update(1)
+        del model
 
     csv_path = Path(args.save_dir) / "block_size.csv"
     csv_path.parent.mkdir(parents=True, exist_ok=True)

@@ -12,6 +12,8 @@ import joblib
 import optuna
 import pandas as pd
 from tqdm import tqdm
+from sklearn.exceptions import InconsistentVersionWarning
+import warnings
 
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent.parent / "src"))
 
@@ -22,7 +24,7 @@ from llm_mixed_q.datasets import (
     is_regression_task,
     preprocess_dataset_dict,
 )
-from llm_mixed_q.eval import eval_cls_glue
+from llm_mixed_q.eval import eval_cls_glue, eval_dse_results
 from llm_mixed_q.models import (
     get_tokenizer_cls,
     get_model_cls,
@@ -107,6 +109,8 @@ def main():
             "trial_id",
             "accuracy",
             "avg_bitwidth",
+            "fps",
+            "fps_per_lut",
             "quant_config",
             "datetime_start",
             "datetime_end",
@@ -120,22 +124,28 @@ def main():
         quant_config_i = extract_quant_config(study, trial_id, qc_path_i)
         model_i = build_model(args.model_arch, args.model_name, quant_config_i)
         config_i = model_i.config
-        results_i = eval_cls_glue(
+        sw_results_i = eval_cls_glue(
             model=model_i,
             task=args.task,
             eval_dataloader=eval_dataloader,
             is_regression=is_regression_task(args.task),
         )
+        dse_results = eval_dse_results(
+            config_i,
+            is_mixed=True,
+        )
         accuracy_df.loc[len(accuracy_df)] = [
             trial_id,
-            results_i["accuracy"],
+            sw_results_i["accuracy"],
             get_avg_bitwidth(config_i, model_profiler, args.max_length),
+            dse_results["best_fps"],
+            dse_results["best_fps"] / dse_results["resource"],
             qc_path_i.name,
             study.trials[trial_id].datetime_start.strftime("%Y-%m-%d %H:%M:%S"),
             study.trials[trial_id].datetime_complete.strftime("%Y-%m-%d %H:%M:%S"),
         ]
         progress_bar.set_postfix(
-            {"trial_id": trial_id, "accuracy": results_i["accuracy"]}
+            {"trial_id": trial_id, "accuracy": sw_results_i["accuracy"]}
         )
         progress_bar.update(1)
 
@@ -145,5 +155,6 @@ def main():
 if __name__ == "__main__":
     hf_datasets.logging.set_verbosity_error()
     transformers.logging.set_verbosity_error()
+    warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
     set_logging_verbosity("info")
     main()

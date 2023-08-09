@@ -33,12 +33,13 @@ conda env create -f environment.yml
   + Fine-grained / Coarse-grained search space.
     The search space can be specific layers, transformer bocks, or the whole model.
 
-  + Search without / without statistic profiles. This feature is only for integer quantisation. When statistic profiles are available, the search space can only includes the width and the fraction width is determined by the statistic profile.
+  + Search without/without statistic profiles. This feature is only for integer quantisation. When statistic profiles are available, the search space can only includes the width and the fraction width is determined by the statistic profile.
 
 * Search objectives
   + Accuracy
   + Memory density
-  + OPs per bit
+  + Frame Per Second (FPS)
+  + FPS per LUT
 
 * Search algorithms:
   + Random
@@ -65,26 +66,30 @@ cd llm-mixed-q/experiments/asplos/fine_tune/
 Then we can search the mixed-precision BFP quantisation, considering accuracy, memory density, and OPs per bit.
 
 ```bash
-cd llm-mixed-q/experiments/asplos/mixed_bfp_acc_mem_ops
+cd llm-mixed-q/experiments/asplos/mixed_bfp_co_optimize
 
 # run an example search script, "2023_8_4" is a ckpt tag
 ./bert_base_sst2.sh \
   "2023_8_4" \
-  ../../../experiments/asplos/configs/search/bfp_acc_mem_ops/bert_base_sst2.toml
+  ../../../experiments/asplos/configs/search/bfp_co_optimize/bert_base_sst2.toml
 ```
 
-The search space is fine-grained and includes all layers of the model. The search algorithm is TPE.
+The search space is fine-grained and includes all layers of the model. The search algorithm is TPE. The objective function takes the form
+
+```python
+objective = alpha_1 * accuracy + alpha_2 * mem_density + alpha_3 * fps + alpha_4 * fps_per_lut
+```
 
 ### Search using zero-shot prompt accuracy
 
 For GPT-like model, we evaluate the accuracy on SST2 dataset using zero-shot prompt accuracy.
 
 ```bash
-cd llm-mixed-q/experiments/asplos/mixed_bfp_acc_mem_ops
+cd llm-mixed-q/experiments/asplos/mixed_bfp_co_optimize
 
 ./vicuna_7b_sst2.sh \
   "2023_8_4" \
-  ../../../experiments/asplos/configs/search/bfp_acc_mem_ops/vicuna_7b_sst2.toml
+  ../../../experiments/asplos/configs/search/bfp_co_optimize/vicuna_7b_sst2.toml
 ```
 
 The search space is coarse-grained and performed on the Transformer block. The searched block is reused across the whole model. We don't search the positional embedding layer (RoPE) and fix it to 4-bit integer quantisation.

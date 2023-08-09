@@ -151,6 +151,10 @@ class SearchIntQuantisationForClassification(SearchBase):
             assert (
                 self.search_config["search_strategy"]["fps_threshold"] == 0
             ), "alpha_fps is 0, please set fps_threshold to 0 as well"
+        if self.search_config["search_estimator"]["fps_per_lut"] == 0:
+            assert (
+                self.search_config["search_strategy"]["fps_threshold"] == 0
+            ), "fps_per_lut is 0, please set fps_threshold to 0 as well"
 
     def rebuild_model(self, quant_config):
         if quant_config is None:
@@ -235,6 +239,7 @@ class SearchIntQuantisationForClassification(SearchBase):
             h_metric.update(
                 {
                     "fps": results["best_fps"],
+                    "fps_per_lut": results["best_fps"] / results["resource"],
                 }
             )
             return h_metric
@@ -341,20 +346,21 @@ class SearchIntQuantisationForClassification(SearchBase):
         def logger_callback(
             study: optuna.Study, frozen_trail: optuna.trial.FrozenTrial
         ):
-            acc, mem_density, fps = frozen_trail.values
+            acc, mem_density, fps, fps_per_lut = frozen_trail.values
             # fmt: off
             ori_acc = acc / (self.search_config["search_estimator"]["alpha_accuracy"] + 1e-8)
             ori_mem_density = mem_density / (self.search_config["search_estimator"]["alpha_memory_density"] + 1e-8)
             ori_fps = fps / (self.search_config["search_estimator"]["alpha_fps"] + 1e-8)
+            ori_fps_per_lut = fps_per_lut / (self.search_config["search_estimator"]["alpha_fps"] + 1e-8)
 
             avg_bitwidth = self.search_config["search_estimator"]["compare_to"] / ori_mem_density
             # fmt: on
             logger.info(
                 f"Trial {frozen_trail.number} is done: "
-                f"unscaled (accuracy, mem_density, fps) = "
-                f"({ori_acc:.4f}, {ori_mem_density:.2f}, {ori_fps:.2f}), "
+                f"unscaled (accuracy, mem_density, fps, fps_per_lut) = "
+                f"({ori_acc:.4f}, {ori_mem_density:.2f}, {ori_fps:.2f}, {ori_fps_per_lut:.2e}), "
                 f"scaled (...) = "
-                f"({acc:.4f}, {mem_density:.2f}, {fps:.2f}), "
+                f"({acc:.4f}, {mem_density:.2f}, {fps:.2f}, {fps_per_lut:.2f}), "
                 f"avg_bitwidth = {avg_bitwidth:.1f}"
             )
 
@@ -376,7 +382,7 @@ class SearchIntQuantisationForClassification(SearchBase):
                 )
         logger.info(f"Using sampler: {sampler.__class__.__name__}")
         study = optuna.create_study(
-            directions=["maximize", "maximize", "maximize"],
+            directions=["maximize", "maximize", "maximize", "maximize"],
             sampler=sampler,
         )
 
@@ -472,6 +478,7 @@ class SearchIntQuantisationForClassification(SearchBase):
         alpha_acc: float,
         alpha_mem_density: float,
         alpha_fps: float,
+        alpha_fps_per_lut: float,
         compare_to: int,
     ) -> pd.DataFrame:
         result_df = pd.DataFrame(
@@ -480,9 +487,11 @@ class SearchIntQuantisationForClassification(SearchBase):
                 "accuracy",
                 "memory_density",
                 "fps",
+                "fps_per_lut",
                 "scaled_accuracy",
                 "scaled_memory_density",
                 "scaled_fps",
+                "scaled_fps_per_lut",
                 "quant_config_path",
                 "avg_bitwidth",
                 "quant_config",
@@ -506,19 +515,27 @@ class SearchIntQuantisationForClassification(SearchBase):
                     save_path=quant_config_path,
                 )
             )
-            scaled_acc, scaled_mem_density, scaled_fps = trial.values
+            (
+                scaled_acc,
+                scaled_mem_density,
+                scaled_fps,
+                scaled_fps_per_lut,
+            ) = trial.values
             acc = scaled_acc / (alpha_acc + 1e-8)
             mem_density = scaled_mem_density / (alpha_mem_density + 1e-8)
             fps = scaled_fps / (alpha_fps + 1e-8)
+            fps_per_lut = scaled_fps_per_lut / (alpha_fps + 1e-8)
             avg_bitwidth = compare_to / mem_density
             result_df.loc[i] = [
                 trial_id,
                 acc,
                 mem_density,
                 fps,
+                fps_per_lut,
                 scaled_acc,
                 scaled_mem_density,
                 scaled_fps,
+                scaled_fps_per_lut,
                 quant_config_path,
                 avg_bitwidth,
                 quant_config,
@@ -548,6 +565,7 @@ class SearchIntQuantisationForClassification(SearchBase):
             alpha_acc=self.search_config["search_estimator"]["alpha_accuracy"],
             alpha_mem_density=self.search_config["search_estimator"]["alpha_memory_density"],
             alpha_fps=self.search_config["search_estimator"]["alpha_fps"],
+            alpha_fps_per_lut=self.search_config["search_estimator"]["alpha_fps_per_lut"],
             compare_to=self.search_config["search_estimator"]["compare_to"],
         )
         # fmt: on
@@ -559,7 +577,8 @@ class SearchIntQuantisationForClassification(SearchBase):
             f"(alpha_accuracy, alpha_memory_density, alpha_fps) = "
             f"{self.search_config['search_estimator']['alpha_accuracy']}, "
             f"{self.search_config['search_estimator']['alpha_memory_density']}, "
-            f"{self.search_config['search_estimator']['alpha_fps']}"
+            f"{self.search_config['search_estimator']['alpha_fps']}, "
+            f"{self.search_config['search_estimator']['alpha_fps_per_lut']}, "
         )
 
         result_df = result_df.drop("quant_config", axis=1)
@@ -594,6 +613,7 @@ class SearchIntQuantisationForClassification(SearchBase):
         acc_threshold = self.search_config["search_strategy"]["accuracy_threshold"]
         avg_bitwidth_threshold = self.search_config["search_strategy"]["avg_bitwidth_threshold"]
         fps_threshold = self.search_config["search_strategy"]["fps_threshold"]
+        fps_per_lut_threshold = self.search_config["search_strategy"]["fps_per_lut_threshold"]
         # fmt: on
         sort_by = self.search_config["search_strategy"]["sort_by"]
 
@@ -602,7 +622,8 @@ class SearchIntQuantisationForClassification(SearchBase):
                 "accuracy",
                 "avg_bitwidth",
                 "fps",
-            ], f"Unknown sort_by: {s}, must be one of ['accuracy', 'avg_bitwidth', 'fps']"
+                "fps_per_lut",
+            ], f"Unknown sort_by: {s}, must be one of ['accuracy', 'avg_bitwidth', 'fps', 'fps_per_lut']"
 
         # fmt: off
         result_df = SearchIntQuantisationForClassification.get_result_df(
@@ -616,6 +637,7 @@ class SearchIntQuantisationForClassification(SearchBase):
             alpha_acc=self.search_config["search_estimator"]["alpha_accuracy"],
             alpha_mem_density=self.search_config["search_estimator"]["alpha_memory_density"],
             alpha_fps=self.search_config["search_estimator"]["alpha_fps"],
+            alpha_fps_per_lut=self.search_config["search_estimator"]["alpha_fps_per_lut"],
             compare_to=self.search_config["search_estimator"]["compare_to"],
         )
         # fmt: on
@@ -625,9 +647,12 @@ class SearchIntQuantisationForClassification(SearchBase):
             filtered_df["avg_bitwidth"] <= avg_bitwidth_threshold
         ]
         filtered_df = filtered_df.loc[filtered_df["fps"] >= fps_threshold]
+        filtered_df = filtered_df.loc[
+            filtered_df["fps_per_lut"] >= fps_per_lut_threshold
+        ]
         if len(filtered_df) == 0:
             logger.warning(
-                f"No trials found with acc >= {acc_threshold}, avg_bitwidth <= {avg_bitwidth_threshold}, fps >= {fps_threshold}"
+                f"No trials found with acc >= {acc_threshold}, avg_bitwidth <= {avg_bitwidth_threshold}, fps >= {fps_threshold}, fps_per_lut >= {fps_per_lut_threshold}"
             )
             return
 
@@ -635,6 +660,7 @@ class SearchIntQuantisationForClassification(SearchBase):
             "accuracy": False,
             "avg_bitwidth": True,
             "fps": False,
+            "fps_per_lut": False,
         }
 
         filtered_df = filtered_df.sort_values(
@@ -708,6 +734,10 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
             assert (
                 self.search_config["search_strategy"]["fps_threshold"] == 0
             ), "alpha_fps is 0, please set fps_threshold to 0 as well"
+        if self.search_config["search_estimator"]["fps_per_lut"] == 0:
+            assert (
+                self.search_config["search_strategy"]["fps_threshold"] == 0
+            ), "fps_per_lut is 0, please set fps_threshold to 0 as well"
 
     def rebuild_model(self, quant_config):
         raise NotImplementedError
@@ -796,6 +826,7 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
             h_metric.update(
                 {
                     "fps": results["best_fps"],
+                    "fps_per_lut": results["best_fps"] / results["resource"],
                 }
             )
             return h_metric
@@ -905,20 +936,21 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
         def logger_callback(
             study: optuna.Study, frozen_trail: optuna.trial.FrozenTrial
         ):
-            acc, mem_density, fps = frozen_trail.values
+            acc, mem_density, fps, fps_per_lut = frozen_trail.values
             # fmt: off
             ori_acc = acc / (self.search_config["search_estimator"]["alpha_accuracy"] + 1e-8)
             ori_mem_density = mem_density / (self.search_config["search_estimator"]["alpha_memory_density"] + 1e-8)
             ori_fps = fps / (self.search_config["search_estimator"]["alpha_fps"] + 1e-8)
+            ori_fps_per_lut = fps_per_lut / (self.search_config["search_estimator"]["alpha_fps"] + 1e-8)
 
             avg_bitwidth = self.search_config["search_estimator"]["compare_to"] / ori_mem_density
             # fmt: on
             logger.info(
                 f"Trial {frozen_trail.number} is done: "
-                f"unscaled (accuracy, mem_density, fps) = "
-                f"({ori_acc:.4f}, {ori_mem_density:.2f}, {ori_fps:.2f}), "
+                f"unscaled (accuracy, mem_density, fps, fps_per_lut) = "
+                f"({ori_acc:.4f}, {ori_mem_density:.2f}, {ori_fps:.2f}, {fps_per_lut:.2e}), "
                 f"scaled (...) = "
-                f"({acc:.4f}, {mem_density:.2f}, {fps:.2f}), "
+                f"({acc:.4f}, {mem_density:.2f}, {fps:.2f}, {fps_per_lut:.2f}), "
                 f"avg_bitwidth = {avg_bitwidth:.1f}"
             )
 
@@ -940,7 +972,7 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
                 )
         logger.info(f"Using sampler: {sampler.__class__.__name__}")
         study = optuna.create_study(
-            directions=["maximize", "maximize", "maximize"],
+            directions=["maximize", "maximize", "maximize", "maximize"],
             sampler=sampler,
         )
 
@@ -1041,6 +1073,7 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
         alpha_acc: float,
         alpha_mem_density: float,
         alpha_fps: float,
+        alpha_fps_per_lut: float,
         compare_to: int,
     ) -> pd.DataFrame:
         result_df = pd.DataFrame(
@@ -1049,9 +1082,11 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
                 "accuracy",
                 "memory_density",
                 "fps",
+                "fps_per_lut",
                 "scaled_accuracy",
                 "scaled_memory_density",
                 "scaled_fps",
+                "scaled_fps_per_lut",
                 "quant_config_path",
                 "avg_bitwidth",
                 "quant_config",
@@ -1075,19 +1110,27 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
                     save_path=quant_config_path,
                 )
             )
-            scaled_acc, scaled_mem_density, scaled_fps = trial.values
+            (
+                scaled_acc,
+                scaled_mem_density,
+                scaled_fps,
+                scaled_fps_per_lut,
+            ) = trial.values
             acc = scaled_acc / (alpha_acc + 1e-8)
             mem_density = scaled_mem_density / (alpha_mem_density + 1e-8)
             fps = scaled_fps / (alpha_fps + 1e-8)
+            fps_per_lut = scaled_fps_per_lut / (alpha_fps_per_lut + 1e-8)
             avg_bitwidth = compare_to / mem_density
             result_df.loc[i] = [
                 trial_id,
                 acc,
                 mem_density,
                 fps,
+                fps_per_lut,
                 scaled_acc,
                 scaled_mem_density,
                 scaled_fps,
+                scaled_fps_per_lut,
                 quant_config_path,
                 avg_bitwidth,
                 quant_config,
@@ -1117,6 +1160,7 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
             alpha_acc=self.search_config["search_estimator"]["alpha_accuracy"],
             alpha_mem_density=self.search_config["search_estimator"]["alpha_memory_density"],
             alpha_fps=self.search_config["search_estimator"]["alpha_fps"],
+            alpha_fps_per_lut=self.search_config["search_estimator"]["alpha_fps_per_lut"],
             compare_to=self.search_config["search_estimator"]["compare_to"],
         )
         # fmt: on
@@ -1127,7 +1171,8 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
             f"(alpha_accuracy, alpha_memory_density, alpha_fps) = "
             f"{self.search_config['search_estimator']['alpha_accuracy']}, "
             f"{self.search_config['search_estimator']['alpha_memory_density']}, "
-            f"{self.search_config['search_estimator']['alpha_fps']}"
+            f"{self.search_config['search_estimator']['alpha_fps']}, "
+            f"{self.search_config['search_estimator']['alpha_fps_per_lut']},"
         )
 
         result_df = result_df.drop("quant_config", axis=1)
@@ -1164,6 +1209,7 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
         acc_threshold = self.search_config["search_strategy"]["accuracy_threshold"]
         avg_bitwidth_threshold = self.search_config["search_strategy"]["avg_bitwidth_threshold"]
         fps_threshold = self.search_config["search_strategy"]["fps_threshold"]
+        fps_per_lut_threshold = self.search_config["search_strategy"]["fps_per_lut_threshold"]
         # fmt: on
         sort_by = self.search_config["search_strategy"]["sort_by"]
 
@@ -1172,7 +1218,8 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
                 "accuracy",
                 "avg_bitwidth",
                 "fps",
-            ], f"Unknown sort_by: {s}, must be one of ['accuracy', 'avg_bitwidth', 'fps']"
+                "fps_per_lut",
+            ], f"Unknown sort_by: {s}, must be one of ['accuracy', 'avg_bitwidth', 'fps', 'fps_per_lut']"
         # fmt: off
         result_df = SearchIntQuantisationForPromptingCLS.get_result_df(
             study,
@@ -1185,6 +1232,7 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
             alpha_acc=self.search_config["search_estimator"]["alpha_accuracy"],
             alpha_mem_density=self.search_config["search_estimator"]["alpha_memory_density"],
             alpha_fps=self.search_config["search_estimator"]["alpha_fps"],
+            alpha_fps_per_lut=self.search_config["search_estimator"]["alpha_fps_per_lut"],
             compare_to=self.search_config["search_estimator"]["compare_to"],
         )
         # fmt: on
@@ -1194,9 +1242,12 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
             filtered_df["avg_bitwidth"] <= avg_bitwidth_threshold
         ]
         filtered_df = filtered_df.loc[filtered_df["fps"] >= fps_threshold]
+        filtered_df = filtered_df.loc[
+            filtered_df["fps_per_lut"] >= fps_per_lut_threshold
+        ]
         if len(filtered_df) == 0:
             logger.warning(
-                f"No trials found with acc >= {acc_threshold}, avg_bitwidth <= {avg_bitwidth_threshold}, fps >= {fps_threshold}"
+                f"No trials found with acc >= {acc_threshold}, avg_bitwidth <= {avg_bitwidth_threshold}, fps >= {fps_threshold}, fps_per_lut >= {fps_per_lut_threshold}"
             )
             return
 
@@ -1204,6 +1255,7 @@ class SearchIntQuantisationForPromptingCLS(SearchBase):
             "accuracy": False,
             "avg_bitwidth": True,
             "fps": False,
+            "fps_per_lut": False,
         }
 
         filtered_df = filtered_df.sort_values(

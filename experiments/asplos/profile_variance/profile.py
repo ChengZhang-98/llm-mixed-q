@@ -7,6 +7,7 @@ import datasets as hf_datasets
 from torch.utils.data import DataLoader
 import json
 import pickle
+from argparse import ArgumentParser
 
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent.parent / "src"))
 
@@ -25,6 +26,13 @@ from models.identity import Identity
 
 
 def main():
+    parser = ArgumentParser()
+    parser.add_argument("--save_name", type=str, default="variance_online.pkl")
+    args = parser.parse_args()
+
+    save_name = Path(args.save_name)
+    save_name.parent.mkdir(exist_ok=True, parents=True)
+
     stat_manager = StatManager(act_stats=("variance_online",), weight_stats=())
 
     model = LlamaForCausalLM.from_pretrained("lmsys/vicuna-7b-v1.3").to("cuda:0")
@@ -73,11 +81,8 @@ def main():
         progress_bar=True,
     )
     results = stat_manager.finalize(show_progress_bar=True)
-    with open("variance_online.pkl", "wb") as f:
+    with open(save_name, "wb") as f:
         pickle.dump(results, f)
-
-    with open("variance_online.json", "w") as f:
-        json.dump(results, f)
 
 
 if __name__ == "__main__":

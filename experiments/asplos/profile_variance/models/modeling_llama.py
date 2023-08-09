@@ -245,8 +245,9 @@ class LlamaAttention(nn.Module):
         self.k_proj_identity = Identity(block_id=layer_id, name="k_proj")
         self.v_proj_identity = Identity(block_id=layer_id, name="v_proj")
         self.o_proj_identity = Identity(block_id=layer_id, name="o_proj")
-        self.matmul_0_identity = Identity(block_id=layer_id, name="matmul_0")
-        self.matmul_1_identity = Identity(block_id=layer_id, name="matmul_1")
+        self.matmul_q_identity = Identity(block_id=layer_id, name="matmul_q")
+        self.matmul_k_identity = Identity(block_id=layer_id, name="matmul_k")
+        self.matmul_a_identity = Identity(block_id=layer_id, name="matmul_a")
 
     def _shape(self, tensor: torch.Tensor, seq_len: int, bsz: int):
         return (
@@ -302,11 +303,11 @@ class LlamaAttention(nn.Module):
 
         past_key_value = (key_states, value_states) if use_cache else None
 
+        query_states = self.matmul_q_identity(query_states)
+        key_states = self.matmul_k_identity(key_states)
         attn_weights = torch.matmul(
             query_states, key_states.transpose(2, 3)
         ) / math.sqrt(self.head_dim)
-
-        attn_weights = self.matmul_0_identity(attn_weights)
 
         if attn_weights.size() != (bsz, self.num_heads, q_len, kv_seq_len):
             raise ValueError(
@@ -328,12 +329,12 @@ class LlamaAttention(nn.Module):
             )
 
         # upcast attention to fp32
+
         attn_weights = nn.functional.softmax(
             attn_weights, dim=-1, dtype=torch.float32
         ).to(query_states.dtype)
+        attn_weights = self.matmul_a_identity(attn_weights)
         attn_output = torch.matmul(attn_weights, value_states)
-
-        attn_output = self.matmul_1_identity(attn_output)
 
         if attn_output.size() != (bsz, self.num_heads, q_len, self.head_dim):
             raise ValueError(

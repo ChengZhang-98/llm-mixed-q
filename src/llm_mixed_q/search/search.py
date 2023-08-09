@@ -484,7 +484,7 @@ class SearchQuantisationForClassification(SearchBase):
             alpha_acc=self.search_config["search_estimator"]["alpha_accuracy"],
             alpha_mem_density=self.search_config["search_estimator"]["alpha_memory_density"],
             alpha_fps=self.search_config["search_estimator"]["alpha_fps"],
-            alpha_fps_per_lut=self.search_config["search_strategy"]["alpha_fps_per_lut"],
+            alpha_fps_per_lut=self.search_config["search_estimator"]["alpha_fps_per_lut"],
             compare_to=self.search_config["search_estimator"]["compare_to"],
         )
         # fmt:on

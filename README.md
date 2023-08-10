@@ -35,7 +35,7 @@ conda env create -f environment.yml
 
   + Search without/without statistic profiles. This feature is only for integer quantisation. When statistic profiles are available, the search space can only includes the width and the fraction width is determined by the statistic profile.
 
-* Search objectives
+* Search objective can be a combination of 
   + Accuracy
   + Memory density
   + Frame Per Second (FPS)

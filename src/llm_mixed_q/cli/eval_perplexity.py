@@ -3,8 +3,11 @@ import logging
 import os
 from argparse import ArgumentParser
 from pathlib import Path
+import ast
 
-from accelerate import dispatch_model, infer_auto_device_map
+import torch
+import psutil
+from accelerate import dispatch_model, infer_auto_device_map, init_empty_weights
 from torch.utils.data import DataLoader
 from transformers import DataCollatorForLanguageModeling
 
@@ -31,6 +34,7 @@ def cli_eval_lm_wikitext2():
     parser.add_argument("--batch_size", type=int, default=16)
     parser.add_argument("--max_length", type=int, default=2048)
     parser.add_argument("--model_parallelism", action="store_true")
+    parser.add_argument("--device_map", type=str, default="auto")
     parser.add_argument(
         "--dataset_split",
         type=str,
@@ -59,9 +63,14 @@ def cli_eval_lm_wikitext2():
         model = model_cls.from_pretrained(args.model_name, config=config).to("cuda")
     else:
         model = model_cls.from_pretrained(args.model_name, config=config)
-        device_map = infer_auto_device_map(
-            model, no_split_module_classes=model._no_split_modules
-        )
+        if args.device_map == "auto":
+            device_map = infer_auto_device_map(
+                model,
+                no_split_module_classes=model._no_split_modules,
+                dtype=torch.float16,
+            )
+        else:
+            device_map = ast.literal_eval(args.device_map)
         model = dispatch_model(model, device_map=device_map)
 
     raw_dataset = get_raw_dataset_dict(args.task)

@@ -2,7 +2,7 @@ from ..train import ddp_train_runner, fsdp_train_runner
 from .eval_cls import cli_eval_cls_glue
 from .eval_perplexity import cli_eval_lm_wikitext2
 from .eval_perplexity_llm_int8 import cli_eval_lm_wikitext2_llm_int8
-from .eval_prompting_cls import cli_prompting_eval_cls
+from .eval_prompting_cls import cli_eval_prompting_cls
 from .extract_quant_config_cls import cli_extract_quant_config_and_eval_cls_glue
 from .extract_quant_config_promting_cls import (
     cli_extract_quant_config_and_prompting_eval,

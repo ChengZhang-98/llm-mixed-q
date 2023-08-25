@@ -16,7 +16,7 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 logger = logging.getLogger(__name__)
 
 
-def cli_prompting_eval_cls():
+def cli_eval_prompting_cls():
     parser = ArgumentParser()
 
     parser.add_argument(
@@ -31,6 +31,7 @@ def cli_prompting_eval_cls():
         choices=["bert", "opt", "llama"],
     )
     parser.add_argument("--model_name", required=True, help="model name")
+    parser.add_argument("--model_args", default="", help="model args")
     parser.add_argument(
         "--quant_config", required=True, help="path to quant config file"
     )
@@ -72,6 +73,7 @@ def cli_prompting_eval_cls():
         model_wrapper=args.model_wrapper,
         model_arch=args.model_arch,
         model_name=args.model_name,
+        model_args=args.model_args,
         quant_config=args.quant_config,
         tasks=args.tasks,
         num_fewshot=args.num_fewshot,

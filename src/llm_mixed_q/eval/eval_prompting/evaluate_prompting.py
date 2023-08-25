@@ -19,6 +19,7 @@ def eval_prompting_tasks(
     model_name: str,
     quant_config: str | dict,
     tasks: list[str],
+    model_args: str = "",
     num_fewshot: int = 0,
     batch_size: str = None,
     max_batch_size: int = None,
@@ -29,7 +30,11 @@ def eval_prompting_tasks(
     task_names = lm_eval_utils.pattern_match(tasks, lm_eval_tasks.ALL_TASKS)
     description_dict = {}
 
-    model_args = f"model_arch={model_arch},model_name={model_name}"
+    model_args = (
+        f"model_arch={model_arch},model_name={model_name},{model_args}"
+        if model_args
+        else f"model_arch={model_arch},model_name={model_name}"
+    )
 
     if isinstance(quant_config, str):
         quant_config = load_config(quant_config)

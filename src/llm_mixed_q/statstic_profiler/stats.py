@@ -63,6 +63,53 @@ class _StatBase:
 
 
 @_add_to_stat_mapping
+class Record(_StatBase):
+    """
+    Record all samples passed in
+
+    Args:
+        device (str|None): the device to move the samples to. If None, the samples will not be moved.
+        add_new_dim_before_concat (bool): if True, add a new dimension before concatenating the samples.
+    """
+
+    name = "record"
+
+    def __init__(self, device=None, add_new_dim_before_concat: bool = False) -> None:
+        super().__init__()
+        self.device = device
+        self.add_new_dim: bool = add_new_dim_before_concat
+        self.data: Tensor = None
+        self.count: int = None
+        self.total_size_in_bytes: float = None
+
+    @torch.no_grad()
+    def update_a_sample(self, new_s: Tensor):
+        if isinstance(new_s, (list, tuple, int, float)):
+            new_s = torch.tensor(new_s).float()
+        assert isinstance(new_s, Tensor)
+        new_s = new_s.clone().detach().float()
+        if self.device is not None:
+            new_s = new_s.to(self.device)
+        if self.add_new_dim:
+            new_s = new_s.unsqueeze(0)
+        if self.data is None:
+            self.data = new_s
+            self.count = 1
+        else:
+            self.data = torch.concat((self.data, new_s), dim=0)
+            self.count += 1
+        self.total_size_in_bytes = self.data.element_size() * self.data.nelement()
+
+    @torch.no_grad()
+    def compute(self) -> dict:
+        return {
+            "data": self.data,
+            "count": self.count,
+            "size_in_bytes": self.total_size_in_bytes,
+        }
+
+
+@_add_to_stat_mapping
 class VarianceOnline(_StatBase):
     """
     Use Welford's online algorithm to calculate running variance and mean
@@ -174,6 +221,64 @@ class VarianceOnline(_StatBase):
             "variance": var,
             "count": self.count,
         }
+
+
+@_add_to_stat_mapping
+class VariancePrecise(Record):
+    """
+    Concatenate samples and use torch.var, torch.mean to calculate variance and mean
+
+    This is precise but may use massive memory when the count or sample size is large.
+
+    ---
+    Args:
+        device (str|None): the device to move the samples to. If None, the samples will not be moved.
+        dims (str|list|None): the dimensions to reduce. If "all", reduce all dimensions. If None, do not reduce any dimension. If a list, reduce the specified dimensions.
+    """
+
+    name = "variance_precise"
+
+    def __init__(self, device=None, dims: Literal["all"] | None | list = "all") -> None:
+        super().__init__(device=device, add_new_dim_before_concat=True)
+        self.dims_to_reduce = dims
+
+    @torch.no_grad()
+    def update_a_sample(self, new_s: Tensor):
+        super().update_a_sample(new_s=new_s)
+
+    @torch.no_grad()
+    def compute(self) -> dict[str, ndarray]:
+        match self.dims_to_reduce:
+            case "all":
+                var = torch.var(self.data)
+                mean = torch.mean(self.data)
+                count = self.data.nelement()
+            case None:
+                count = self.data.size(0)
+                if self.data.size(0) < 2:
+                    logger.warning(
+                        f"VariancePrecise: count is {self.data.size(0)}, which is less than 2. "
+                        "Returning NA for mean and variance."
+                    )
+                    mean = "NA"
+                    var = "NA"
+                else:
+                    var = torch.var(self.data, dim=0)
+                    mean = torch.mean(self.data, dim=0)
+            case _:
+                dims_to_reduce = [i + 1 for i in self.dims_to_reduce]
+                count = self.data[dims_to_reduce].nelements()
+                if self.data[dims_to_reduce].nelements() < 2:
+                    logger.warning(
+                        f"VariancePrecise: count is {self.data[dims_to_reduce].nelements()}, which is less than 2. "
+                        "Returning NA for mean and variance."
+                    )
+                    var = "NA"
+                    mean = "NA"
+                else:
+                    var = torch.var(self.data, dim=[0] + dims_to_reduce)
+                    mean = torch.mean(self.data, dim=[0] + dims_to_reduce)
+        return {"mean": mean, "variance": var, "count": count}
 
 
 @_add_to_stat_mapping

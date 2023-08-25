@@ -7,7 +7,7 @@ import datasets as hf_datasets
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent.parent / "src"))
 
 from llm_mixed_q.utils import set_logging_verbosity, get_logger
-from llm_mixed_q.cli import cli_prompting_eval_cls
+from llm_mixed_q.cli import cli_eval_prompting_cls
 
 logger = get_logger(__name__)
 
@@ -18,4 +18,4 @@ if __name__ == "__main__":
     hf_datasets.logging.set_verbosity_error()
     transformers.logging.set_verbosity_error()
     set_logging_verbosity("info")
-    cli_prompting_eval_cls()
+    cli_eval_prompting_cls()

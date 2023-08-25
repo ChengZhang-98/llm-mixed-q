@@ -1,0 +1,4 @@
+[default]
+bypass = true
+name = "integer"
+is_ptq = true

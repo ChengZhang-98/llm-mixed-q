@@ -3,10 +3,14 @@ import logging
 import os
 from argparse import ArgumentParser
 from pathlib import Path
+import ast
 
 from torch.utils.data import DataLoader
-from transformers import (AutoModelForCausalLM, AutoTokenizer,
-                          DataCollatorForLanguageModeling)
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    DataCollatorForLanguageModeling,
+)
 
 from ..datasets import get_raw_dataset_dict, preprocess_dataset_dict
 from ..eval import eval_lm_wikitext2
@@ -29,6 +33,7 @@ def cli_eval_lm_wikitext2_llm_int8():
     parser.add_argument("--batch_size", type=int, default=16)
     parser.add_argument("--max_length", type=int, default=2048)
     parser.add_argument("--model_parallelism", action="store_true")
+    parser.add_argument("--device_map", type=str, default="auto")
     parser.add_argument(
         "--dataset_split",
         type=str,
@@ -54,11 +59,15 @@ def cli_eval_lm_wikitext2_llm_int8():
             load_in_4bit=args.load_in_4bit,
         )
     else:
+        if args.device_map == "auto":
+            device_map = "auto"
+        else:
+            device_map = ast.literal_eval(args.device_map)
         model = AutoModelForCausalLM.from_pretrained(
             args.model_name,
             load_in_8bit=args.load_in_8bit,
             load_in_4bit=args.load_in_4bit,
-            device_map="auto",
+            device_map=device_map,
         )
 
     raw_dataset = get_raw_dataset_dict(args.task)

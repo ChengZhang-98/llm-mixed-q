@@ -15,7 +15,9 @@ The inference of Large language models (LLMs) requires immense computation and m
 Conda environment is recommended. To create a conda environment, run:
 
 ```bash
+git clone https://github.com/ChengZhang-98/llm-mixed-q.git
 cd llm-mixed-q
+git submodule update --init submodules/lm-evaluation-harness
 conda env create -f environment.yml
 ```
 
@@ -46,9 +48,7 @@ conda env create -f environment.yml
 
 ## Entry points
 
-```bash
-git clone https://github.com/ChengZhang-98/llm-mixed-q.git
-```
+
 
 ### Section 1: Variance vs Layer number plot
 

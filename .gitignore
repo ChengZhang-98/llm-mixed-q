@@ -1,0 +1,6 @@
+/.vscode/
+/**/__pycache__/
+/local_backup/
+/checkpoints/
+/**/lm_cache/
+/**/wandb/

@@ -1,0 +1,18 @@
+by = "type"
+[default]
+bypass = false
+name = "log"
+is_ptq = true
+bias_exponent_bias = 63
+bias_width = 8
+data_in_exponent_bias = 63
+data_in_width = 8
+weight_exponent_bias = 63
+weight_width = 8
+
+
+[rotary_positional_encoding]
+bypass = false
+name = "integer"
+data_in_width = 8
+data_in_frac_width = 7

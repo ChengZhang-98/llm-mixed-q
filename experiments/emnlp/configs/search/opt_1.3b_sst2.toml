@@ -5,6 +5,8 @@ timeout = 28800.0
 sampler = "TPE"
 accuracy_threshold = 0.80
 avg_bitwidth_threshold = 5
+fps_threshold = 0
+fps_per_lut_threshold = 0
 sort_by = ["accuracy", "avg_bitwidth"]
 
 [search_estimator]

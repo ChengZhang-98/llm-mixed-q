@@ -7,7 +7,7 @@ accuracy_threshold = 0.90
 avg_bitwidth_threshold = 5
 fps_threshold = 0
 fps_per_lut_threshold = 0
-sort_by = ["accuracy", "avg_bitwidth", "fps", "fps_per_lut"]
+sort_by = ["accuracy", "avg_bitwidth"]
 
 [search_estimator]
 alpha_accuracy = 1

@@ -1,6 +1,6 @@
+# coding=utf-8
 # A quantized version of the LLaMA model from the HuggingFace Transformers library.
 # Original license below.
-# coding=utf-8
 # Copyright 2022 EleutherAI and the HuggingFace Inc. team. All rights reserved.
 #
 # This code is based on EleutherAI's GPT-NeoX library and the GPT-NeoX

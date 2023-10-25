@@ -1,4 +1,6 @@
 # coding=utf-8
+# A quantized version of the BERT model from the HuggingFace Transformers library.
+# Original license below.
 # Copyright 2018 The Google AI Language Team Authors and The HuggingFace Inc. team.
 # Copyright (c) 2018, NVIDIA CORPORATION.  All rights reserved.
 #

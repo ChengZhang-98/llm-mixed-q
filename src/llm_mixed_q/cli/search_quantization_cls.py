@@ -6,16 +6,10 @@ from pprint import pformat
 from torch.utils.data import DataLoader
 from transformers import default_data_collator, set_seed
 
-from ..datasets import (
-    get_num_labels,
-    get_raw_dataset_dict,
-    is_regression_task,
-    preprocess_dataset_dict,
-)
-from ..search import (
-    SearchQuantisationForClassification,
-    SearchQuantisationForPromptingCLS,
-)
+from ..datasets import (get_num_labels, get_raw_dataset_dict,
+                        is_regression_task, preprocess_dataset_dict)
+from ..search import (SearchQuantisationForClassification,
+                      SearchQuantisationForPromptingCLS)
 
 logger = logging.getLogger(__name__)
 

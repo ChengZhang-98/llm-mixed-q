@@ -1,6 +1,4 @@
 import logging
-import os
-import re
 from copy import deepcopy
 
 import toml

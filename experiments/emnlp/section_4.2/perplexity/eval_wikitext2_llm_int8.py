@@ -1,13 +1,14 @@
-from pathlib import Path
 import os
 import sys
+from pathlib import Path
 
 sys.path.append((Path(__file__).resolve().parents[4] / "src").as_posix())
 
+import datasets as hf_datasets
+import transformers
+
 from llm_mixed_q.cli import cli_eval_lm_wikitext2_llm_int8
 from llm_mixed_q.utils import set_logging_verbosity
-import transformers
-import datasets as hf_datasets
 
 
 def main():

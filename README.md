@@ -19,17 +19,6 @@ cd llm-mixed-q
 conda env create -f environment.yml
 ```
 
-## Citation
-
-```bibtex
-@article{zhang2023revisiting,
-  title={Revisiting Block-based Quantisation: What is Important for Sub-8-bit LLM Inference?},
-  author={Zhang, Cheng and Cheng, Jianyi and Shumailov, Ilia and Constantinides, George A and Zhao, Yiren},
-  journal={arXiv preprint arXiv:2310.05079},
-  year={2023}
-}
-```
-
 ## Features
 
 * Supported model architectures:
@@ -105,4 +94,15 @@ cd /experiments/emnlp/section_4.3
 cd llm-mixed-q/experiments/emnlp/section_4.4
 # this bash script requires a string tag and a search config toml
 ./opt_1.3b_sst2.sh dummy-tag llm-mixed-q/experiments/emnlp/configs/search/opt_1.3b_sst2.toml
+```
+
+## Citation
+
+```bibtex
+@article{zhang2023revisiting,
+  title={Revisiting Block-based Quantisation: What is Important for Sub-8-bit LLM Inference?},
+  author={Zhang, Cheng and Cheng, Jianyi and Shumailov, Ilia and Constantinides, George A and Zhao, Yiren},
+  journal={arXiv preprint arXiv:2310.05079},
+  year={2023}
+}
 ```

@@ -1,6 +1,7 @@
-from pathlib import Path
-from argparse import ArgumentParser
 import pickle
+from argparse import ArgumentParser
+from pathlib import Path
+
 import pandas as pd
 
 

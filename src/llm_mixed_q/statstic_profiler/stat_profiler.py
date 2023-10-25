@@ -1,6 +1,6 @@
 import logging
 
-from ..eval import eval_lm_wikitext2, eval_cls_glue
+from ..eval import eval_cls_glue, eval_lm_wikitext2
 from .stat_manager import StatManager
 
 logger = logging.getLogger(__name__)

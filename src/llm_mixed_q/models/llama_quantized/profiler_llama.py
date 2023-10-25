@@ -1,10 +1,9 @@
-from ..quantize.quantized_layer_profiler import (
-    profile_linear_layer,
-    profile_matmul_layer,
-    register_a_stat_hook,
-    update_profile,
-)
-from .modeling_llama import LlamaQuantizedDecoderLayer, LlamaQuantizedForCausalLM
+from ..quantize.quantized_layer_profiler import (profile_linear_layer,
+                                                 profile_matmul_layer,
+                                                 register_a_stat_hook,
+                                                 update_profile)
+from .modeling_llama import (LlamaQuantizedDecoderLayer,
+                             LlamaQuantizedForCausalLM)
 
 
 def _profile_llama_layer(

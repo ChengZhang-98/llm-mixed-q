@@ -1,28 +1,27 @@
 import os
-import sys
-from pathlib import Path
-import transformers
-from transformers import DataCollatorForLanguageModeling
-from torch.utils.data import DataLoader
 import pickle
+import sys
 from argparse import ArgumentParser
+from pathlib import Path
+
+import transformers
+from torch.utils.data import DataLoader
+from transformers import DataCollatorForLanguageModeling
 
 print(str(Path(__file__).parents[4].resolve() / "src"))
 sys.path.append(str(Path(__file__).parents[4].resolve() / "src"))
 
-from llm_mixed_q.eval import eval_lm_wikitext2
 from llm_mixed_q.datasets import get_raw_dataset_dict, preprocess_dataset_dict
+from llm_mixed_q.eval import eval_lm_wikitext2
 
 os.environ["PYTHONBREAKPOINT"] = "ipdb.set_trace"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 
-from llm_mixed_q.statstic_profiler import StatManager
-from models.modeling_llama import (
-    LlamaForCausalLM,
-    LlamaDecoderLayer,
-)
 from models.identity import Identity
+from models.modeling_llama import LlamaDecoderLayer, LlamaForCausalLM
+
+from llm_mixed_q.statstic_profiler import StatManager
 
 
 def main():

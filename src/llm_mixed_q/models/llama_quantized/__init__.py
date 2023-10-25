@@ -35,13 +35,11 @@ vicuna = LlamaQuantizedForCausalLM.from_pretrained(
 """
 
 from .configuration_llama import LlamaQuantizedConfig
-from .modeling_llama import (
-    LlamaQuantizedForCausalLM,
-    LlamaQuantizedForSequenceClassification,
-)
-from .profiler_llama import profile_llama_quantized, register_stat_hooks_llama_quantized
+from .modeling_llama import (LlamaQuantizedForCausalLM,
+                             LlamaQuantizedForSequenceClassification)
+from .profiler_llama import (profile_llama_quantized,
+                             register_stat_hooks_llama_quantized)
 from .quant_config_llama import (
     format_stat_profiled_int_config_llama_quantized,
-    parse_llama_quantized_config,
-)
+    parse_llama_quantized_config)
 from .sampler_llama import sample_llama_quant_config

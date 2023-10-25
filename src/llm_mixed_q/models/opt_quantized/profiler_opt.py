@@ -1,15 +1,11 @@
 import torch
 
-from ..quantize.quantized_layer_profiler import (
-    profile_linear_layer,
-    profile_matmul_layer,
-    register_a_stat_hook,
-    update_profile,
-)
-from .modeling_opt import (
-    OPTQuantizedDecoderLayer,
-    OPTQuantizedForSequenceClassification,
-)
+from ..quantize.quantized_layer_profiler import (profile_linear_layer,
+                                                 profile_matmul_layer,
+                                                 register_a_stat_hook,
+                                                 update_profile)
+from .modeling_opt import (OPTQuantizedDecoderLayer,
+                           OPTQuantizedForSequenceClassification)
 
 
 def _profile_opt_layer(
